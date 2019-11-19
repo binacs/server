@@ -6,6 +6,8 @@ import (
 	"github.com/BinacsLee/server/config"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/pprof"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
