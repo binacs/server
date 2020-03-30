@@ -1,32 +1,62 @@
 package config
 
 import (
+	"sync"
+
 	"github.com/BurntSushi/toml"
-	"log"
 )
 
-// Config ...
 type Config struct {
-	Host    string `toml:host`
-	Port    string `toml:port`
-	ImgPath string `toml:"imgpath"`
+	WorkSpace   string      `toml:"workspace"`
+	File        string      `toml:"configfile"`
+	GinConfig   GinConfig   `toml:"GinConfig"`
+	LogConfig   LogConfig   `toml:"LogConfig"`
+	RedisConfig RedisConfig `toml:"RedisConfig"`
+	MysqlConfig MysqlConfig `toml:"MysqlConfig"`
+	//Redis
+	//Mysql
+	rwmtx *sync.RWMutex
 }
 
-var config Config
-var configFile = "./config.toml"
-
-// SetPath
-func SetConfPath(path string) {
-	configFile = path
+type GinConfig struct {
+	HttpPort string `toml:"HttpPort"`
 }
 
-// GetConfig config struct from config file
-func GetConfig() Config {
-	if config.Host == "" {
-		// default value
-		if _, err := toml.DecodeFile(configFile, &config); err != nil {
-			log.Fatal("read the struct of config failed !", err)
-		}
+func defaultConfig() Config {
+	ret := Config{
+		WorkSpace: ".",
+		File:      "./config.toml",
+		GinConfig: GinConfig{
+			HttpPort: "80",
+		},
+		LogConfig:   defaultLogConfig(),
+		RedisConfig: defaultRedisConfig(),
+		MysqlConfig: defaultMysqlConfig(),
+		rwmtx:       &sync.RWMutex{},
 	}
-	return config
+	return ret
+}
+
+func LoadFromFile(configFile string) (*Config, error) {
+	cfg := defaultConfig()
+	if _, err := toml.DecodeFile(configFile, &cfg); err != nil {
+		return &cfg, err
+	}
+	cfg.File = configFile
+	return &cfg, nil
+}
+
+func (cfg *Config) Reload() error {
+	rwmtx := cfg.rwmtx
+	rwmtx.Lock()
+	defer rwmtx.Unlock()
+	configFile := cfg.File
+	newConfig, err := LoadFromFile(configFile)
+	if err != nil {
+		return err
+	}
+	*cfg = *newConfig
+	cfg.File = configFile
+	cfg.rwmtx = rwmtx
+	return nil
 }

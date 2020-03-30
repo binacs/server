@@ -1,3 +1,33 @@
-host = "127.0.0.1"
-port = ":8888"
-imgpath = "./img"
+
+workspace = "."
+file = "./config.toml"
+
+[GinConfig]
+HttpPort = "88"
+
+[LogConfig]
+Level = "debug"
+
+[RedisConfig]
+Network      = "tcp"
+Addr         = "127.0.0.1:6379"
+Password     = "password"
+DB           = 0
+PoolSize     = 10
+MinIdleConns = 3
+
+[MysqlConfig]
+MaxIdleConns = 33
+MaxOpenConns = 100
+[[MysqlConfig.Conns]]
+User 	 = "user1"
+Password = "password"
+Host	 = "127.0.0.1"
+Port	 = "3306"
+DB		 = "db"
+[[MysqlConfig.Conns]]
+User 	 = "user1"
+Password = "password"
+Host	 = "127.0.0.1"
+Port	 = "3306"
+DB		 = "db"
