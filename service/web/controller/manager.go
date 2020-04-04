@@ -1,5 +1,6 @@
 package controller
 
+/*
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -16,3 +17,4 @@ func Reload(ctx *gin.Context) {
 	ctx.String(http.StatusOK, "Reload finish")
 	return
 }
+*/

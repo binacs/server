@@ -1,5 +1,6 @@
 package controller
 
+/*
 import (
 	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service"
@@ -19,3 +20,4 @@ type ServiceHub struct {
 	MysqlService  service.MysqlService  `inject-name:"MysqlService"`
 	ServiceLogger log.Logger            `inject-name:"ServiceLogger"`
 }
+*/

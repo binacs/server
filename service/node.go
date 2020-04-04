@@ -17,4 +17,6 @@ func (ns *NodeServiceImpl) AfterInject() error {
 	return nil
 }
 
-//func
+func (ns *NodeServiceImpl) OnStart() {
+	
+}

@@ -13,7 +13,7 @@ func SetApiRouter(r *gin.RouterGroup) {
 }
 
 func SetManagerRouter(r *gin.RouterGroup) {
-	r.POST("/reload", Reload)
+	//r.POST("/reload", Reload)
 }
 
 func SetMonitorRouter(r *gin.RouterGroup) {
