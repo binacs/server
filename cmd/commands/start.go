@@ -20,8 +20,10 @@ var (
 
 			fmt.Println(*cfg)
 			node := initService(logger, cfg)
-			//node.OnStart()
 			fmt.Println("node = ", node)
+			if err = node.OnStart(); err != nil {
+				fmt.Println(err)
+			}
 			base.Forever()
 
 			return nil
@@ -29,11 +31,12 @@ var (
 	}
 )
 
-func initService(logger log.Logger, cfg *config.Config) service.NodeService {
+func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl {
 	nodeSvc := service.NodeServiceImpl{}
 
 	inject.Regist(Inject_Config, cfg)
 
+	inject.Regist(Inject_ZAPLOGGER, zaplogger)
 	inject.Regist(Inject_LOGGER, logger)
 	inject.Regist(Inject_Node_LOGGER, logger.With("module", "node"))
 	inject.Regist(Inject_Web_LOGGER, logger.With("module", "web"))
@@ -53,5 +56,5 @@ func initService(logger log.Logger, cfg *config.Config) service.NodeService {
 	if err != nil {
 		panic(err.Error())
 	}
-	return nodeSvc
+	return &nodeSvc
 }

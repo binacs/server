@@ -4,8 +4,10 @@ const (
 	Inject_Config = "Config"
 
 	Inject_LOGGER         = "Logger"
+	Inject_ZAPLOGGER      = "ZapLogger"
 	Inject_Node_LOGGER    = "NodeLogger"
 	Inject_Web_LOGGER     = "WebLogger"
+	Inject_GRPC_LOGGER    = "GRPCLogger"
 	Inject_Service_LOGGER = "ServiceLogger"
 	Inject_Config_LOGGER  = "ConfigLogger"
 	Inject_Redis_LOGGER   = "RedisLogger"
@@ -15,6 +17,7 @@ const (
 
 	Inject_Node_Service   = "NodeService"
 	Inject_Web_Service    = "WebService"
+	Inject_GRPC_Service   = "GRPCService"
 	Inject_Config_Service = "ConfigService"
 	Inject_Redis_Service  = "RedisService"
 	Inject_Mysql_Service  = "MysqlService"

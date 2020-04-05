@@ -2,8 +2,10 @@
 workspace = "."
 file = "./config.toml"
 
-[GinConfig]
-HttpPort = "88"
+[GRPCConfig]
+HttpPort = "80"
+[WebConfig]
+HttpPort = "80"
 
 [LogConfig]
 Level = "debug"

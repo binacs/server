@@ -9,7 +9,8 @@ import (
 type Config struct {
 	WorkSpace   string      `toml:"workspace"`
 	File        string      `toml:"configfile"`
-	GinConfig   GinConfig   `toml:"GinConfig"`
+	WebConfig   WebConfig   `toml:"WebConfig"`
+	GRPCConfig  GRPCConfig  `toml:"GRPCConfig"`
 	LogConfig   LogConfig   `toml:"LogConfig"`
 	RedisConfig RedisConfig `toml:"RedisConfig"`
 	MysqlConfig MysqlConfig `toml:"MysqlConfig"`
@@ -18,17 +19,12 @@ type Config struct {
 	rwmtx *sync.RWMutex
 }
 
-type GinConfig struct {
-	HttpPort string `toml:"HttpPort"`
-}
-
 func defaultConfig() Config {
 	ret := Config{
-		WorkSpace: ".",
-		File:      "./config.toml",
-		GinConfig: GinConfig{
-			HttpPort: "80",
-		},
+		WorkSpace:   ".",
+		File:        "./config.toml",
+		WebConfig:   defaultWebConfig(),
+		GRPCConfig:  defaultGRPCConfig(),
 		LogConfig:   defaultLogConfig(),
 		RedisConfig: defaultRedisConfig(),
 		MysqlConfig: defaultMysqlConfig(),

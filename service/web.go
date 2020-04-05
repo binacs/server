@@ -26,7 +26,7 @@ func (ws *WebServiceImpl) AfterInject() error {
 	ws.r.Use(gin.Recovery())
 	controller.SetRouter(ws.r)
 	ws.s = &http.Server{
-		Addr:           ":" + ws.Config.GinConfig.HttpPort,
+		Addr:           ":" + ws.Config.WebConfig.HttpPort,
 		Handler:        ws.r,
 		ReadTimeout:    time.Second,
 		WriteTimeout:   time.Second,
@@ -36,10 +36,10 @@ func (ws *WebServiceImpl) AfterInject() error {
 }
 
 func (ws *WebServiceImpl) Serve() error {
+	ws.Logger.Info("GRPCService Serve", "HttpPort", ws.Config.WebConfig.HttpPort)
 	err := ws.s.ListenAndServe()
 	if err != nil {
 		return err
 	}
-	ws.Logger.Info("http start finish", "port", ws.Config.GinConfig.HttpPort)
 	return nil
 }

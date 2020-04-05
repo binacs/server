@@ -2,12 +2,13 @@ package commands
 
 import (
 	"fmt"
+	"path"
+	"strings"
+
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"path"
-	"strings"
 
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
@@ -15,6 +16,7 @@ import (
 
 var (
 	configFile string
+	zaplogger  *zap.Logger
 	logger     log.Logger
 	cfg        *config.Config
 )
@@ -41,15 +43,17 @@ var (
 				fmt.Println("LoadFromFile err: ", err)
 			}
 
-			logger = initLogger(cfg.WorkSpace, cfg.LogConfig)
-			logger.Info("initLogger finished")
+			zaplogger = initLogger(cfg.WorkSpace, cfg.LogConfig)
+			logger = log.NewZapLoggerWapper(zaplogger.Sugar())
+			//zaplogger.Info("zaologger")
+			logger.Info("Init finished")
 
 			return nil
 		},
 	}
 )
 
-func initLogger(rootPath string, logConfig config.LogConfig) log.Logger {
+func initLogger(rootPath string, logConfig config.LogConfig) *zap.Logger {
 	logpath := logConfig.File
 	if !path.IsAbs(logpath) {
 		logpath = path.Join(rootPath, logConfig.File)
@@ -79,7 +83,7 @@ func initLogger(rootPath string, logConfig config.LogConfig) log.Logger {
 	atomicLevel.SetLevel(stringToXZapLoggerLevel(logConfig.Level))
 	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(&hook), atomicLevel)
 	logger := zap.New(core)
-	return log.NewZapLoggerWapper(logger.Sugar())
+	return logger
 }
 
 func stringToXZapLoggerLevel(level string) zapcore.Level {
@@ -93,6 +97,10 @@ func stringToXZapLoggerLevel(level string) zapcore.Level {
 		return zap.WarnLevel
 	case "error":
 		return zap.ErrorLevel
+	case "fatal":
+		return zap.FatalLevel
+	case "panic":
+		return zap.PanicLevel
 	default:
 		return zap.InfoLevel
 	}
