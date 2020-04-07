@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
+	"github.com/BinacsLee/server/service/db"
 )
 
 type NodeService interface {
@@ -10,12 +11,12 @@ type NodeService interface {
 }
 
 type NodeServiceImpl struct {
-	Config   *config.Config `inject-name:"Config"`
-	Logger   log.Logger     `inject-name:"NodeLogger"`
-	WebSvc   WebService     `inject-name:"WebService"`
-	GRPCSvc  GRPCService    `inject-name:"GRPCService"`
-	RedisSvc RedisService   `inject-name:"RedisService"`
-	MysqlSvc MysqlService   `inject-name:"MysqlService"`
+	Config   *config.Config  `inject-name:"Config"`
+	Logger   log.Logger      `inject-name:"NodeLogger"`
+	WebSvc   WebService      `inject-name:"WebService"`
+	GRPCSvc  GRPCService     `inject-name:"GRPCService"`
+	RedisSvc db.RedisService `inject-name:"RedisService"`
+	MysqlSvc db.MysqlService `inject-name:"MysqlService"`
 }
 
 func (ns *NodeServiceImpl) AfterInject() error {
@@ -23,7 +24,7 @@ func (ns *NodeServiceImpl) AfterInject() error {
 }
 
 func (ns *NodeServiceImpl) OnStart() error {
-	err := ns.WebSvc.Serve()
+	err := ns.GRPCSvc.Serve()
 	if err != nil {
 		return err
 	}

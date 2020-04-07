@@ -1,7 +1,6 @@
-package service
+package db
 
 import (
-	//"fmt"
 	"github.com/go-redis/redis"
 
 	"github.com/BinacsLee/server/config"

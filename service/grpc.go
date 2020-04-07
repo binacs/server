@@ -47,14 +47,13 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 			grpc_zap.StreamServerInterceptor(gs.ZapLogger, opts...),
 			grpc_auth.StreamServerInterceptor(middleware.GlobalAuthFunc()),
 		))
-	//ctx := context.Background()
 	gwmux := runtime.NewServeMux()
 	// service
 
 	mux := http.NewServeMux()
 	mux.Handle("/", gwmux)
 	gs.srv = &http.Server{
-		Addr:    gs.Config.GRPCConfig.HttpPort,
+		Addr:    ":" + gs.Config.GRPCConfig.HttpPort,
 		Handler: HandlerFunc(gsrv, mux),
 	}
 	return nil
@@ -62,7 +61,7 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 
 func (gs *GRPCServiceImpl) Serve() error {
 	gs.Logger.Info("GRPCService Serve", "HttpPort", gs.Config.GRPCConfig.HttpPort)
-	listener, err := net.Listen("tcp", gs.Config.GRPCConfig.HttpPort)
+	listener, err := net.Listen("tcp", ":"+gs.Config.GRPCConfig.HttpPort)
 	if err != nil {
 		return err
 	}

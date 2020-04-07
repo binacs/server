@@ -10,6 +10,7 @@ import (
 	"github.com/BinacsLee/server/libs/inject"
 	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service"
+	"github.com/BinacsLee/server/service/db"
 )
 
 var (
@@ -40,6 +41,7 @@ func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl
 	inject.Regist(Inject_LOGGER, logger)
 	inject.Regist(Inject_Node_LOGGER, logger.With("module", "node"))
 	inject.Regist(Inject_Web_LOGGER, logger.With("module", "web"))
+	inject.Regist(Inject_GRPC_LOGGER, logger.With("module", "grpc"))
 	inject.Regist(Inject_Config_LOGGER, logger.With("module", "config"))
 	inject.Regist(Inject_Redis_LOGGER, logger.With("module", "redis"))
 	inject.Regist(Inject_Mysql_LOGGER, logger.With("module", "mysql"))
@@ -47,8 +49,9 @@ func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl
 
 	inject.Regist(Inject_Node_Service, &nodeSvc)
 	inject.Regist(Inject_Web_Service, &service.WebServiceImpl{})
-	inject.Regist(Inject_Redis_Service, &service.RedisServiceImpl{})
-	inject.Regist(Inject_Mysql_Service, &service.MysqlServiceImpl{})
+	inject.Regist(Inject_GRPC_Service, &service.GRPCServiceImpl{})
+	inject.Regist(Inject_Redis_Service, &db.RedisServiceImpl{})
+	inject.Regist(Inject_Mysql_Service, &db.MysqlServiceImpl{})
 	inject.Regist(Inject_Config_Service, &service.ConfigServiceImpl{})
 	//inject.Regist(Inject_ServiceHub, controller.Services)
 
