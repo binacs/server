@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
-	"github.com/BinacsLee/server/service/db"
 )
 
 type NodeService interface {
@@ -15,8 +14,6 @@ type NodeServiceImpl struct {
 	Logger   log.Logger      `inject-name:"NodeLogger"`
 	WebSvc   WebService      `inject-name:"WebService"`
 	GRPCSvc  GRPCService     `inject-name:"GRPCService"`
-	RedisSvc db.RedisService `inject-name:"RedisService"`
-	MysqlSvc db.MysqlService `inject-name:"MysqlService"`
 }
 
 func (ns *NodeServiceImpl) AfterInject() error {

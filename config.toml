@@ -4,6 +4,9 @@ file = "./config.toml"
 
 [GRPCConfig]
 HttpPort = "80"
+CertPath = "tls/server.crt"
+KeyPath  = "tls/server.key"
+Host     = "binacs.cn"
 [WebConfig]
 HttpPort = "80"
 
