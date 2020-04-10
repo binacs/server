@@ -1,42 +1,49 @@
 package db
 
 import (
+	"fmt"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
+	"go.uber.org/zap"
 	"xorm.io/core"
 
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
+	"github.com/BinacsLee/server/types/table"
 )
 
 type MysqlService interface {
+	Sync2() error
+	GetEngineG() *xorm.EngineGroup
 }
 
 type MysqlServiceImpl struct {
-	Config  *config.Config `inject-name:"Config"`
-	Logger  log.Logger     `inject-name:"MysqlLogger"`
-	EngineG *xorm.EngineGroup
+	Config    *config.Config `inject-name:"Config"`
+	Logger    log.Logger     `inject-name:"MysqlLogger"`
+	ZapLogger *zap.Logger    `inject-name:"ZapLogger"`
+	EngineG   *xorm.EngineGroup
 }
 
 func (ms *MysqlServiceImpl) AfterInject() error {
 	var err error
-	ms.EngineG, err = NewMysqlCli(ms.Config.MysqlConfig, ms.Logger)
+	ms.EngineG, err = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func NewMysqlCli(cfg config.MysqlConfig, logger log.Logger) (*xorm.EngineGroup, error) {
+func NewMysqlCli(cfg config.MysqlConfig, logger *zap.Logger) (*xorm.EngineGroup, error) {
 	DSN := cfg.GenerateDSN()
 	engine, err := xorm.NewEngineGroup("mysql", DSN)
 	if err != nil {
 		return nil, err
 	}
-	tableMapper := core.NewPrefixMapper(core.SnakeMapper{}, "t_")
+	tableMapper := core.NewPrefixMapper(core.SameMapper{}, "t_")
 	engine.SetTableMapper(tableMapper)
-	//engine.ShowExecTime(true)
-	//engine.SetLogger(logger)
+	engine.ShowExecTime(true)
+	engine.SetLogger(log.NewMysqlLogger(logger))
 	if cfg.MaxIdleConns > 0 {
 		engine.SetMaxIdleConns(cfg.MaxIdleConns)
 	}
@@ -45,3 +52,19 @@ func NewMysqlCli(cfg config.MysqlConfig, logger log.Logger) (*xorm.EngineGroup, 
 	}
 	return engine, nil
 }
+
+func (ms *MysqlServiceImpl) Sync2() error {
+	if err := ms.EngineG.Master().Sync2(
+		new(table.User),
+	); err != nil {
+		return fmt.Errorf("MysqlService Create table, err: %v\n", err)
+	}
+	ms.Logger.Info("MysqlService Sync2 Succeed")
+	return nil
+}
+
+func (ms *MysqlServiceImpl) GetEngineG() *xorm.EngineGroup {
+	return ms.EngineG
+}
+
+// 通过group可以实现对读写分离的支持

@@ -1,4 +1,4 @@
-package binacs_server_api_v1
+package binacs_api_static_v1
 
 //generate grpc stub code
 //go:generate protoc -I. -I$GOPATH/src -I$GOPATH/src/github.com/google/protobuf/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc:. static.proto

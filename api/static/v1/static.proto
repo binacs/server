@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package proto;
+package binacs_api_static_v1;
 
 import "google/api/annotations.proto";
 
