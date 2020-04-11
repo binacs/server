@@ -1,7 +1,7 @@
 package service
 
 import (
-	//"context"
+	"context"
 	"crypto/tls"
 	"fmt"
 	"io/ioutil"
@@ -21,7 +21,8 @@ import (
 
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
-	//grpc_service "github.com/BinacsLee/server/service/grpc/service"
+	"github.com/BinacsLee/server/service/db"
+	grpc_service "github.com/BinacsLee/server/service/grpc/service"
 )
 
 type GRPCService interface {
@@ -33,7 +34,10 @@ type GRPCServiceImpl struct {
 	Logger    log.Logger     `inject-name:"GRPCLogger"`
 	ZapLogger *zap.Logger    `inject-name:"ZapLogger"`
 
-	//XXXSvc *grpc_service.GRPCXXXServiceImpl `inject-name:"GRPCXXXService"`
+	RedisSvc db.RedisService `inject-name:"RedisService"`
+	MysqlSvc db.MysqlService `inject-name:"MysqlService"`
+
+	UserSvc *grpc_service.GRPCUserServiceImpl `inject-name:"GRPCUserService"`
 
 	tlsCfg *tls.Config
 	creds  credentials.TransportCredentials
@@ -80,11 +84,21 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 }
 
 func (gs *GRPCServiceImpl) Serve() error {
+	gs.Logger.Info("Check DB connection")
+	if err := gs.RedisSvc.Ping(); err != nil {
+		return err
+	}
+	if err := gs.MysqlSvc.Sync2(); err != nil {
+		return err
+	}
+
 	gs.Logger.Info("GRPCService service register")
-	//ctx := context.Background()
-	//if err := gs.XXXSvc.Register(ctx, gs.gsrv, gs.gwmux); err != nil {
-	//	return err
-	//}
+	ctx := context.Background()
+	if err := gs.UserSvc.Register(ctx, gs.gsrv, gs.gwmux); err != nil {
+		return err
+	}
+
+	gs.Logger.Info("ServeMux build")
 	mux := http.NewServeMux()
 	mux.Handle("/", gs.gwmux)
 	gs.srv = &http.Server{
@@ -92,6 +106,7 @@ func (gs *GRPCServiceImpl) Serve() error {
 		Handler:   HandlerFunc(gs.gsrv, mux),
 		TLSConfig: gs.tlsCfg,
 	}
+
 	gs.Logger.Info("GRPCService Serve", "HttpPort", gs.Config.GRPCConfig.HttpPort)
 	listener, err := net.Listen("tcp", ":"+gs.Config.GRPCConfig.HttpPort)
 	if err != nil {

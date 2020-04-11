@@ -451,15 +451,15 @@ func RegisterUserHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 }
 
 var (
-	pattern_User_UserTest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "User", "test"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_User_UserTest_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "user", "test"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_User_UserRegister_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "User", "register"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_User_UserRegister_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "user", "register"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_User_UserAuth_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "User", "auth"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_User_UserAuth_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "user", "auth"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_User_UserRefresh_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "User", "refresh"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_User_UserRefresh_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "user", "refresh"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_User_UserInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "User", "info"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_User_UserInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"api", "v1", "user", "info"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

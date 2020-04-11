@@ -12,7 +12,7 @@ import (
 
 type RedisService interface {
 	Ping() error
-	Set(string, string, time.Time) error
+	Set(string, string, time.Duration) error
 	Get(string) (string, error)
 	Del(string) error
 	GetExpireAt(string) (time.Time, error)
@@ -75,6 +75,13 @@ func NewRedisSentinelCli(cfg config.RedisConfig) (*redis.Client, error) {
 }
 
 // -------------------------------------------------
+func (rs *RedisServiceImpl) Ping() error {
+	if _, err := rs.client.Ping().Result(); err != nil {
+		return fmt.Errorf("RedisCli Ping err: %v", err)
+	}
+	return nil
+}
+
 func (rs *RedisServiceImpl) Set(key string, token string, duration time.Duration) error {
 	err := rs.client.Set(key, token, duration).Err()
 	if err != nil {

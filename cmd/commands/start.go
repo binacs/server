@@ -11,6 +11,7 @@ import (
 	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service"
 	"github.com/BinacsLee/server/service/db"
+	grpc_service "github.com/BinacsLee/server/service/grpc/service"
 )
 
 var (
@@ -50,6 +51,8 @@ func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl
 	inject.Regist(Inject_Node_Service, &nodeSvc)
 	inject.Regist(Inject_Web_Service, &service.WebServiceImpl{})
 	inject.Regist(Inject_GRPC_Service, &service.GRPCServiceImpl{})
+	inject.Regist(Inject_GRPCUser_Service, &grpc_service.GRPCUserServiceImpl{})
+
 	inject.Regist(Inject_Redis_Service, &db.RedisServiceImpl{})
 	inject.Regist(Inject_Mysql_Service, &db.MysqlServiceImpl{})
 	inject.Regist(Inject_Config_Service, &service.ConfigServiceImpl{})

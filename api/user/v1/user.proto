@@ -14,35 +14,35 @@ message UserTestResp {
 service User {
     rpc UserTest(UserTestReq) returns (UserTestResp) {
         option (google.api.http) = {
-            post: "/api/v1/User/test"
+            post: "/api/v1/user/test"
             body: "*"
         };
     };
 
     rpc UserRegister(UserRegisterReq) returns (UserRegisterResp) {
         option (google.api.http) = {
-            post: "/api/v1/User/register"
+            post: "/api/v1/user/register"
             body: "*"
         };
     };
 
     rpc UserAuth(UserAuthReq) returns (UserAuthResp) {
         option (google.api.http) = {
-            post: "/api/v1/User/auth"
+            post: "/api/v1/user/auth"
             body: "*"
         };
     };
     
     rpc UserRefresh(UserRefreshReq) returns (UserRefreshResp) {
         option (google.api.http) = {
-            post: "/api/v1/User/refresh"
+            post: "/api/v1/user/refresh"
             body: "*"
         };
     };
 
     rpc UserInfo(UserInfoReq) returns (UserInfoResp) {
         option (google.api.http) = {
-            post: "/api/v1/User/info"
+            post: "/api/v1/user/info"
             body: "*"
         };
     };
