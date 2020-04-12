@@ -64,6 +64,7 @@ func (us *GRPCUserServiceImpl) UserRegister(ctx context.Context, req *pb.UserReg
 	}
 	affected, err := us.MysqlSvc.GetEngineG().Master().Insert(user)
 	if err != nil || affected == 0 {
+		us.Logger.Error("UserRegister MysqlSvc Insert", "affected", affected, "err", err)
 		return nil, errcode.ErrGrpcAppExecute.AppendMsg("MysqlSvc Insert| err: %s, affected: %s", err, affected)
 	}
 	rsp.Data = &pb.UserRegisterDataObj{
