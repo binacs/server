@@ -30,6 +30,8 @@ func main() {
 	}
 	cli = swagger.NewAPIClient(cfg)
 	ctx = context.Background()
+	// set ctx
+	ctx = context.WithValue(ctx, swagger.ContextAccessToken, "aaaaaaaa")
 
 	// test APIs
 	//testRegister("swagger_test_reg_id", "swagger_test_reg_pwd")

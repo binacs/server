@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"strings"
 
-	//grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	//grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
-	//grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"go.uber.org/zap"
 	"golang.org/x/net/http2"
@@ -23,6 +23,7 @@ import (
 	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service/db"
 	grpc_service "github.com/BinacsLee/server/service/grpc/service"
+	"github.com/BinacsLee/server/types"
 )
 
 type GRPCService interface {
@@ -60,24 +61,22 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 
 	grpc_zap.ReplaceGrpcLoggerV2(gs.ZapLogger)
 	gs.gsrv = grpc.NewServer(grpc.Creds(gs.creds))
-	/*
-		opts := []grpc_zap.Option{
-			//grpc_zap.WithLevels(customFunc),
-		}
-		gs.gsrv = grpc.NewServer(
-			grpc_middleware.WithUnaryServerChain(
-				grpc_ctxtags.UnaryServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
-				grpc_zap.UnaryServerInterceptor(gs.ZapLogger, opts...),
-				grpc_auth.UnaryServerInterceptor(middleware.GlobalAuthFunc()),
-			),
-			grpc_middleware.WithStreamServerChain(
-				grpc_ctxtags.StreamServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
-				grpc_zap.StreamServerInterceptor(gs.ZapLogger, opts...),
-				grpc_auth.StreamServerInterceptor(middleware.GlobalAuthFunc()),
-			),
-			grpc.Creds(gs.creds))
-	*/
-	//ctx := context.Background()
+	opts := []grpc_zap.Option{
+		//grpc_zap.WithLevels(customFunc),
+	}
+	gs.gsrv = grpc.NewServer(
+		grpc_middleware.WithUnaryServerChain(
+			grpc_ctxtags.UnaryServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
+			grpc_zap.UnaryServerInterceptor(gs.ZapLogger, opts...),
+			grpc_auth.UnaryServerInterceptor(gs.GRPCAuth),
+		),
+		grpc_middleware.WithStreamServerChain(
+			grpc_ctxtags.StreamServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
+			grpc_zap.StreamServerInterceptor(gs.ZapLogger, opts...),
+			grpc_auth.StreamServerInterceptor(gs.GRPCAuth),
+		),
+		grpc.Creds(gs.creds),
+	)
 	gs.gwmux = runtime.NewServeMux()
 
 	return nil
@@ -117,6 +116,29 @@ func (gs *GRPCServiceImpl) Serve() error {
 		return err
 	}
 	return nil
+}
+
+func (gs *GRPCServiceImpl) GRPCAuth(ctx context.Context) (context.Context, error) {
+	fmt.Println(ctx)
+	token, err := grpc_auth.AuthFromMD(ctx, types.TokenType_Bearer)
+	if err != nil {
+		fmt.Println("err=", err)
+		return ctx, err
+	}
+	fmt.Println("token before check: ", token)
+	// check token
+	/*
+		if base.IsBase64(token) {
+			tokenDecBytes, err := base64.StdEncoding.DecodeString(token)
+			if err != nil {
+				return ctx, grpc.Errorf(codes.Unauthenticated, "Request unauthenticated because base64 decode failed")
+			}
+			token = string(tokenDecBytes)
+		}
+	*/
+
+	newCtx := context.WithValue(ctx, types.AccessTokenContextKey, token)
+	return newCtx, nil
 }
 
 func HandlerFunc(gsrv *grpc.Server, gwmux http.Handler) http.Handler {
