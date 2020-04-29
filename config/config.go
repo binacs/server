@@ -9,6 +9,7 @@ import (
 type Config struct {
 	WorkSpace   string      `toml:"workspace"`
 	File        string      `toml:"configfile"`
+	Mode        string      `toml:"mode"`
 	WebConfig   WebConfig   `toml:"WebConfig"`
 	GRPCConfig  GRPCConfig  `toml:"GRPCConfig"`
 	LogConfig   LogConfig   `toml:"LogConfig"`
@@ -23,6 +24,7 @@ func defaultConfig() Config {
 	ret := Config{
 		WorkSpace:   ".",
 		File:        "./config.toml",
+		Mode:        "all",
 		WebConfig:   defaultWebConfig(),
 		GRPCConfig:  defaultGRPCConfig(),
 		LogConfig:   defaultLogConfig(),
