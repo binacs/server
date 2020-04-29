@@ -9,8 +9,11 @@ func SetRouter(r *gin.Engine) {
 	SetMonitorRouter(r.Group("monitor"))
 }
 
-func SetApiRouter(r *gin.RouterGroup) {
-	r.StaticFile("/", "./test/static/index.html")
+func SetBasicRouter(r *gin.Engine) {
+	r.StaticFile("/", "./test/static/index")
+	r.StaticFile("/toys", "./test/static/toys")
+	r.StaticFile("/toys/crypto", "./test/static/crypto")
+	r.StaticFile("/about", "./test/static/about")
 }
 
 func SetApiRouter(r *gin.RouterGroup) {
