@@ -9,7 +9,7 @@ type GRPCConfig struct {
 
 func defaultGRPCConfig() GRPCConfig {
 	return GRPCConfig{
-		HttpPort: "80",
+		HttpPort: "9500",
 		CertPath: "server.crt",
 		KeyPath:  "server.key",
 		Host:     "binacs.cn",

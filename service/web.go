@@ -37,7 +37,7 @@ func (ws *WebServiceImpl) AfterInject() error {
 
 func (ws *WebServiceImpl) Serve() error {
 	ws.Logger.Info("WebService Serve", "HttpPort", ws.Config.WebConfig.HttpPort)
-	err := ws.s.ListenAndServe()
+	err := ws.s.ListenAndServeTLS(ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath)
 	if err != nil {
 		return err
 	}

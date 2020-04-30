@@ -10,6 +10,9 @@ KeyPath  = "test/tls/server.key"
 Host     = "server.grpc.io"         # for test
 [WebConfig]
 HttpPort = "443"
+CertPath = "test/tls/server.crt"
+KeyPath  = "test/tls/server.key"
+Host     = "server.grpc.io"         # for test
 
 [LogConfig]
 Level = "debug"
