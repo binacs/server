@@ -19,6 +19,6 @@ func Auth(ctx context.Context) (context.Context, error) {
 	if err != nil {
 		return ctx, err
 	}
-	newCtx := context.WithValue(ctx, types.TokenContextKey, token)
+	newCtx := context.WithValue(ctx, types.AccessTokenContextKey, token)
 	return newCtx, nil
 }
