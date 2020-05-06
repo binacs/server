@@ -1,0 +1,36 @@
+
+workspace = "."
+file = "./test/docker-compose/config.toml"
+mode = "all"
+
+[GRPCConfig]
+HttpPort = "9500"
+CertPath = "test/tls/server.crt"
+KeyPath  = "test/tls/server.key"
+Host     = "server.grpc.io"         # for test
+[WebConfig]
+HttpPort = "443"
+CertPath = "test/tls/server.crt"
+KeyPath  = "test/tls/server.key"
+Host     = "server.grpc.io"         # for test
+
+[LogConfig]
+Level = "debug"
+
+[RedisConfig]
+Network      = "tcp"
+Addr         = "redis:6379"
+Password     = "password"
+DB           = 0
+PoolSize     = 10
+MinIdleConns = 3
+
+[MysqlConfig]
+MaxIdleConns = 33
+MaxOpenConns = 100
+[[MysqlConfig.Conns]]
+User 	 = "root"
+Password = "password"
+Host	 = "mysql"
+Port	 = "3306"
+DB		 = "testdb"

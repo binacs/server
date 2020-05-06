@@ -38,6 +38,7 @@ var (
 				return nil
 			}
 
+			fmt.Println("LoadFromFile: ", configFile)
 			cfg, err = config.LoadFromFile(configFile)
 			if err != nil {
 				fmt.Println("LoadFromFile err: ", err)

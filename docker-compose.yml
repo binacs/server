@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  server_dc:
+    container_name: server_dc
+    build: .
+    ports:
+      - 443:443
+      - 9500:9500
+    depends_on:
+      - mysql_dc
+      - redis_dc
+    links:
+      - mysql_dc:mysql
+      - redis_dc:redis
+
+  mysql_dc:
+    container_name: mysql_dc
+    image: mysql
+    command: [
+      '--default_authentication_plugin=mysql_native_password',
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci'
+    ]
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_ROOT_PASSWORD: password
+
+  redis_dc:
+    container_name: redis_dc
+    image: redis
+    command: --requirepass password
+    ports:
+      - 6379:6379
+    
