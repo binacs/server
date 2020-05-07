@@ -1,20 +1,21 @@
 
 workspace = "."
-file = "./test/docker-compose/config.toml"
+file = "/src/test/docker-compose/config.toml"
 mode = "all"
 
 [GRPCConfig]
 HttpPort = "9500"
-CertPath = "test/tls/server.crt"
-KeyPath  = "test/tls/server.key"
+CertPath = "/src/test/tls/server.crt"
+KeyPath  = "/src/test/tls/server.key"
 Host     = "server.grpc.io"         # for test
 [WebConfig]
 HttpPort = "443"
-CertPath = "test/tls/server.crt"
-KeyPath  = "test/tls/server.key"
+CertPath = "/src/test/tls/server.crt"
+KeyPath  = "/src/test/tls/server.key"
 Host     = "server.grpc.io"         # for test
 
 [LogConfig]
+File  = "/src/test/server.log"
 Level = "debug"
 
 [RedisConfig]
