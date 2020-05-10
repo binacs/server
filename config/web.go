@@ -1,5 +1,6 @@
 package config
 
+// WebConfig the config of web service
 type WebConfig struct {
 	HttpPort  string `toml:"HttpPort"`
 	HttpsPort string `toml:"HttpsPort"`

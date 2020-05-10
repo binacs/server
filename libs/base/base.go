@@ -8,12 +8,14 @@ import (
 	"time"
 )
 
+// Forever run forever
 func Forever() {
 	TrapSignal(func() {
 		fmt.Println("  Bye bye!")
 	})
 }
 
+// TrapSignal catch os.Interrupt and do [cb] func when exit
 func TrapSignal(cb func()) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)

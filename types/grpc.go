@@ -16,10 +16,12 @@ var (
 	grpcMatadataResult_Debug = false
 )
 
+// GrpcMatadataDebugOpen set true
 func GrpcMatadataDebugOpen() {
 	grpcMatadataResult_Debug = true
 }
 
+// GrpcMatadataSetResultFail set fail
 func GrpcMatadataSetResultFail(ctx context.Context, rsp interface{}) {
 	if !grpcMatadataResult_Debug {
 		return

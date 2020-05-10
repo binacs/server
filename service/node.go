@@ -7,10 +7,12 @@ import (
 	"github.com/BinacsLee/server/libs/log"
 )
 
+// NodeService the node service
 type NodeService interface {
 	OnStart() error
 }
 
+// NodeServiceImpl the implement of node service
 type NodeServiceImpl struct {
 	Config  *config.Config `inject-name:"Config"`
 	Logger  log.Logger     `inject-name:"NodeLogger"`
@@ -18,10 +20,12 @@ type NodeServiceImpl struct {
 	GRPCSvc GRPCService    `inject-name:"GRPCService"`
 }
 
+// AfterInject do inject
 func (ns *NodeServiceImpl) AfterInject() error {
 	return nil
 }
 
+// OnStart start all the service
 func (ns *NodeServiceImpl) OnStart() error {
 	var waiter sync.WaitGroup
 

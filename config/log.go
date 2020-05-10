@@ -1,5 +1,6 @@
 package config
 
+// LogConfig config of log
 type LogConfig struct {
 	File       string `toml:"File"`
 	Level      string `toml:"Level"`

@@ -12,10 +12,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// WebService the web service
 type WebService interface {
 	Serve() error
 }
 
+// WebServiceImpl inplement of WebService
 type WebServiceImpl struct {
 	Config *config.Config `inject-name:"Config"`
 	Logger log.Logger     `inject-name:"WebLogger"`
@@ -23,6 +25,7 @@ type WebServiceImpl struct {
 	s      *http.Server
 }
 
+// AfterInject inject
 func (ws *WebServiceImpl) AfterInject() error {
 	ws.r = gin.New()
 	ws.r.Use(gin.Recovery())
@@ -38,6 +41,7 @@ func (ws *WebServiceImpl) AfterInject() error {
 	return nil
 }
 
+// // Serve start web serve
 func (ws *WebServiceImpl) Serve() error {
 	ws.Logger.Info("WebService Serve", "HttpPort", ws.Config.WebConfig.HttpPort, "HttpsPort", ws.Config.WebConfig.HttpsPort)
 	go func() {

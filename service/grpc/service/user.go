@@ -19,6 +19,7 @@ import (
 	"github.com/BinacsLee/server/types/table"
 )
 
+// GRPCUserServiceImpl GRPC user service implement
 type GRPCUserServiceImpl struct {
 	Config   *config.Config  `inject-name:"Config"`
 	Logger   log.Logger      `inject-name:"GRPCLogger"`
@@ -26,6 +27,7 @@ type GRPCUserServiceImpl struct {
 	MysqlSvc db.MysqlService `inject-name:"MysqlService"`
 }
 
+// Register a new user
 func (us *GRPCUserServiceImpl) Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux) error {
 	if gsrv != nil {
 		pb.RegisterUserServer(gsrv, us)
@@ -45,11 +47,14 @@ func (us *GRPCUserServiceImpl) Register(ctx context.Context, gsrv *grpc.Server, 
 }
 
 // interface...
+
+// UserTest for test
 func (us *GRPCUserServiceImpl) UserTest(ctx context.Context, req *pb.UserTestReq) (*pb.UserTestResp, error) {
 	us.Logger.Info("UserTest", "req", req)
 	return &pb.UserTestResp{Code: 200, Msg: "test"}, nil
 }
 
+// UserRegister register
 func (us *GRPCUserServiceImpl) UserRegister(ctx context.Context, req *pb.UserRegisterReq) (*pb.UserRegisterResp, error) {
 	us.Logger.Info("UserRegister", "req", req)
 	rsp := &pb.UserRegisterResp{
@@ -75,6 +80,7 @@ func (us *GRPCUserServiceImpl) UserRegister(ctx context.Context, req *pb.UserReg
 	return rsp, nil
 }
 
+// UserAuth auth
 func (us *GRPCUserServiceImpl) UserAuth(ctx context.Context, req *pb.UserAuthReq) (*pb.UserAuthResp, error) {
 	us.Logger.Info("UserAuth", "req", req)
 	rsp := &pb.UserAuthResp{
@@ -96,6 +102,7 @@ func (us *GRPCUserServiceImpl) UserAuth(ctx context.Context, req *pb.UserAuthReq
 	return rsp, nil
 }
 
+// UserRefresh refresh token
 func (us *GRPCUserServiceImpl) UserRefresh(ctx context.Context, req *pb.UserRefreshReq) (*pb.UserRefreshResp, error) {
 	us.Logger.Info("UserRefresh", "req", req)
 	rsp := &pb.UserRefreshResp{
@@ -126,6 +133,7 @@ func (us *GRPCUserServiceImpl) UserRefresh(ctx context.Context, req *pb.UserRefr
 	return rsp, nil
 }
 
+// UserInfo user information
 func (us *GRPCUserServiceImpl) UserInfo(ctx context.Context, req *pb.UserInfoReq) (*pb.UserInfoResp, error) {
 	us.Logger.Info("UserInfo", "req", req)
 	rsp := &pb.UserInfoResp{
@@ -147,6 +155,7 @@ func (us *GRPCUserServiceImpl) UserInfo(ctx context.Context, req *pb.UserInfoReq
 
 // ---------------------------------------------------------------
 // internal basic function
+
 // Auth Token
 func (us *GRPCUserServiceImpl) doAuthToken(ctx context.Context, req *pb.UserAuthReq) (*pb.UserTokenObj, *errcode.Error) {
 	id := req.GetId()

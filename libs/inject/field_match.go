@@ -14,6 +14,7 @@ func init() {
 	strategyMap[DEFAULT_STRATEGY] = &NameMatchStrategy{}
 }
 
+// NameMatchStrategy
 type NameMatchStrategy struct {
 }
 
@@ -28,6 +29,7 @@ func (n *NameMatchStrategy) findObjByTFieldInfo(objMap map[string]*ObjInfo, fiel
 	return objMap[fieldInfo.tag.name], nil
 }
 
+// TypeMatchStrategy
 type TypeMatchStrategy struct {
 }
 
@@ -48,6 +50,7 @@ func (t *TypeMatchStrategy) findObjByTFieldInfo(objMap map[string]*ObjInfo, fiel
 	return ret, nil
 }
 
+// MatchStrategyComNameType
 type MatchStrategyComNameType struct {
 }
 
@@ -70,11 +73,13 @@ func (m *MatchStrategyComNameType) findObjByTFieldInfo(objMap map[string]*ObjInf
 	return sty, err
 }
 
+// FieldMatchStrategy
 type FieldMatchStrategy interface {
 	name() string
 	findObjByTFieldInfo(objMap map[string]*ObjInfo, fieldInfo *InjectFieldInfo) (*ObjInfo, error)
 }
 
+// FieldMatchStrategyMap
 type FieldMatchStrategyMap map[string]FieldMatchStrategy
 
 func (f FieldMatchStrategyMap) regist(fms FieldMatchStrategy) error {

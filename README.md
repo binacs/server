@@ -3,7 +3,7 @@
 计划使用go**优雅**地重构个人server
 
 [![Build Status](https://travis-ci.com/BinacsLee/server.svg?branch=master)](https://travis-ci.com/BinacsLee/server)
-[![Go Report Card](https://goreportcard.com/report/github.com/BinacsLee/server)](https://goreportcard.com/report/github.com/BinacsLee/server)
+[![Go Report Card](https://goreportcard.com/badge/github.com/BinacsLee/server)](https://goreportcard.com/report/github.com/BinacsLee/server)
 
 ### tools
 

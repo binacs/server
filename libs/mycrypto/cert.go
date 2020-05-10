@@ -12,8 +12,8 @@ import (
 
 // https://blog.csdn.net/u010846177/article/details/54357239
 
-//GenSignselfCertificate 生成自签名证书
-//func GenSignselfCertificate(req *x509.CertificateRequest, publickey, privKey interface{}, maxPath int, days time.Duration) ([]byte, error) {
+// GenSignselfCertificate 生成自签名证书
+// func GenSignselfCertificate(req *x509.CertificateRequest, publickey, privKey interface{}, maxPath int, days time.Duration) ([]byte, error) {
 func GenSignselfCertificate(publickey, privKey interface{}, maxPath int, days time.Duration, isECC bool) ([]byte, error) {
 	req := &x509.CertificateRequest{
 		Subject: pkix.Name{
@@ -56,8 +56,8 @@ func GenSignselfCertificate(publickey, privKey interface{}, maxPath int, days ti
 	return cert, nil
 }
 
-//GenCertificate 生成非自签名证书
-//func GenCertificate(req *x509.CertificateRequest, parentCert *x509.Certificate, pubKey, parentPrivKey interface{}, isCA bool, days time.Duration) ([]byte, error) {
+// GenCertificate 生成非自签名证书
+// func GenCertificate(req *x509.CertificateRequest, parentCert *x509.Certificate, pubKey, parentPrivKey interface{}, isCA bool, days time.Duration) ([]byte, error) {
 func GenCertificate(parentCert *x509.Certificate, pubKey, parentPrivKey interface{}, isCA bool, days time.Duration) ([]byte, error) {
 	req := &x509.CertificateRequest{
 		Subject: pkix.Name{
@@ -100,6 +100,7 @@ func GenCertificate(parentCert *x509.Certificate, pubKey, parentPrivKey interfac
 }
 
 // ==========================================================
+
 // EncodeCsr 生成证书请求
 func EncodeCsr(country, organization, organizationlUnit, locality, province, streetAddress, postallCode []string, commonName string, priv interface{}) ([]byte, error) {
 	req := &x509.CertificateRequest{

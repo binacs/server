@@ -15,6 +15,7 @@ import (
 )
 
 var (
+	// StartCmd the start command
 	StartCmd = &cobra.Command{
 		Use:   "start",
 		Short: "Start Command",

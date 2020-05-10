@@ -26,10 +26,12 @@ import (
 	"github.com/BinacsLee/server/types"
 )
 
+// GRPCService interface
 type GRPCService interface {
 	Serve() error
 }
 
+// GRPCServiceImpl inplement of GRPCService
 type GRPCServiceImpl struct {
 	Config    *config.Config `inject-name:"Config"`
 	Logger    log.Logger     `inject-name:"GRPCLogger"`
@@ -48,6 +50,7 @@ type GRPCServiceImpl struct {
 	srv   *http.Server
 }
 
+// AfterInject inject
 func (gs *GRPCServiceImpl) AfterInject() error {
 	var err error
 	gs.tlsCfg, err = tlsConfig(gs.Config.GRPCConfig.CertPath, gs.Config.GRPCConfig.KeyPath)
@@ -82,6 +85,7 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 	return nil
 }
 
+// Serve start grpc serve
 func (gs *GRPCServiceImpl) Serve() error {
 	gs.Logger.Info("Check DB connection")
 	if err := gs.RedisSvc.Ping(); err != nil {
@@ -118,6 +122,7 @@ func (gs *GRPCServiceImpl) Serve() error {
 	return nil
 }
 
+// GRPCAuth support grpc-auth
 func (gs *GRPCServiceImpl) GRPCAuth(ctx context.Context) (context.Context, error) {
 	fmt.Println(ctx)
 	token, err := grpc_auth.AuthFromMD(ctx, types.TokenType_Bearer)
@@ -141,6 +146,7 @@ func (gs *GRPCServiceImpl) GRPCAuth(ctx context.Context) (context.Context, error
 	return newCtx, nil
 }
 
+// HandlerFunc support both GRPC and RESTful API
 func HandlerFunc(gsrv *grpc.Server, gwmux http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.Header.Get("Content-Type"), "application/grpc") {

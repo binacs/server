@@ -6,6 +6,7 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+// Config global config
 type Config struct {
 	WorkSpace   string      `toml:"workspace"`
 	File        string      `toml:"configfile"`
@@ -35,6 +36,7 @@ func defaultConfig() Config {
 	return ret
 }
 
+// LoadFromFile load from configFile
 func LoadFromFile(configFile string) (*Config, error) {
 	cfg := defaultConfig()
 	if _, err := toml.DecodeFile(configFile, &cfg); err != nil {
@@ -44,6 +46,7 @@ func LoadFromFile(configFile string) (*Config, error) {
 	return &cfg, nil
 }
 
+// Reload reload config
 func (cfg *Config) Reload() error {
 	rwmtx := cfg.rwmtx
 	rwmtx.Lock()

@@ -8,12 +8,15 @@ import (
 )
 
 // ---------------------------- web ------------------------------
+
+// Response the reponse
 type Response struct {
 	Code int64       `json:"code"`
 	Msg  string      `json:"msg"`
 	Data interface{} `json:"data"`
 }
 
+// WebResponse the web response
 func WebResponse(err *Error, data interface{}) *Response {
 	return &Response{
 		Code: err.Code(),
@@ -37,6 +40,8 @@ var (
 )
 
 // ---------------------------- Error ------------------------------
+
+// Error error
 type Error struct {
 	code        int64
 	chineseDesc string
@@ -44,10 +49,12 @@ type Error struct {
 	detail      string
 }
 
+// Code return the code
 func (e *Error) Code() int64 {
 	return e.code
 }
 
+// Msg make the msg
 func (e *Error) Msg(lang string) string {
 	switch strings.ToUpper(lang) {
 	case LangChinese:
@@ -63,6 +70,7 @@ func (e *Error) Msg(lang string) string {
 	}
 }
 
+// Desc return the desc
 func (e *Error) Desc(lang string) string {
 	switch strings.ToUpper(lang) {
 	case LangChinese:
@@ -72,10 +80,12 @@ func (e *Error) Desc(lang string) string {
 	}
 }
 
+// Error return the string(msg)
 func (e *Error) Error() string {
 	return e.Msg(LangChinese)
 }
 
+// AppendMsg append msg
 func (e *Error) AppendMsg(f interface{}, v ...interface{}) *Error {
 	if !debugMode {
 		return e
@@ -91,16 +101,19 @@ var (
 
 var debugMode = true
 
+// SetDebugMode set debug mode
 func SetDebugMode(mode bool) {
 	debugMode = mode
 }
 
+// ErrorMaker error maker
 type ErrorMaker struct {
 	serverid   int
 	appErrList map[int64]interface{}
 	sysErrList map[int64]interface{}
 }
 
+// NewErrorMaker return a pointer to ErrorMaker
 func NewErrorMaker(serverid int) *ErrorMaker {
 	return &ErrorMaker{
 		serverid:   serverid,
@@ -109,23 +122,28 @@ func NewErrorMaker(serverid int) *ErrorMaker {
 	}
 }
 
+// SetServerid set the serverid
 func (m *ErrorMaker) SetServerid(serverid int) bool {
 	m.serverid = serverid
 	return true
 }
 
-func (m *ErrorMaker) GetServiceID() int {
+// GetServiceID get the serverid
+func (m *ErrorMaker) GetServerID() int {
 	return m.serverid
 }
 
+// GetAppErrList get the app error list
 func (m *ErrorMaker) GetAppErrList() map[int64]interface{} {
 	return m.appErrList
 }
 
+// GetSysErrList get the system error list
 func (m *ErrorMaker) GetSysErrList() map[int64]interface{} {
 	return m.sysErrList
 }
 
+// MakeSystemError make system error
 func (m *ErrorMaker) MakeSystemError(errorseq int, ChineseMsg string, EnglishMsg string) *Error {
 	const typeSystem = 1
 	errcode := int64(m.serverid*10000 + typeSystem*1000 + errorseq)
@@ -137,6 +155,7 @@ func (m *ErrorMaker) MakeSystemError(errorseq int, ChineseMsg string, EnglishMsg
 	return err
 }
 
+// MakeAppError make app error
 func (m *ErrorMaker) MakeAppError(errorseq int, ChineseDesc string, EnglishDesc string) *Error {
 	const typeSystem = 2
 	errcode := int64(m.serverid*10000 + typeSystem*1000 + errorseq)
@@ -148,11 +167,12 @@ func (m *ErrorMaker) MakeAppError(errorseq int, ChineseDesc string, EnglishDesc 
 	return err
 }
 
+// MakeSuccess make success
 func (m *ErrorMaker) MakeSuccess() *Error {
 	return &Error{0, "成功", "Success", ""}
 }
 
-// common
+// Format common usage
 func Format(f interface{}, v ...interface{}) string {
 	var msg string
 	switch f.(type) {

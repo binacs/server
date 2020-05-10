@@ -10,6 +10,7 @@ import (
 	"github.com/BinacsLee/server/libs/log"
 )
 
+// RedisService redis service
 type RedisService interface {
 	Ping() error
 	Set(string, string, time.Duration) error
@@ -18,6 +19,7 @@ type RedisService interface {
 	GetExpireAt(string) (time.Time, error)
 }
 
+// RedisServiceImpl inplement of RedisService
 type RedisServiceImpl struct {
 	Config  *config.Config `inject-name:"Config"`
 	Logger  log.Logger     `inject-name:"RedisLogger"`
@@ -27,6 +29,7 @@ type RedisServiceImpl struct {
 	// state
 }
 
+// AfterInject do inject
 func (rs *RedisServiceImpl) AfterInject() error {
 	var err error
 	rs.client, err = NewRedisCli(rs.Config.RedisConfig)
@@ -40,6 +43,7 @@ func (rs *RedisServiceImpl) AfterInject() error {
 	return nil
 }
 
+// NewRedisCli return a pointer to Redis Client
 func NewRedisCli(cfg config.RedisConfig) (*redis.Client, error) {
 	client := redis.NewClient(&redis.Options{
 		Network:      cfg.Network,
@@ -55,6 +59,7 @@ func NewRedisCli(cfg config.RedisConfig) (*redis.Client, error) {
 	return client, nil
 }
 
+// NewRedisCli return a pointer to Redis Failover Client
 func NewRedisSentinelCli(cfg config.RedisConfig) (*redis.Client, error) {
 	failoverOpt := &redis.FailoverOptions{
 		MasterName:    cfg.SentinelMaster,
@@ -75,6 +80,8 @@ func NewRedisSentinelCli(cfg config.RedisConfig) (*redis.Client, error) {
 }
 
 // -------------------------------------------------
+
+// Ping check the connection
 func (rs *RedisServiceImpl) Ping() error {
 	if _, err := rs.client.Ping().Result(); err != nil {
 		return fmt.Errorf("RedisCli Ping err: %v", err)
@@ -82,6 +89,7 @@ func (rs *RedisServiceImpl) Ping() error {
 	return nil
 }
 
+// Set set key
 func (rs *RedisServiceImpl) Set(key string, token string, duration time.Duration) error {
 	err := rs.client.Set(key, token, duration).Err()
 	if err != nil {
@@ -91,6 +99,7 @@ func (rs *RedisServiceImpl) Set(key string, token string, duration time.Duration
 	return nil
 }
 
+// Get get key
 func (rs *RedisServiceImpl) Get(key string) (string, error) {
 	token, err := rs.client.Get(key).Result()
 	if err != nil {
@@ -103,6 +112,7 @@ func (rs *RedisServiceImpl) Get(key string) (string, error) {
 	return token, nil
 }
 
+// Del delete key
 func (rs *RedisServiceImpl) Del(key string) error {
 	err := rs.client.Del(key).Err()
 	if err != nil {
@@ -112,6 +122,7 @@ func (rs *RedisServiceImpl) Del(key string) error {
 	return nil
 }
 
+// GetExpireAt get key expire-time
 func (rs *RedisServiceImpl) GetExpireAt(key string) (time.Time, error) {
 	res, err := rs.client.TTL(key).Result()
 	if err != nil {

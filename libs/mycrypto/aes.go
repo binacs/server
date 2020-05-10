@@ -18,6 +18,7 @@ func aesUnpadding(src []byte) []byte {
 	return src[:n-unPadNum]
 }
 
+// EncryptAES aes encrypt
 func EncryptAES(src []byte, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -29,6 +30,7 @@ func EncryptAES(src []byte, key []byte) ([]byte, error) {
 	return src, nil
 }
 
+// DecryptAES aes decrypt
 func DecryptAES(src []byte, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {

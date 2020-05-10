@@ -2,8 +2,10 @@ package table
 
 import "time"
 
+// UserPermissionType bit
 type UserPermissionType int
 
+// User the user table
 type User struct {
 	UID         int                `xorm:"user_uid not null pk autoincr INT(20)"`
 	UIN         string             `xorm:"id not null comment('用户ID名') unique VARCHAR(64)"`
@@ -18,8 +20,9 @@ type User struct {
 	Version   int       `xorm:"version"`
 }
 
+// TableName return the table name
 func (t *User) TableName() string {
 	return "t_user"
 }
 
-// Set Get IsCan
+// Set Get Is Can

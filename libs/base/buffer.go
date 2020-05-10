@@ -6,14 +6,17 @@ import (
 	"strconv"
 )
 
+// Buffer bytes buffer
 type Buffer struct {
 	*bytes.Buffer
 }
 
+// NewBuffer return a pointer to Buffer
 func NewBuffer() *Buffer {
 	return &Buffer{Buffer: new(bytes.Buffer)}
 }
 
+// Append append to buffer, support interface
 func (bf *Buffer) Append(i interface{}) *Buffer {
 	switch v := i.(type) {
 	case int:

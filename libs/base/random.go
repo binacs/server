@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// GetRandomString return a random string
 func GetRandomString(lens int) string {
 	str := "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	bytes := []byte(str)
@@ -16,6 +17,7 @@ func GetRandomString(lens int) string {
 	return string(result)
 }
 
+// GetRandomInt return a random int(string)
 func GetRandomInt(lens int) string {
 	str := "0123456789"
 	bytes := []byte(str)

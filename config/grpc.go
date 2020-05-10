@@ -1,5 +1,6 @@
 package config
 
+// GRPCConfig the config of grpc service
 type GRPCConfig struct {
 	HttpPort string `toml:"HttpPort"`
 	CertPath string `toml:"CertPath"`

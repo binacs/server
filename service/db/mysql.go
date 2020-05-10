@@ -13,11 +13,13 @@ import (
 	"github.com/BinacsLee/server/types/table"
 )
 
+// MysqlService mysql service
 type MysqlService interface {
 	Sync2() error
 	GetEngineG() *xorm.EngineGroup
 }
 
+// MysqlServiceImpl inplement of MysqlService
 type MysqlServiceImpl struct {
 	Config    *config.Config `inject-name:"Config"`
 	Logger    log.Logger     `inject-name:"MysqlLogger"`
@@ -25,6 +27,7 @@ type MysqlServiceImpl struct {
 	EngineG   *xorm.EngineGroup
 }
 
+// AfterInject inject
 func (ms *MysqlServiceImpl) AfterInject() error {
 	var err error
 	ms.EngineG, err = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
@@ -34,6 +37,7 @@ func (ms *MysqlServiceImpl) AfterInject() error {
 	return nil
 }
 
+// NewMysqlCli return a (mysql client) Engine Group
 func NewMysqlCli(cfg config.MysqlConfig, logger *zap.Logger) (*xorm.EngineGroup, error) {
 	DSN := cfg.GenerateDSN()
 	engine, err := xorm.NewEngineGroup("mysql", DSN)
@@ -53,6 +57,7 @@ func NewMysqlCli(cfg config.MysqlConfig, logger *zap.Logger) (*xorm.EngineGroup,
 	return engine, nil
 }
 
+// Sync2 sync the db
 func (ms *MysqlServiceImpl) Sync2() error {
 	if err := ms.EngineG.Master().Sync2(
 		new(table.User),
@@ -63,6 +68,7 @@ func (ms *MysqlServiceImpl) Sync2() error {
 	return nil
 }
 
+// GetEngineG return Engine Group
 func (ms *MysqlServiceImpl) GetEngineG() *xorm.EngineGroup {
 	return ms.EngineG
 }

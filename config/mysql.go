@@ -2,6 +2,7 @@ package config
 
 import "fmt"
 
+// SigCon config of single mysql db
 type SigCon struct {
 	User     string `toml:"User"`
 	Password string `toml:"Password"`
@@ -10,6 +11,7 @@ type SigCon struct {
 	DB       string `toml:"DB"`
 }
 
+// MysqlConfig the config of mysql
 type MysqlConfig struct {
 	Conns        []SigCon `toml:"Conns"`
 	DSN          []string
@@ -25,6 +27,7 @@ func defaultMysqlConfig() MysqlConfig {
 	}
 }
 
+// GenerateDSN get DSNs
 func (mc MysqlConfig) GenerateDSN() []string {
 	num := len(mc.Conns)
 	DSN := make([]string, num, num)

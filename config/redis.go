@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 )
 
+// RedisConfig the config of redis
 type RedisConfig struct {
 	Network      string `toml:"Network"`
 	Addr         string `toml:"Addr"`

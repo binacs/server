@@ -1,10 +1,11 @@
 package treemap
 
 const (
-	RED   = 0
-	BLACK = 1
+	RED   = 0 // RED
+	BLACK = 1 // BLACK
 )
 
+// Keytype the key type
 type Keytype interface {
 	LessThan(interface{}) bool
 	Equal(interface{}) bool
@@ -12,6 +13,7 @@ type Keytype interface {
 
 type valuetype interface{}
 
+// node
 type node struct {
 	left, right, parent *node
 	color               int
@@ -19,15 +21,18 @@ type node struct {
 	Value               valuetype
 }
 
+// Tree tree
 type Tree struct {
 	root *node
 	size int
 }
 
+// NewTree return a pointer to Tree
 func NewTree() *Tree {
 	return &Tree{}
 }
 
+// Find ...
 func (t *Tree) Find(key Keytype) interface{} {
 	n := t.findnode(key)
 	if n != nil {
@@ -36,10 +41,12 @@ func (t *Tree) Find(key Keytype) interface{} {
 	return nil
 }
 
+// FindIter ...
 func (t *Tree) FindIter(key Keytype) *node {
 	return t.findnode(key)
 }
 
+// Empty ...
 func (t *Tree) Empty() bool {
 	if t.root == nil {
 		return true
@@ -47,19 +54,23 @@ func (t *Tree) Empty() bool {
 	return false
 }
 
+// Iterator ...
 func (t *Tree) Iterator() *node {
 	return minimum(t.root)
 }
 
+// Size ...
 func (t *Tree) Size() int {
 	return t.size
 }
 
+// Clear ...
 func (t *Tree) Clear() {
 	t.root = nil
 	t.size = 0
 }
 
+// Insert ...
 func (t *Tree) Insert(key Keytype, value valuetype) {
 	x := t.root
 	var y *node
@@ -89,6 +100,7 @@ func (t *Tree) Insert(key Keytype, value valuetype) {
 
 }
 
+// Delete ...
 func (t *Tree) Delete(key Keytype) {
 	z := t.findnode(key)
 	if z == nil {

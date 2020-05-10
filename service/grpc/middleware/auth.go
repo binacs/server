@@ -8,12 +8,14 @@ import (
 	"github.com/BinacsLee/server/types"
 )
 
+// GlobalAuthFunc global auth function
 func GlobalAuthFunc() func(ctx context.Context) (context.Context, error) {
 	return func(ctx context.Context) (context.Context, error) {
 		return Auth(ctx)
 	}
 }
 
+// Auth local auth function
 func Auth(ctx context.Context) (context.Context, error) {
 	token, err := grpc_auth.AuthFromMD(ctx, types.TokenType_Bearer)
 	if err != nil {

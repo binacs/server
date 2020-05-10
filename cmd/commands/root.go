@@ -30,6 +30,7 @@ func rootCmdFlags(cmd *cobra.Command) {
 }
 
 var (
+	// RootCmd the root command
 	RootCmd = &cobra.Command{
 		Use:   "root",
 		Short: "Root Command",
