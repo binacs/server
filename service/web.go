@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/unrolled/secure"
+
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service/web/controller"
@@ -24,6 +26,7 @@ type WebServiceImpl struct {
 func (ws *WebServiceImpl) AfterInject() error {
 	ws.r = gin.New()
 	ws.r.Use(gin.Recovery())
+	ws.r.Use(ws.tlsTransfer())
 	controller.SetRouter(ws.r)
 	ws.s = &http.Server{
 		Addr:           ":" + ws.Config.WebConfig.HttpPort,
@@ -36,10 +39,36 @@ func (ws *WebServiceImpl) AfterInject() error {
 }
 
 func (ws *WebServiceImpl) Serve() error {
-	ws.Logger.Info("WebService Serve", "HttpPort", ws.Config.WebConfig.HttpPort)
-	err := ws.s.ListenAndServeTLS(ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath)
+	ws.Logger.Info("WebService Serve", "HttpPort", ws.Config.WebConfig.HttpPort, "HttpsPort", ws.Config.WebConfig.HttpsPort)
+	go func() {
+		if err := ws.s.ListenAndServe(); err != nil {
+			ws.Logger.Error("WebService Serve", "ListenAndServe err", err)
+		}
+	}()
+	err := ws.r.RunTLS(":"+ws.Config.WebConfig.HttpsPort, ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath)
 	if err != nil {
+		ws.Logger.Error("WebService Serve", "ListenAndServeTLS err", err)
 		return err
 	}
 	return nil
+}
+
+func (ws *WebServiceImpl) tlsTransfer() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		middleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     "localhost:" + ws.Config.WebConfig.HttpsPort,
+		})
+		err := middleware.Process(c.Writer, c.Request)
+		if err != nil {
+			ws.Logger.Error("WebService tlsTransfer", "Process err", err)
+			c.Abort()
+			return
+		}
+		// Avoid header rewrite if response is a redirection.
+		//if status := c.Writer.Status(); status > 300 && status < 399 {
+		//	c.Abort()
+		//}
+		c.Next()
+	}
 }
