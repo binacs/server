@@ -2,6 +2,8 @@
 
 计划使用go**优雅**地重构个人server
 
+[![Build Status](https://travis-ci.com/BinacsLee/server.svg?branch=master)](https://travis-ci.com/BinacsLee/server)
+
 
 
 ### tools
@@ -51,7 +53,7 @@ server
 ├── service	# 抽象为服务的各项功能
 │   ├── db		# 存储服务
 │   ├── grpc	# grpc服务
-│   ├── web	    # web服务
+│   ├── web     # web服务
 │   ├── grpc.go
 │   ├── web.go
 │   └── node.go
