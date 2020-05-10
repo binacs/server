@@ -57,7 +57,7 @@ func (ws *WebServiceImpl) tlsTransfer() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		middleware := secure.New(secure.Options{
 			SSLRedirect: true,
-			SSLHost:     "localhost:" + ws.Config.WebConfig.HttpsPort,
+			SSLHost:     ws.Config.WebConfig.Host + ":" + ws.Config.WebConfig.HttpsPort,
 		})
 		err := middleware.Process(c.Writer, c.Request)
 		if err != nil {
