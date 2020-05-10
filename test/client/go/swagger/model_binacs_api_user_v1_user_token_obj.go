@@ -10,7 +10,7 @@
 package swagger
 
 type BinacsApiUserV1UserTokenObj struct {
-	AccessToken string `json:"access_token,omitempty"`
-	ExpireTime string `json:"expire_time,omitempty"`
+	AccessToken  string `json:"access_token,omitempty"`
+	ExpireTime   string `json:"expire_time,omitempty"`
 	RefreshToken string `json:"refresh_token,omitempty"`
 }

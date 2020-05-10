@@ -11,5 +11,5 @@ package swagger
 
 type ProtobufAny struct {
 	TypeUrl string `json:"type_url,omitempty"`
-	Value string `json:"value,omitempty"`
+	Value   string `json:"value,omitempty"`
 }

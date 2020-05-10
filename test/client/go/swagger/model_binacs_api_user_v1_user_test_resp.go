@@ -11,5 +11,5 @@ package swagger
 
 type BinacsApiUserV1UserTestResp struct {
 	Code string `json:"code,omitempty"`
-	Msg string `json:"msg,omitempty"`
+	Msg  string `json:"msg,omitempty"`
 }

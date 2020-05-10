@@ -10,7 +10,7 @@
 package swagger
 
 type BinacsApiUserV1UserRegisterResp struct {
-	Code string `json:"code,omitempty"`
-	Msg string `json:"msg,omitempty"`
+	Code string                              `json:"code,omitempty"`
+	Msg  string                              `json:"msg,omitempty"`
 	Data *BinacsApiUserV1UserRegisterDataObj `json:"data,omitempty"`
 }

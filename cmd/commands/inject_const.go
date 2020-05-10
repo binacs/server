@@ -16,8 +16,8 @@ const (
 	Inject_ServiceHub = "ServiceHub"
 
 	Inject_Node_Service = "NodeService"
-	
-	Inject_Web_Service  = "WebService"
+
+	Inject_Web_Service = "WebService"
 
 	Inject_GRPC_Service     = "GRPCService"
 	Inject_GRPCUser_Service = "GRPCUserService"

@@ -4,10 +4,12 @@ go 1.14
 
 require (
 	github.com/BurntSushi/toml v0.3.1
+	github.com/dgraph-io/badger v1.6.1 // indirect
 	github.com/gin-gonic/gin v1.6.2
 	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-xorm/xorm v0.7.9
+	github.com/gojp/goreportcard v0.0.0-20200415071653-59167b516f3f // indirect
 	github.com/golang/protobuf v1.3.5
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.14.3

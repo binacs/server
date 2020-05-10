@@ -10,9 +10,9 @@
 package swagger
 
 type BinacsApiUserV1UserInfoObj struct {
-	Id string `json:"id,omitempty"`
-	Role string `json:"role,omitempty"`
-	Desc string `json:"desc,omitempty"`
-	Ctime string `json:"ctime,omitempty"`
-	More []string `json:"more,omitempty"`
+	Id    string   `json:"id,omitempty"`
+	Role  string   `json:"role,omitempty"`
+	Desc  string   `json:"desc,omitempty"`
+	Ctime string   `json:"ctime,omitempty"`
+	More  []string `json:"more,omitempty"`
 }

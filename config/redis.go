@@ -8,14 +8,14 @@ type RedisConfig struct {
 	Network      string `toml:"Network"`
 	Addr         string `toml:"Addr"`
 	Password     string `toml:"Password"`
-	DB           int	`toml:"DB"`
-	PoolSize     int	`toml:"PoolSize"`
-	MinIdleConns int	`toml:"MinIdleConns"`
+	DB           int    `toml:"DB"`
+	PoolSize     int    `toml:"PoolSize"`
+	MinIdleConns int    `toml:"MinIdleConns"`
 	TLSConfig    *tls.Config
 	//Limiter Limiter
 
 	// HA
-	SentinelMaster    string `toml:"SentinelMaster"`
+	SentinelMaster    string   `toml:"SentinelMaster"`
 	SentinelEndpoints []string `toml:"SentinelEndpoints"`
 }
 

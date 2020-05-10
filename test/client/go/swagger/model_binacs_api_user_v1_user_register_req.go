@@ -10,6 +10,6 @@
 package swagger
 
 type BinacsApiUserV1UserRegisterReq struct {
-	Id string `json:"id,omitempty"`
+	Id  string `json:"id,omitempty"`
 	Pwd string `json:"pwd,omitempty"`
 }
