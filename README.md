@@ -59,7 +59,7 @@ server
 ├── test	# 测试使用
 │   ├── client	# grpc测试client端
 │   ├── static
-│   └── tls		# TLS证书
+│   └── tls	# TLS证书
 ├── types	# 数据结构定义 常量定义
 │   ├── table	# 数据库表定义
 │   ├── grpc.go

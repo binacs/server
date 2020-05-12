@@ -2,13 +2,14 @@ package service
 
 import (
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"time"
 
 	"github.com/unrolled/secure"
 
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
-	"github.com/BinacsLee/server/service/web/controller"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +31,7 @@ func (ws *WebServiceImpl) AfterInject() error {
 	ws.r = gin.New()
 	ws.r.Use(gin.Recovery())
 	ws.r.Use(ws.tlsTransfer())
-	controller.SetRouter(ws.r)
+	ws.SetRouter(ws.r)
 	ws.s = &http.Server{
 		Addr:           ":" + ws.Config.WebConfig.HttpPort,
 		Handler:        ws.r,
@@ -41,7 +42,7 @@ func (ws *WebServiceImpl) AfterInject() error {
 	return nil
 }
 
-// // Serve start web serve
+// Serve start web serve
 func (ws *WebServiceImpl) Serve() error {
 	ws.Logger.Info("WebService Serve", "HttpPort", ws.Config.WebConfig.HttpPort, "HttpsPort", ws.Config.WebConfig.HttpsPort)
 	go func() {
@@ -74,5 +75,53 @@ func (ws *WebServiceImpl) tlsTransfer() gin.HandlerFunc {
 		//	c.Abort()
 		//}
 		c.Next()
+	}
+}
+
+// ------------------ Gin Router ------------------
+
+// SetRouter set all router
+func (ws *WebServiceImpl) SetRouter(r *gin.Engine) {
+	ws.SetBasicRouter(r)
+	ws.SetApiRouter(r.Group("api"))
+	ws.SetManagerRouter(r.Group("manager"))
+	ws.SetMonitorRouter(r.Group("monitor"))
+}
+
+// SetBasicRouter set basic router
+func (ws *WebServiceImpl) SetBasicRouter(r *gin.Engine) {
+	r.StaticFile("/", "./test/static/index")
+	r.StaticFile("/toys", "./test/static/toys")
+	r.StaticFile("/toys/crypto", "./test/static/crypto")
+	r.StaticFile("/about", "./test/static/about")
+}
+
+// SetApiRouter set RESTful api router
+func (ws *WebServiceImpl) SetApiRouter(r *gin.RouterGroup) {
+}
+
+// SetManagerRouter set manager router
+func (ws *WebServiceImpl) SetManagerRouter(r *gin.RouterGroup) {
+	//r.POST("/reload", Reload)
+}
+
+// SetMonitorRouter set monitor router
+func (ws *WebServiceImpl) SetMonitorRouter(r *gin.RouterGroup) {
+	//r.GET("/monitor", Monitor)
+	r.GET("/prometheus", ws.prometheusReverseProxy())
+	r.GET("/prometheus/:path", ws.prometheusReverseProxy())
+}
+
+func (ws *WebServiceImpl) prometheusReverseProxy() gin.HandlerFunc {
+	target := ws.Config.WebConfig.ReverseProxy["prometheus"]
+	//target := "http://127.0.0.1:9000" //转向的host
+	return func(c *gin.Context) {
+		remote, err := url.Parse(target)
+		if err != nil {
+			ws.Logger.Error("WebService ReverseProxy prometheus", "error", err)
+		}
+		proxy := httputil.NewSingleHostReverseProxy(remote)
+		c.Request.URL.Path = "monitor/prometheus/" + c.Param("path") //请求API
+		proxy.ServeHTTP(c.Writer, c.Request)
 	}
 }
