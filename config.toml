@@ -16,6 +16,7 @@ KeyPath   = "test/tls/server.key"
 Host      = "server.grpc.io"         # for test
 [WebConfig.ReverseProxy]
 "prometheus" = "http://127.0.0.1:9000"
+#"grafana"   = "http://127.0.0.1:3000"
 
 [LogConfig]
 Level = "debug"

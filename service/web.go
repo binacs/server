@@ -107,9 +107,8 @@ func (ws *WebServiceImpl) SetManagerRouter(r *gin.RouterGroup) {
 
 // SetMonitorRouter set monitor router
 func (ws *WebServiceImpl) SetMonitorRouter(r *gin.RouterGroup) {
-	//r.GET("/monitor", Monitor)
-	r.GET("/prometheus", ws.prometheusReverseProxy())
-	r.GET("/prometheus/:path", ws.prometheusReverseProxy())
+	r.Any("/prometheus/*path", ws.prometheusReverseProxy())
+	//r.GET("/grafana/*path", ws.grafanaReverseProxy())
 }
 
 func (ws *WebServiceImpl) prometheusReverseProxy() gin.HandlerFunc {
@@ -118,10 +117,27 @@ func (ws *WebServiceImpl) prometheusReverseProxy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		remote, err := url.Parse(target)
 		if err != nil {
-			ws.Logger.Error("WebService ReverseProxy prometheus", "error", err)
+			ws.Logger.Error("WebService prometheusReverseProxy", "error", err)
 		}
 		proxy := httputil.NewSingleHostReverseProxy(remote)
-		c.Request.URL.Path = "monitor/prometheus/" + c.Param("path") //请求API
+		c.Request.URL.Path = "monitor/prometheus" + c.Param("path") //请求API
+		ws.Logger.Info("WebService prometheusReverseProxy ready to serve", "path", c.Param("path"), "url.path", c.Request.URL.Path)
 		proxy.ServeHTTP(c.Writer, c.Request)
 	}
 }
+
+/*
+func (ws *WebServiceImpl) grafanaReverseProxy() gin.HandlerFunc {
+	target := ws.Config.WebConfig.ReverseProxy["grafana"]
+	return func(c *gin.Context) {
+		remote, err := url.Parse(target)
+		if err != nil {
+			ws.Logger.Error("WebService grafanaReverseProxy", "error", err)
+		}
+		proxy := httputil.NewSingleHostReverseProxy(remote)
+		c.Request.URL.Path = c.Param("path") //请求API
+		ws.Logger.Info("WebService grafanaReverseProxy ready to serve", "path", c.Param("path"), "url.path", c.Request.URL.Path)
+		proxy.ServeHTTP(c.Writer, c.Request)
+	}
+}
+*/
