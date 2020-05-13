@@ -15,6 +15,7 @@ RestartSec=5
 WantedBy=multi-user.target
 EOF
 
+sudo systemctl stop binacsserver
 sudo systemctl daemon-reload
 sudo systemctl enable binacsserver
 sudo systemctl start binacsserver

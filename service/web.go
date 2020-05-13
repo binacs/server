@@ -90,10 +90,10 @@ func (ws *WebServiceImpl) SetRouter(r *gin.Engine) {
 
 // SetBasicRouter set basic router
 func (ws *WebServiceImpl) SetBasicRouter(r *gin.Engine) {
-	r.StaticFile("/", "./test/static/index")
-	r.StaticFile("/toys", "./test/static/toys")
-	r.StaticFile("/toys/crypto", "./test/static/crypto")
-	r.StaticFile("/about", "./test/static/about")
+	r.StaticFile("/", ws.Config.WebConfig.StaticPath+"index")
+	r.StaticFile("/toys", ws.Config.WebConfig.StaticPath+"toys")
+	r.StaticFile("/toys/crypto", ws.Config.WebConfig.StaticPath+"crypto")
+	r.StaticFile("/about", ws.Config.WebConfig.StaticPath+"about")
 }
 
 // SetApiRouter set RESTful api router
