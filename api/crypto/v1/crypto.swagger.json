@@ -1,0 +1,184 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "crypto.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/crypto/decrypt": {
+      "post": {
+        "operationId": "Crypto_CryptoDecrypt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/binacs_api_crypto_v1CryptoDecryptResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/binacs_api_crypto_v1CryptoDecryptReq"
+            }
+          }
+        ],
+        "tags": [
+          "Crypto"
+        ]
+      }
+    },
+    "/api/v1/crypto/encrypt": {
+      "post": {
+        "operationId": "Crypto_CryptoEncrypt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/binacs_api_crypto_v1CryptoEncryptResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/binacs_api_crypto_v1CryptoEncryptReq"
+            }
+          }
+        ],
+        "tags": [
+          "Crypto"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "binacs_api_crypto_v1CryptoDecryptReq": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "type": "string"
+        },
+        "encryptText": {
+          "type": "string"
+        }
+      }
+    },
+    "binacs_api_crypto_v1CryptoDecryptResObj": {
+      "type": "object",
+      "properties": {
+        "plainText": {
+          "type": "string"
+        }
+      },
+      "title": "CryptoDecrypt"
+    },
+    "binacs_api_crypto_v1CryptoDecryptResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/binacs_api_crypto_v1CryptoDecryptResObj"
+        }
+      }
+    },
+    "binacs_api_crypto_v1CryptoEncryptReq": {
+      "type": "object",
+      "properties": {
+        "algorithm": {
+          "type": "string"
+        },
+        "plainText": {
+          "type": "string"
+        }
+      }
+    },
+    "binacs_api_crypto_v1CryptoEncryptResObj": {
+      "type": "object",
+      "properties": {
+        "encryptText": {
+          "type": "string"
+        }
+      },
+      "title": "CryptoEncrypt"
+    },
+    "binacs_api_crypto_v1CryptoEncryptResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/binacs_api_crypto_v1CryptoEncryptResObj"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

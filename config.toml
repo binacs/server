@@ -11,7 +11,7 @@ Host     = "server.grpc.io"         # for test
 [WebConfig]
 HttpPort   = "80"
 HttpsPort  = "443"
-StaticPath = "./"
+StaticPath = "./test/static/"
 CertPath   = "test/tls/server.crt"
 KeyPath    = "test/tls/server.key"
 Host       = "server.grpc.io"         # for test

@@ -10,6 +10,7 @@ import (
 
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/log"
+	web_service "github.com/BinacsLee/server/service/web/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,8 +23,11 @@ type WebService interface {
 type WebServiceImpl struct {
 	Config *config.Config `inject-name:"Config"`
 	Logger log.Logger     `inject-name:"WebLogger"`
-	r      *gin.Engine
-	s      *http.Server
+
+	CryptoSvc *web_service.WebCryptoServiceImpl `inject-name:"WebCryptoService"`
+
+	r *gin.Engine
+	s *http.Server
 }
 
 // AfterInject inject
@@ -98,6 +102,8 @@ func (ws *WebServiceImpl) SetBasicRouter(r *gin.Engine) {
 
 // SetApiRouter set RESTful api router
 func (ws *WebServiceImpl) SetApiRouter(r *gin.RouterGroup) {
+	r.POST("/v1/crypto/encrypto", ws.apiV1CryptoEncrypto)
+	r.POST("/v1/crypto/decrypto", ws.apiV1CryptoDecrypto)
 }
 
 // SetManagerRouter set manager router
@@ -110,6 +116,30 @@ func (ws *WebServiceImpl) SetMonitorRouter(r *gin.RouterGroup) {
 	r.Any("/prometheus/*path", ws.prometheusReverseProxy())
 	//r.GET("/grafana/*path", ws.grafanaReverseProxy())
 }
+
+// ------------------ Gin Service ------------------
+
+func (ws *WebServiceImpl) apiV1CryptoEncrypto(c *gin.Context) {
+	text := c.Request.FormValue("text")
+	tp := c.Request.FormValue("type")
+	rsp, err := ws.CryptoSvc.CryptoEncrypt(c, text, tp)
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl apiV1CryptoEncrypto", "err", err, "text", text, "type", tp)
+	}
+	c.String(http.StatusOK, rsp.Data.EncryptText)
+}
+
+func (ws *WebServiceImpl) apiV1CryptoDecrypto(c *gin.Context) {
+	text := c.Request.FormValue("text")
+	tp := c.Request.FormValue("type")
+	rsp, err := ws.CryptoSvc.CryptoDecrypt(c, text, tp)
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl apiV1CryptoDecrypto", "err", err, "text", text, "type", tp)
+	}
+	c.String(http.StatusOK, rsp.Data.PlainText)
+}
+
+// ------------------ ReverseProxy ------------------
 
 func (ws *WebServiceImpl) prometheusReverseProxy() gin.HandlerFunc {
 	target := ws.Config.WebConfig.ReverseProxy["prometheus"]

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="http://www.jq22.com/jquery/jquery-1.7.1.js"></script>
+    <script src="https://libs.baidu.com/jquery/1.7.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>binacs.cn - 基于密码学的加解密</title>
     <style type="text/css">
@@ -58,12 +58,14 @@
         <div style="font-size: 15px; margin-left: -160px">
             <a>选择加密方法：</a>
             <select id="crytype" name="">
-                <option value="0">BASE64</option>
+                <option value="BASE64">BASE64</option>
+                <option value="AES">AES</option>
+                <option value="DES">DES</option>
             </select>
         </div>
         <div>
-          <button type="button" onclick="enc()" value="1" id="encid">加密</button>
-          <button type="button" onclick="dec()" value="2" id="decid">解密</button>
+          <button type="button" onclick="enc()" value="enc" id="encid">加密</button>
+          <button type="button" onclick="dec()" value="dec" id="decid">解密</button>
         </div>
         <div style="font-size: 15px; margin-left: -350px"><a>密文：</a></div>
         <textarea name="dectext" id="dec_source"></textarea>
@@ -79,27 +81,34 @@
 
       function enc(){
         $.ajax({
-          'url': 'reactor.cgi',
+          'url': '/api/v1/crypto/encrypto',
           'data': { "text": $('#enc_source').val(),
-                    "type": $('#encid').val()},
+                    "type": $('#crytype').val()},
           'type': 'post',
           'dataType': "text",
           'success': function(data){
+            console.log("enc success")
             $('#dec_source').val(data);
+          },
+          error : function() {
+            alert("异常！");
           }
-
         })
       }
 
       function dec(){
         $.ajax({
-          'url': 'reactor.cgi',
+          'url': '/api/v1/crypto/decrypto',
           'data': { "text": $('#dec_source').val(),
-                    "type": $('#decid').val()},
+                    "type": $('#crytype').val()},
           'type': 'post',
           'dataType': "text",
           'success': function(data){
+            console.log("dec success")
             $('#enc_source').val(data);
+          },
+          error : function() {
+            alert("异常！");
           }
         })
       }

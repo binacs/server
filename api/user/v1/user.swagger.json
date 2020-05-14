@@ -13,7 +13,7 @@
   "paths": {
     "/api/v1/user/auth": {
       "post": {
-        "operationId": "UserAuth",
+        "operationId": "User_UserAuth",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -45,7 +45,7 @@
     },
     "/api/v1/user/info": {
       "post": {
-        "operationId": "UserInfo",
+        "operationId": "User_UserInfo",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -77,7 +77,7 @@
     },
     "/api/v1/user/refresh": {
       "post": {
-        "operationId": "UserRefresh",
+        "operationId": "User_UserRefresh",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -109,7 +109,7 @@
     },
     "/api/v1/user/register": {
       "post": {
-        "operationId": "UserRegister",
+        "operationId": "User_UserRegister",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -141,7 +141,7 @@
     },
     "/api/v1/user/test": {
       "post": {
-        "operationId": "UserTest",
+        "operationId": "User_UserTest",
         "responses": {
           "200": {
             "description": "A successful response.",

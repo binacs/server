@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package binacs_api_crypto_v1;
+
+import "google/api/annotations.proto";
+
+service Crypto {
+    rpc CryptoEncrypt(CryptoEncryptReq) returns (CryptoEncryptResp) {
+        option (google.api.http) = {
+            post: "/api/v1/crypto/encrypt"
+            body: "*"
+        };
+    };
+
+    rpc CryptoDecrypt(CryptoDecryptReq) returns (CryptoDecryptResp) {
+        option (google.api.http) = {
+            post: "/api/v1/crypto/decrypt"
+            body: "*"
+        };
+    };
+}
+// CryptoEncrypt
+message CryptoEncryptResObj {
+    string encryptText = 1;
+}
+
+message CryptoEncryptReq {
+    string algorithm = 1;
+    string plainText = 2;
+}
+
+message CryptoEncryptResp {
+    int64 code = 1;
+    string msg = 2;
+    CryptoEncryptResObj data = 3;
+}
+
+// CryptoDecrypt
+message CryptoDecryptResObj {
+    string plainText = 1;
+}
+
+message CryptoDecryptReq {
+    string algorithm = 1;
+    string encryptText = 2;
+}
+
+message CryptoDecryptResp {
+    int64 code = 1;
+    string msg = 2;
+    CryptoDecryptResObj data = 3;
+}
