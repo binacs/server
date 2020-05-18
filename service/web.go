@@ -35,7 +35,7 @@ func (ws *WebServiceImpl) AfterInject() error {
 	ws.r = gin.New()
 	ws.r.Use(gin.Recovery())
 	ws.r.Use(ws.tlsTransfer())
-	ws.SetRouter(ws.r)
+	ws.setRouter(ws.r)
 	ws.s = &http.Server{
 		Addr:           ":" + ws.Config.WebConfig.HttpPort,
 		Handler:        ws.r,
@@ -84,35 +84,35 @@ func (ws *WebServiceImpl) tlsTransfer() gin.HandlerFunc {
 
 // ------------------ Gin Router ------------------
 
-// SetRouter set all router
-func (ws *WebServiceImpl) SetRouter(r *gin.Engine) {
-	ws.SetBasicRouter(r)
-	ws.SetApiRouter(r.Group("api"))
-	ws.SetManagerRouter(r.Group("manager"))
-	ws.SetMonitorRouter(r.Group("monitor"))
+// setRouter set all router
+func (ws *WebServiceImpl) setRouter(r *gin.Engine) {
+	ws.setBasicRouter(r)
+	ws.setApiRouter(r.Group("api"))
+	ws.setManagerRouter(r.Group("manager"))
+	ws.setMonitorRouter(r.Group("monitor"))
 }
 
-// SetBasicRouter set basic router
-func (ws *WebServiceImpl) SetBasicRouter(r *gin.Engine) {
+// setBasicRouter set basic router
+func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
 	r.StaticFile("/", ws.Config.WebConfig.StaticPath+"index")
 	r.StaticFile("/toys", ws.Config.WebConfig.StaticPath+"toys")
 	r.StaticFile("/toys/crypto", ws.Config.WebConfig.StaticPath+"crypto")
 	r.StaticFile("/about", ws.Config.WebConfig.StaticPath+"about")
 }
 
-// SetApiRouter set RESTful api router
-func (ws *WebServiceImpl) SetApiRouter(r *gin.RouterGroup) {
+// setApiRouter set RESTful api router
+func (ws *WebServiceImpl) setApiRouter(r *gin.RouterGroup) {
 	r.POST("/v1/crypto/encrypto", ws.apiV1CryptoEncrypto)
 	r.POST("/v1/crypto/decrypto", ws.apiV1CryptoDecrypto)
 }
 
-// SetManagerRouter set manager router
-func (ws *WebServiceImpl) SetManagerRouter(r *gin.RouterGroup) {
+// setManagerRouter set manager router
+func (ws *WebServiceImpl) setManagerRouter(r *gin.RouterGroup) {
 	//r.POST("/reload", Reload)
 }
 
-// SetMonitorRouter set monitor router
-func (ws *WebServiceImpl) SetMonitorRouter(r *gin.RouterGroup) {
+// setMonitorRouter set monitor router
+func (ws *WebServiceImpl) setMonitorRouter(r *gin.RouterGroup) {
 	r.Any("/prometheus/*path", ws.prometheusReverseProxy())
 	//r.GET("/grafana/*path", ws.grafanaReverseProxy())
 }
@@ -126,7 +126,7 @@ func (ws *WebServiceImpl) apiV1CryptoEncrypto(c *gin.Context) {
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1CryptoEncrypto", "err", err, "text", text, "type", tp)
 	}
-	c.String(http.StatusOK, rsp.Data.EncryptText)
+	c.String(http.StatusOK, rsp)
 }
 
 func (ws *WebServiceImpl) apiV1CryptoDecrypto(c *gin.Context) {
@@ -136,7 +136,7 @@ func (ws *WebServiceImpl) apiV1CryptoDecrypto(c *gin.Context) {
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1CryptoDecrypto", "err", err, "text", text, "type", tp)
 	}
-	c.String(http.StatusOK, rsp.Data.PlainText)
+	c.String(http.StatusOK, rsp)
 }
 
 // ------------------ ReverseProxy ------------------

@@ -1,19 +1,18 @@
-
-workspace = "."
-file = "./config.toml"
+workspace = "/work/"
+file = "/work/kubernetes/config.toml"
 mode = "all"
 
 [GRPCConfig]
 HttpPort = "9500"
-CertPath = "test/tls/server.crt"
-KeyPath  = "test/tls/server.key"
+CertPath = "/work/tls/server.crt"
+KeyPath  = "/work/tls/server.key"
 Host     = "server.grpc.io"         # for test
 [WebConfig]
 HttpPort   = "80"
 HttpsPort  = "443"
-StaticPath = "./test/static/"
-CertPath   = "test/tls/server.crt"
-KeyPath    = "test/tls/server.key"
+StaticPath = "/work/static/"
+CertPath   = "/work/tls/server.crt"
+KeyPath    = "/work/tls/server.key"
 Host       = "server.grpc.io"         # for test
 [WebConfig.ReverseProxy]
 "prometheus" = "http://127.0.0.1:9000"
@@ -24,11 +23,12 @@ Host       = "server.grpc.io"         # for test
 "CryptoDES"    = "cryptfunc-des-svc.cryptfunc"
 
 [LogConfig]
+File  = "/work/server.log"
 Level = "debug"
 
 [RedisConfig]
 Network      = "tcp"
-Addr         = "127.0.0.1:6379"
+Addr         = "redis.namepace:6379"
 Password     = "password"
 DB           = 0
 PoolSize     = 10
@@ -40,12 +40,6 @@ MaxOpenConns = 100
 [[MysqlConfig.Conns]]
 User 	 = "root"
 Password = "password"
-Host	 = "127.0.0.1"
+Host	 = "mysql.namepace"
 Port	 = "3306"
 DB		 = "testdb"
-# [[MysqlConfig.Conns]]
-# User 	   = "user1"
-# Password = "password"
-# Host	   = "127.0.0.1"
-# Port	   = "3306"
-# DB       = "db"

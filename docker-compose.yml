@@ -5,6 +5,7 @@ services:
     container_name: server_dc
     build: .
     ports:
+      - 80:80
       - 443:443
       - 9500:9500
     depends_on:

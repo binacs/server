@@ -9,6 +9,7 @@ type WebConfig struct {
 	KeyPath      string            `toml:"KeyPath"`
 	Host         string            `toml:"Host"`
 	ReverseProxy map[string]string `toml:"ReverseProxy"`
+	K8sService	 map[string]string `toml:"K8sService"`
 }
 
 func defaultWebConfig() WebConfig {

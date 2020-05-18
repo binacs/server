@@ -12,8 +12,8 @@ FROM alpine
 
 COPY --from=binacsGoBuild /src/bin/server \
     /src/test \
-    /src/test/
+    /work/
 
-EXPOSE 9500 443
+EXPOSE 9500 443 80
 
-CMD sleep 30s && ./src/test/server start --configFile /src/test/docker-compose/config.toml
+CMD sleep 30s && ./work/server start --configFile /work/docker-compose/config.toml

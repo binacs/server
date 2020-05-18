@@ -1,105 +1,105 @@
 package service
 
 import (
-	"fmt"
+	"context"
+
+	"google.golang.org/grpc"
 	"github.com/gin-gonic/gin"
 
-	pb "github.com/BinacsLee/server/api/crypto/v1"
+	//pb "github.com/BinacsLee/server/api/crypto/v1"
+	pb "github.com/BinacsLee/Cryptology/api/cryptofunc"
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/errcode"
+	//"github.com/BinacsLee/server/libs/errcode"
 	"github.com/BinacsLee/server/libs/log"
-	"github.com/BinacsLee/server/service/db"
+	//"github.com/BinacsLee/server/service/db"
 )
+
 // WebCryptoServiceImpl Web crypto service implement
 type WebCryptoServiceImpl struct {
-	Config   *config.Config  `inject-name:"Config"`
-	Logger   log.Logger      `inject-name:"WebLogger"`
-	RedisSvc db.RedisService `inject-name:"RedisService"`
-	MysqlSvc db.MysqlService `inject-name:"MysqlService"`
+	Config *config.Config `inject-name:"Config"`
+	Logger log.Logger     `inject-name:"WebLogger"`
+	// 这里不同加密算法的客户端可以合并(把类型作为参数) 但为了显示不同服务将其单独列出
+	clientBASE64 pb.CryptoFuncClient
+	clientAES    pb.CryptoFuncClient
+	clientDES    pb.CryptoFuncClient
+}
+
+// AfterInject do inject
+func (cs *WebCryptoServiceImpl) AfterInject() error {
+	if addr, ok := cs.Config.WebConfig.K8sService["CryptoBASE64"]; ok {
+		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		if err != nil {
+			return err
+		}
+		cs.clientBASE64 = pb.NewCryptoFuncClient(conn)
+	}
+	if addr, ok := cs.Config.WebConfig.K8sService["CryptoAES"]; ok {
+		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		if err != nil {
+			return err
+		}
+		cs.clientAES = pb.NewCryptoFuncClient(conn)
+	}
+	if addr, ok := cs.Config.WebConfig.K8sService["CryptoDES"]; ok {
+		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		if err != nil {
+			return err
+		}
+		cs.clientDES = pb.NewCryptoFuncClient(conn)
+	}
+	return nil
 }
 
 // CryptoEncrypt encrypt
-func (cs *WebCryptoServiceImpl) CryptoEncrypt(ctx *gin.Context, text, tp string) (*pb.CryptoEncryptResp, error) {
+func (cs *WebCryptoServiceImpl) CryptoEncrypt(ctx *gin.Context, text, tp string) (string, error) {
 	cs.Logger.Info("WebCryptoServiceImpl CryptoEncrypt Start", "text", text, "tpye", tp)
-	// req useless for now
-	req := &pb.CryptoEncryptReq{
-		Algorithm: tp,
-		PlainText: text,
+	var client pb.CryptoFuncClient
+	switch tp {
+	case "BASE64":
+		client = cs.clientBASE64
+	case "AES":
+		client = cs.clientAES
+	case "DES":
+		client = cs.clientDES
+	default:
+		cs.Logger.Error("CryptoEncrypt: NOT BASE64/AES/DES", "type", tp)
+		return "TypeNotSupport", nil
 	}
-	rsp := &pb.CryptoEncryptResp{
-		Code: errcode.ErrGrpcSuccess.Code(),
-		Msg:  errcode.ErrGrpcSuccess.Error(),
+
+	req := &pb.EncryptReq{
+		Src: text,
 	}
-	data, appErr := cs.doCryptoEncrypt(ctx, req)
-	if appErr != nil {
-		rsp.Code = appErr.Code()
-		rsp.Msg = appErr.Error()
-		cs.Logger.Error("CryptoEncrypt error", "errCode", rsp.Code, "errMsg", rsp.Msg)
-		return rsp, nil
+	resp, err := client.Encrypt(context.Background(), req)
+	if err != nil {
+		cs.Logger.Error("CryptoEncrypt client.Encrypt", "err", err)
+		return "client.Encrypt Error", err
 	}
-	rsp.Data = data
-	return rsp, nil
+	return resp.GetRes(), nil
 }
 
 // CryptoDecrypt decrypt
-func (cs *WebCryptoServiceImpl) CryptoDecrypt(ctx *gin.Context, text, tp string) (*pb.CryptoDecryptResp, error) {
+func (cs *WebCryptoServiceImpl) CryptoDecrypt(ctx *gin.Context, text, tp string) (string, error) {
 	cs.Logger.Info("WebCryptoServiceImpl CryptoDecrypt Start", "text", text, "tpye", tp)
-	// req useless for now
-	req := &pb.CryptoDecryptReq{
-		Algorithm:   tp,
-		EncryptText: text,
-	}
-	rsp := &pb.CryptoDecryptResp{
-		Code: errcode.ErrGrpcSuccess.Code(),
-		Msg:  errcode.ErrGrpcSuccess.Error(),
-	}
-	data, appErr := cs.doCryptoDecrypt(ctx, req)
-	if appErr != nil {
-		rsp.Code = appErr.Code()
-		rsp.Msg = appErr.Error()
-		cs.Logger.Error("WebCryptoServiceImpl CryptoDecrypt error", "errCode", rsp.Code, "errMsg", rsp.Msg)
-		return rsp, nil
-	}
-	rsp.Data = data
-	return rsp, nil
-}
-
-func (cs *WebCryptoServiceImpl) doCryptoEncrypt(ctx *gin.Context, req *pb.CryptoEncryptReq) (*pb.CryptoEncryptResObj, *errcode.Error) {
-	algs := req.GetAlgorithm()
-	plainText := req.GetPlainText()
-	fmt.Println("algs=",algs, " plainText=",plainText)
-	var encryptText string
-	switch algs {
+	var client pb.CryptoFuncClient
+	switch tp {
 	case "BASE64":
+		client = cs.clientBASE64
 	case "AES":
+		client = cs.clientAES
 	case "DES":
-	case "RSA":
+		client = cs.clientDES
 	default:
-		cs.Logger.Error("doCryptoEncrypt: NOT BASE64/AES/DES/RSA", "type", algs)
-		return nil, errcode.ErrGrpcAppExecute.AppendMsg("doCryptoEncrypt: NOT AES/RSA/ECC/SMx, type: %s", algs)
+		cs.Logger.Error("CryptoDecrypt: NOT BASE64/AES/DES", "type", tp)
+		return "TypeNotSupport", nil
 	}
-	cs.Logger.Info("doCryptoEncrypt: Encrypt succeed")
-	return &pb.CryptoEncryptResObj{
-		EncryptText: encryptText,
-	}, nil
-}
 
-func (cs *WebCryptoServiceImpl) doCryptoDecrypt(ctx *gin.Context, req *pb.CryptoDecryptReq) (*pb.CryptoDecryptResObj, *errcode.Error) {
-	algs := req.GetAlgorithm()
-	encryptText := req.GetEncryptText()
-	fmt.Println("algs=",algs, " encryptText=",encryptText)
-	var plainText string
-	switch algs {
-	case "BASE64":
-	case "AES":
-	case "DES":
-	case "RSA":
-	default:
-		cs.Logger.Error("doCryptoDecrypt: NOT BASE64/AES/DES/RSA", "type", algs)
-		return nil, errcode.ErrGrpcAppExecute.AppendMsg("doCryptoDecrypt: NOT AES/RSA/ECC/SMx, type: %s", algs)
+	req := &pb.DecryptReq{
+		Src: text,
 	}
-	cs.Logger.Info("doCryptoDecrypt: Encrypt succeed")
-	return &pb.CryptoDecryptResObj{
-		PlainText: plainText,
-	}, nil
+	resp, err := client.Decrypt(context.Background(), req)
+	if err != nil {
+		cs.Logger.Error("CryptoDecrypt client.Encrypt", "err", err)
+		return "client.Decrypt Error", err
+	}
+	return resp.GetRes(), nil
 }
