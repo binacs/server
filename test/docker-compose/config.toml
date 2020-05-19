@@ -19,9 +19,9 @@ Host       = "server.grpc.io"         # for test
 "prometheus" = "http://127.0.0.1:9000"
 #"grafana"   = "http://127.0.0.1:3000"
 [WebConfig.K8sService]
-"CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc"
-"CryptoAES"    = "cryptfunc-aes-svc.cryptfunc"
-"CryptoDES"    = "cryptfunc-des-svc.cryptfunc"
+# "CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc"
+# "CryptoAES"    = "cryptfunc-aes-svc.cryptfunc"
+# "CryptoDES"    = "cryptfunc-des-svc.cryptfunc"
 
 [LogConfig]
 File  = "/work/server.log"

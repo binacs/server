@@ -27,7 +27,8 @@ spec:
       containers:
       - name: binacs-cn-root
         image: binacslee/binacs-cn:latest
-        command: ["/bin/sh","-c","/work/server start --configFile /work/kubernetes/config.toml"]
+        #command: ["/bin/sh","-c","/work/server start --configFile /work/config.toml"]
+        command: ["/bin/sh","-c","/work/server start --configFile /kubernetes/config.toml"]
         ports:
           - name: http
             # binacs: 80 => 9080
@@ -40,3 +41,10 @@ spec:
           - name: grpc
             containerPort: 9500
             protocol: TCP
+        volumeMounts:
+        - name: binacs-cn-hostpath
+          mountPath: /kubernetes
+      volumes:
+      - name: binacs-cn-hostpath
+        hostPath:
+          path: /root/binacs/go-server/kubernetes-hostpath

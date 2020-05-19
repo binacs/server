@@ -4,6 +4,7 @@ services:
   server_dc:
     container_name: server_dc
     build: .
+    # image: binacslee/binacs-cn:latest
     ports:
       - 80:80
       - 443:443
