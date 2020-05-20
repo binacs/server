@@ -1,10 +1,9 @@
 package main
 
 import (
-	//"github.com/spf13/cobra"
-	"fmt"
-	cmd "github.com/BinacsLee/server/cmd/commands"
 	"os"
+
+	cmd "github.com/BinacsLee/server/cmd/commands"
 )
 
 func main() {
@@ -16,5 +15,4 @@ func main() {
 	if rootCmd.Execute() != nil {
 		os.Exit(1)
 	}
-	fmt.Println("end")
 }

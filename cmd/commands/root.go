@@ -26,7 +26,7 @@ func init() {
 }
 
 func rootCmdFlags(cmd *cobra.Command) {
-	RootCmd.PersistentFlags().StringVar(&configFile, "configFile", "config.toml", "config file (default is ./config.toml)")
+	cmd.PersistentFlags().StringVar(&configFile, "configFile", "config.toml", "config file (default is ./config.toml)")
 }
 
 var (
