@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/BinacsLee/Cryptology v0.0.0-20200517140202-53faadbf68aa
 	github.com/BurntSushi/toml v0.3.1
+	github.com/binacsgo/inject v0.0.0-20200626064859-3d02591122c8
 	github.com/gin-gonic/gin v1.6.2
 	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
