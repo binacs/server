@@ -10,8 +10,8 @@ import (
 	"github.com/unrolled/secure"
 
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/log"
 	web_service "github.com/BinacsLee/server/service/web/service"
+	"github.com/binacsgo/log"
 )
 
 // WebService the web service

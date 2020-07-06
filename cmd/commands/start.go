@@ -7,12 +7,12 @@ import (
 
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/base"
-	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service"
 	"github.com/BinacsLee/server/service/db"
 	grpc_service "github.com/BinacsLee/server/service/grpc/service"
 	web_service "github.com/BinacsLee/server/service/web/service"
 	"github.com/binacsgo/inject"
+	"github.com/binacsgo/log"
 )
 
 var (

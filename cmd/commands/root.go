@@ -11,7 +11,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/log"
+	"github.com/binacsgo/log"
 )
 
 var (

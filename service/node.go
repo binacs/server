@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/log"
+	"github.com/binacsgo/log"
 )
 
 // NodeService the node service

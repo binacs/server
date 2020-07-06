@@ -9,8 +9,8 @@ import (
 	"xorm.io/core"
 
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/types/table"
+	"github.com/binacsgo/log"
 )
 
 // MysqlService mysql service

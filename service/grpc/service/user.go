@@ -13,10 +13,10 @@ import (
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/base"
 	"github.com/BinacsLee/server/libs/errcode"
-	"github.com/BinacsLee/server/libs/log"
 	"github.com/BinacsLee/server/service/db"
 	"github.com/BinacsLee/server/types"
 	"github.com/BinacsLee/server/types/table"
+	"github.com/binacsgo/log"
 )
 
 // GRPCUserServiceImpl GRPC user service implement

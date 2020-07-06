@@ -7,7 +7,7 @@ import (
 	"github.com/go-redis/redis"
 
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/log"
+	"github.com/binacsgo/log"
 )
 
 // RedisService redis service

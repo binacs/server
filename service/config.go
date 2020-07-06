@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/log"
+	"github.com/binacsgo/log"
 )
 
 // ConfigService config service
