@@ -27,11 +27,11 @@
 
 ```
 server
-├── api	    # 服务定义 此目录下执行make以依据proto文件生成go和swagger文档
+├── api	    	# 服务定义 此目录下执行make以依据proto文件生成go和swagger文档
 │   ├── Makefile
 │   ├── ...
 │   └── ...
-├── cmd	    # 程序入口 使用cobra以及自写 依赖注入* 组件
+├── cmd	    	# 程序入口 使用cobra以及自写 依赖注入* 组件
 │   ├── commands
 │   └── main.go
 ├── config	# 配置相关 支持热加载
@@ -50,7 +50,7 @@ server
 │   ├── mycrypto
 │   └── treemap
 ├── service	# 抽象为服务的各项功能
-│   ├── db		# 存储服务
+│   ├── db	# 存储服务
 │   ├── grpc	# grpc服务
 │   ├── web     # web服务
 │   ├── grpc.go
@@ -65,7 +65,7 @@ server
 │   ├── grpc.go
 │   ├── redis.go
 │   └── types.go
-└── version # 版本
+└── version 	# 版本
     └── version.go
 
 ```
@@ -77,16 +77,16 @@ server
 必备：
 
 1. cobra
-2. zap和日志分割
+2. zap 和日志分割
 3. gin
 4. grpc & grpc-gateway
-5. redis & mysql基础 以及对象存储xorm
+5. redis & mysql 基础 以及对象存储 xorm
 6. protobuf & swagger
 
 选读：
 
-1. opentracing协议
-2. prometheus组件
+1. opentracing 协议
+2. prometheus 组件
 3. docker & k8s
 
 ### * 关于依赖注入
@@ -107,22 +107,21 @@ server
 docker-compose up
 ```
 
-借助docker-compose.yml配置快速搭建全套服务环境。
+借助 `docker-compose.yml` 配置快速搭建全套服务环境。
 
-随后在浏览器中访问本机443端口即可。
+随后在浏览器中访问本机 80 / 443 端口即可。
 
 
 
 ## 2. 分块构建
 
-分块构建server, redis 与 mysql, 需要注意的是, server构建需在redis与mysql构建完成之后。
+分块构建 `server` , `redis` 与 `mysql` , 需要注意的是, `server` 构建需在 `redis` 与 `mysql` 构建完成之后。
 
 ### 2.1 redis
 
 ```shell
 docker pull redis:latest
 docker run -itd --name redis-test -p 6379:6379 redis --requirepass "password"
-
 ```
 
 如果你需要在docker中直接操作redis, 请执行
@@ -142,28 +141,28 @@ docker pull mysql
 docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=testdb mysql 
 ```
 
-在启动server之前, 你需要在mysql中先行建立DB, 使用collation : utf8mb4的配置并新建testdb。需要注意的是，前文 `docker run` 指令中的 `-e MYSQL_DATABASE=testdb` 与下列mysql指令等效：
+在启动 server 之前, 你需要在 mysql 中先行建立DB, 使用 `collation : utf8mb4` 的配置并新建 testdb。需要注意的是，前文 `docker run` 指令中的 `-e MYSQL_DATABASE=testdb` 与下列mysql指令等效：
 
 ```mysql
 CREATE SCHEMA `testdb` DEFAULT CHARACTER SET utf8mb4 ;
 ```
 
-如果你需要在docker中直接操作mysql, 请执行
+如果你需要在 Docker 中直接操作 mysql , 请执行
 
 ```shell
 $ docker exec -it mysql-test /bin/bash
 [mysql容器] $ mysql -uroot -ppassword
 ```
 
-1. linux可视化管理工具: Workbench
+1. linux 可视化管理工具: Workbench
 
-```
+```shell
 sudo apt-get install mysql-workbench
 ```
 
-2. 对于windows macOS: Navicat
+2. 对于 windows macOS: Navicat
 
-此时在host项需配置docker-machine ip而非localhost or 127.0.0.1
+此时在 host 项需配置 `docker-machine ip` 而非 `localhost` nor `127.0.0.1` 。
 
 
 
@@ -191,4 +190,14 @@ docker build -t binacs/server:v1 .
 docker run -itd --name server -p 443:443 -p 9500:9500 binacs/server:v1
 ```
 
-随后在浏览器中访问本机443端口即可。
+随后在浏览器中访问本机 80 / 443 端口即可。
+
+
+
+## 3. Kubernetes 部署
+
+Dockerfile 来自本项目。
+
+镜像来自 [Docker Hub](https://hub.docker.com/r/binacslee/binacs-cn) 。
+
+部署配置位于 [deployment-binacs-cn](https://github.com/OpenKikCoc/deployment-binacs-cn) 项目。

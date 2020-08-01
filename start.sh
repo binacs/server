@@ -1,3 +1,3 @@
-#/bin/bash
+#!/bin/sh
 
 ./bin/server start
