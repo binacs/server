@@ -18,8 +18,8 @@ github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/binacsgo/inject v0.0.0-20200626113918-c47dac618e7c h1:wp0DHAfJ+6pyUU/ahXj7bVweZ4y3K+96J+NWqZzm2VM=
 github.com/binacsgo/inject v0.0.0-20200626113918-c47dac618e7c/go.mod h1:y6s5Mc8Z5qatGOOCvRJyBVblQ91UChAhDUgMAcrcW0c=
-github.com/binacsgo/log v0.0.0-20200706140919-57d00169bb05 h1:aMhGIg194CSEpFdunVhsMJUQ1q4CifEuPOVs4BWMUpo=
-github.com/binacsgo/log v0.0.0-20200706140919-57d00169bb05/go.mod h1:p+PaxGF8XlyWU4ZkTmxItLIOAJ2dRz9r0YZq0+lgTGA=
+github.com/binacsgo/log v0.0.0-20200826160138-ed583c8224fa h1:8CZtCdC+KoVLTyuP702u81Fy0jpq1UacJbSRMweEQfA=
+github.com/binacsgo/log v0.0.0-20200826160138-ed583c8224fa/go.mod h1:p+PaxGF8XlyWU4ZkTmxItLIOAJ2dRz9r0YZq0+lgTGA=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=

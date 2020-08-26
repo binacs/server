@@ -46,7 +46,7 @@ var (
 			}
 
 			zaplogger = initLogger(cfg.WorkSpace, cfg.LogConfig)
-			logger = log.NewZapLoggerWapper(zaplogger.Sugar())
+			logger = log.NewZapLoggerWrapper(zaplogger.Sugar())
 			//zaplogger.Info("zaologger")
 			logger.Info("Init finished")
 

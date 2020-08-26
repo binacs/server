@@ -6,7 +6,7 @@ require (
 	github.com/BinacsLee/Cryptology v0.0.0-20200517140202-53faadbf68aa
 	github.com/BurntSushi/toml v0.3.1
 	github.com/binacsgo/inject v0.0.0-20200626113918-c47dac618e7c
-	github.com/binacsgo/log v0.0.0-20200706140919-57d00169bb05
+	github.com/binacsgo/log v0.0.0-20200826160138-ed583c8224fa
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
