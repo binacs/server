@@ -30,20 +30,20 @@ Web 框架。
 
 ```go
 func init() {
-	router = gin.New()			// return a *gin.Engine
-	router.Use(gin.Recovery())
-	router.StaticFile("/", index.html)
-	
-	server = &http.Server{
-		Addr:           ":" + ws.Config.WebConfig.HttpPort,
-		Handler:        router,
-		ReadTimeout:    time.Second,
-		WriteTimeout:   time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
-  if err := server.ListenAndServe(); err != nil {
-    // xxx
-  }
+    router = gin.New()            // return a *gin.Engine
+    router.Use(gin.Recovery())
+    router.StaticFile("/", index.html)
+    
+    server = &http.Server{
+        Addr:           ":" + ws.Config.WebConfig.HttpPort,
+        Handler:        router,
+        ReadTimeout:    time.Second,
+        WriteTimeout:   time.Second,
+        MaxHeaderBytes: 1 << 20,
+    }
+    if err := server.ListenAndServe(); err != nil {
+        // xxx
+    }
 }
 ```
 
@@ -58,8 +58,4 @@ Engine 可注册各类中间件以及路由，更多请参考 godoc ；
 ## 3. 使用示例
 
 较简单，参考 2 部分以及项目代码。
-
-
-
-
 

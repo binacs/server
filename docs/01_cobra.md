@@ -45,14 +45,14 @@ git clone URL --bare
 通过以下方式定义一个命令：
 
 ```go
-	RootCmd = &cobra.Command{
-		Use:   "root",
-		Short: "Root Command",
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
-      // ...
-			return nil
-		},
-	}
+    RootCmd = &cobra.Command{
+        Use:   "root",
+        Short: "Root Command",
+        PersistentPreRunE: func(cmd *cobra.Command, args []string) (err error) {
+            // ...
+            return nil
+        },
+    }
 ```
 
 定义了一个 RootCmd 命令，并指明 Use (如何使用)、Short (简要描述)、PersistentPreRunE (功能函数) 等。
@@ -83,7 +83,7 @@ var clientAuth bool
 
 // 1.1
 func AddOrdererFlags(cmd *cobra.Command) {
-  	// get flags, then xxxVarP
+    // get flags, then xxxVarP
     flags := cmd.PersistentFlags()
     flags.StringVarP(&OrderingEndpoint, "orderer", "o", "", "Ordering service endpoint")
     flags.BoolVarP(&clientAuth, "clientauth", "", false, "Use mutual TLS when communicating with the orderer endpoint")
@@ -91,14 +91,14 @@ func AddOrdererFlags(cmd *cobra.Command) {
 
 // 1.2
 func rootCmdFlags(cmd *cobra.Command) {
-  	// cmd.xxxFlags.xxVar
-		cmd.PersistentFlags().StringVar(&configFile, "configFile", "config.toml", "config file (default is ./config.toml)")
+      // cmd.xxxFlags.xxVar
+      cmd.PersistentFlags().StringVar(&configFile, "configFile", "config.toml", "config file (default is ./config.toml)")
 }
 
 // Eg: 
 // StringVarP 用来接收类型为字符串变量的标志。
 // 相较StringVar， StringVarP 支持标志短写。
-//	以 OrderingEndpoint 例：在指定标志时可以用 --orderer ，也可以使用短写 -o。
+//    以 OrderingEndpoint 例：在指定标志时可以用 --orderer ，也可以使用短写 -o。
 ```
 
 
@@ -119,16 +119,16 @@ func rootCmdFlags(cmd *cobra.Command) {
 
 ```go
 var cmd = &cobra.Command{
-  Short: "hello",
-  Args: func(cmd *cobra.Command, args []string) error {
-    if len(args) < 1 {
-      return errors.New("requires at least one arg")
-    }
-    return nil
-  },
-  Run: func(cmd *cobra.Command, args []string) {
-    fmt.Println("Hello, World!")
-  },
+    Short: "hello",
+    Args: func(cmd *cobra.Command, args []string) error {
+        if len(args) < 1 {
+          return errors.New("requires at least one arg")
+        }
+        return nil
+    },
+    Run: func(cmd *cobra.Command, args []string) {
+        fmt.Println("Hello, World!")
+    },
 }
 ```
 

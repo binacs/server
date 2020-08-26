@@ -1,14 +1,8 @@
 # prometheus
 
-
-
-
-
 ## 1. 概述
 
 metric 统计组件；监控告警解决方案。
-
-
 
 ## 2. 关键概念
 
@@ -41,9 +35,9 @@ PromQL (Prometheus Query Language) 是 Prometheus 自己开发的数据查询 DS
 
 ### 2.4 prometheus采集策略
 
-只能抓取指定 target 暴露的数据，即对 target 开放端口有要求；
+只能抓取指定 `target` 暴露的数据，即对 `target` 开放端口有要求；
 
-对于不对外暴露固定端口的 target，需采取上报至push gateway，再由prometheus主动抓取push gateway暴露端口的办法实现数据采集。
+对于不对外暴露固定端口的 `target` ，需采取上报至 `push gateway` ，再由 prometheus 主动抓取 `push gateway` 暴露端口的办法实现数据采集。
 
 
 
@@ -51,24 +45,20 @@ PromQL (Prometheus Query Language) 是 Prometheus 自己开发的数据查询 DS
 
 常规配置即可，每个项的含义参考官方文档。
 
-
-
 **注意：**
 
-**采用push gateway解决方案时，需指定 push gateway 的 `honor_labels: true`。**
+**采用 `push gateway` 解决方案时，需指定 `push gateway` 的 `honor_labels: true` 。**
 
-*如果honor_labels设置为"true"，则通过保留已抓取数据的标签值并忽略冲突的服务器端标签来解决标签冲突。*
+*如果 `honor_labels` 设置为 `"true"` ，则通过保留已抓取数据的标签值并忽略冲突的服务器端标签来解决标签冲突。*
 
 
 
 ## 4. 配套组件
 
-NodeExporter：提供 http 路由以供 prometheus 抓取其在单个主机上采集得到的各类数据。
+`NodeExporter` ：提供 http 路由以供 prometheus 抓取其在单个主机上采集得到的各类数据。
 
-PushGateway：采用上报方案时各个节点上报的目标，也是 prometheus 抓取的目标。
+`PushGateway` ：采用上报方案时各个节点上报的目标，也是 prometheus 抓取的目标。
 
-AlertManager：接收 prometheus 依据规则产生的告警信息，可以转发至 webhook 以及直接触发邮件等告警机制。**由于alert manager的告警渠道支持并不完善，在需要同时支持多个告警渠道的场景下建议写一个新的组件作为webhook，由新组件触发各场景下的告警消息推送。如需要同时支持邮件、微信、钉钉、消息队列等渠道时。**
-
-
+`AlertManager` ：接收 prometheus 依据规则产生的告警信息，可以转发至 `webhook` 以及直接触发邮件等告警机制。**由于 `alert manager` 的告警渠道支持并不完善，在需要同时支持多个告警渠道的场景下建议写一个新的组件作为 `webhook` ，由新组件触发各场景下的告警消息推送。如需要同时支持邮件、微信、钉钉、消息队列等渠道时。**
 
 在本项目中，prometheus 采集的数据均来自push gateway，而后者的数据均由物理节点运行的 [ProPush](https://github.com/BinacsLee/ProPush) 主动上报。

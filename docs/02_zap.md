@@ -20,33 +20,33 @@
 
 ```go
 func initLogger(rootPath string, logConfig config.LogConfig) *zap.Logger {
-	logpath := logConfig.File
-	if !path.IsAbs(logpath) {
-		logpath = path.Join(rootPath, logConfig.File)
-	}
-  // lumberjack
-  hook := lumberjack.Logger{...}
-  // 编码器配置
-	encoderConfig := zapcore.EncoderConfig{
-		TimeKey:        "_time",
-		LevelKey:       "_level",
-		NameKey:        "_logger",
-		CallerKey:      "_caller",
-		MessageKey:     "_message",
-		StacktraceKey:  "_stacktrace",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.LowercaseLevelEncoder,
-		EncodeTime:     zapcore.ISO8601TimeEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
-	}
-	atomicLevel := zap.NewAtomicLevel()
-	atomicLevel.SetLevel(stringToXZapLoggerLevel(logConfig.Level))
-  // core 传入: encoderConfig lumberjack 和 atomicLevel 等等
-	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(&hook), atomicLevel)
-  // logger
-	logger := zap.New(core)
-	return logger
+    logpath := logConfig.File
+    if !path.IsAbs(logpath) {
+        logpath = path.Join(rootPath, logConfig.File)
+    }
+    // lumberjack
+    hook := lumberjack.Logger{...}
+    // 编码器配置
+    encoderConfig := zapcore.EncoderConfig{
+        TimeKey:        "_time",
+        LevelKey:       "_level",
+        NameKey:        "_logger",
+        CallerKey:      "_caller",
+        MessageKey:     "_message",
+        StacktraceKey:  "_stacktrace",
+        LineEnding:     zapcore.DefaultLineEnding,
+        EncodeLevel:    zapcore.LowercaseLevelEncoder,
+        EncodeTime:     zapcore.ISO8601TimeEncoder,
+        EncodeDuration: zapcore.SecondsDurationEncoder,
+        EncodeCaller:   zapcore.ShortCallerEncoder,
+    }
+    atomicLevel := zap.NewAtomicLevel()
+    atomicLevel.SetLevel(stringToXZapLoggerLevel(logConfig.Level))
+    // core 传入: encoderConfig lumberjack 和 atomicLevel 等等
+    core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(&hook), atomicLevel)
+    // logger
+    logger := zap.New(core)
+    return logger
 }
 ```
 
@@ -79,13 +79,12 @@ https://github.com/natefinch/lumberjack
 如需同时打印到控制台和文件：
 
 ```go
-
 zapcore.NewCore(
-  	// Encoder 可以更改
-		zapcore.NewJSONEncoder(encoderConfig),
-  	// 请注意这里：
-		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook)),
-		atomicLevel,
+    // Encoder 可以更改
+    zapcore.NewJSONEncoder(encoderConfig),
+    // 请注意这里：
+    zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook)),
+    atomicLevel,
 )
 ```
 
