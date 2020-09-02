@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
@@ -29,11 +30,8 @@ type MysqlServiceImpl struct {
 
 // AfterInject inject
 func (ms *MysqlServiceImpl) AfterInject() error {
-	var err error
-	ms.EngineG, err = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
-	if err != nil {
-		return err
-	}
+	ms.EngineG, _ = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
+	go ms.checkLoop()
 	return nil
 }
 
@@ -55,6 +53,18 @@ func NewMysqlCli(cfg config.MysqlConfig, logger *zap.Logger) (*xorm.EngineGroup,
 		engine.SetMaxOpenConns(cfg.MaxOpenConns)
 	}
 	return engine, nil
+}
+
+// -------------------------------------------------
+
+func (ms *MysqlServiceImpl) checkLoop() {
+	ticker := time.NewTicker(1 * time.Minute)
+	defer ticker.Stop()
+	for range ticker.C {
+		if err := ms.EngineG.Ping(); err != nil {
+			ms.EngineG, _ = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
+		}
+	}
 }
 
 // Sync2 sync the db

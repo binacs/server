@@ -31,15 +31,9 @@ type RedisServiceImpl struct {
 
 // AfterInject do inject
 func (rs *RedisServiceImpl) AfterInject() error {
-	var err error
-	rs.client, err = NewRedisCli(rs.Config.RedisConfig)
-	if err != nil {
-		return err
-	}
-	rs.fClient, err = NewRedisSentinelCli(rs.Config.RedisConfig)
-	if err != nil {
-		return err
-	}
+	rs.client, _ = NewRedisCli(rs.Config.RedisConfig)
+	rs.fClient, _ = NewRedisSentinelCli(rs.Config.RedisConfig)
+	go rs.checkLoop()
 	return nil
 }
 
@@ -80,6 +74,16 @@ func NewRedisSentinelCli(cfg config.RedisConfig) (*redis.Client, error) {
 }
 
 // -------------------------------------------------
+
+func (rs *RedisServiceImpl) checkLoop() {
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+	for range ticker.C {
+		if err := rs.Ping(); err != nil {
+			rs.client, _ = NewRedisCli(rs.Config.RedisConfig)
+		}
+	}
+}
 
 // Ping check the connection
 func (rs *RedisServiceImpl) Ping() error {
