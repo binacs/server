@@ -24,7 +24,8 @@ type WebServiceImpl struct {
 	Config *config.Config `inject-name:"Config"`
 	Logger log.Logger     `inject-name:"WebLogger"`
 
-	CryptoSvc *web_service.WebCryptoServiceImpl `inject-name:"WebCryptoService"`
+	CryptoSvc  *web_service.WebCryptoServiceImpl  `inject-name:"WebCryptoService"`
+	TinyURLSvc *web_service.WebTinyURLServiceImpl `inject-name:"WebTinyURLService"`
 
 	r *gin.Engine
 	s *http.Server
@@ -88,6 +89,7 @@ func (ws *WebServiceImpl) tlsTransfer() gin.HandlerFunc {
 func (ws *WebServiceImpl) setRouter(r *gin.Engine) {
 	ws.setBasicRouter(r)
 	ws.setApiRouter(r.Group("api"))
+	ws.setRedirectRouter(r.Group("r"))
 	ws.setManagerRouter(r.Group("manager"))
 	ws.setMonitorRouter(r.Group("monitor"))
 }
@@ -97,13 +99,22 @@ func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
 	r.StaticFile("/", ws.Config.WebConfig.StaticPath+"index")
 	r.StaticFile("/toys", ws.Config.WebConfig.StaticPath+"toys")
 	r.StaticFile("/toys/crypto", ws.Config.WebConfig.StaticPath+"crypto")
+	r.StaticFile("/toys/tinyurl", ws.Config.WebConfig.StaticPath+"tinyurl")
 	r.StaticFile("/about", ws.Config.WebConfig.StaticPath+"about")
+}
+
+// setApiRouter set RESTful api router
+func (ws *WebServiceImpl) setRedirectRouter(r *gin.RouterGroup) {
+	r.Any("/:turl", ws.redirect)
 }
 
 // setApiRouter set RESTful api router
 func (ws *WebServiceImpl) setApiRouter(r *gin.RouterGroup) {
 	r.POST("/v1/crypto/encrypto", ws.apiV1CryptoEncrypto)
 	r.POST("/v1/crypto/decrypto", ws.apiV1CryptoDecrypto)
+
+	r.POST("/v1/tinyurl/encode", ws.apiV1TinyURLEncode)
+	r.POST("/v1/tinyurl/decode", ws.apiV1TinyURLDecode)
 }
 
 // setManagerRouter set manager router
@@ -118,6 +129,14 @@ func (ws *WebServiceImpl) setMonitorRouter(r *gin.RouterGroup) {
 }
 
 // ------------------ Gin Service ------------------
+
+func (ws *WebServiceImpl) redirect(c *gin.Context) {
+	rsp, err := ws.TinyURLSvc.URLDecode(c, c.Param("turl"))
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl redirect", "URLDecode err", err, "turl", c.Param("turl"))
+	}
+	c.Redirect(http.StatusMovedPermanently, rsp)
+}
 
 func (ws *WebServiceImpl) apiV1CryptoEncrypto(c *gin.Context) {
 	text := c.Request.FormValue("text")
@@ -135,6 +154,24 @@ func (ws *WebServiceImpl) apiV1CryptoDecrypto(c *gin.Context) {
 	rsp, err := ws.CryptoSvc.CryptoDecrypt(c, text, tp)
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1CryptoDecrypto", "err", err, "text", text, "type", tp)
+	}
+	c.String(http.StatusOK, rsp)
+}
+
+func (ws *WebServiceImpl) apiV1TinyURLEncode(c *gin.Context) {
+	text := c.Request.FormValue("text")
+	rsp, err := ws.TinyURLSvc.URLEncode(c, text)
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl apiV1TinyURLEncode", "err", err, "text", text)
+	}
+	c.String(http.StatusOK, rsp)
+}
+
+func (ws *WebServiceImpl) apiV1TinyURLDecode(c *gin.Context) {
+	text := c.Request.FormValue("text")
+	rsp, err := ws.TinyURLSvc.URLDecode(c, text)
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl apiV1TinyURLDecode", "err", err, "text", text)
 	}
 	c.String(http.StatusOK, rsp)
 }

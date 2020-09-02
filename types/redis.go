@@ -64,3 +64,15 @@ func RedisRefreshTokenKey(refreshToken string) string {
 func RedisCredentialsKey(id, pwd string) string {
 	return fmt.Sprintf(Prefix_CredentialKey, id, pwd)
 }
+
+// -----------------------------------------------------------------------
+const (
+	// For TinyURL
+	TinyURLExpire     = int64(0)           // TinyURLExpire time
+	Prefix_TinyURLKey = "/SVR/TINY/URL/%s" // Prefix_TinyURLKey used in db service
+)
+
+// TinyURLExpireDuration return the access token expire duration (time.Duration)
+func TinyURLExpireDuration() time.Duration {
+	return time.Duration(TinyURLExpire) * time.Hour
+}

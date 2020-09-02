@@ -53,6 +53,7 @@ func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl
 	inject.Regist(Inject_Node_Service, &nodeSvc)
 	inject.Regist(Inject_Web_Service, &service.WebServiceImpl{})
 	inject.Regist(Inject_WebCrypto_Service, &web_service.WebCryptoServiceImpl{})
+	inject.Regist(Inject_WebTinyURL_Service, &web_service.WebTinyURLServiceImpl{})
 
 	inject.Regist(Inject_GRPC_Service, &service.GRPCServiceImpl{})
 	inject.Regist(Inject_GRPCUser_Service, &grpc_service.GRPCUserServiceImpl{})

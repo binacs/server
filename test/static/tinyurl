@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://libs.baidu.com/jquery/1.7.1/jquery.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+        body {
+            background-color: #FFFFFF;
+            font-size: 12px;
+            color: #404040;
+            font-family: Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+            line-height: 40px;
+        }
+
+        hr {
+            /*透明渐变水平线*/
+            width: 80%;
+            margin: 0 auto;
+            border: 0;
+            height: 1px;
+            background: #333;
+            background-image: linear-gradient(to right, #ccc, #333, #ccc);
+        }
+
+        textarea {
+            height: 200px;
+            width: 400px;
+            resize: none;
+            border: 2px solid;
+            border-color: #595959;
+            border-radius: 5px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div
+        style="width: 600px; left: 50%; padding-top: 50px; margin-left: -300px; text-align: center; position: absolute;">
+        <div style="height: 60px; font-size: 22px; ">
+            <a style="color: black;">短链接生成服务</a>
+        </div>
+        <hr>
+        <div style="height: 40px; font-size: 12px;  padding-top: 10px;">
+            <a style="color: grey;">默认使用md5算法</a>
+            <br>
+        </div>
+    </div>
+
+
+    <div
+        style="width: 800px; left: 50%; padding-top: 200px; margin-left: -400px; text-align: center; position: absolute;">
+        <form id="form">
+            <div style="font-size: 15px;"><a>原始URL</a></div>
+            <input name="enctext" id="enc_source" style="width: 500px;"></input>
+
+            <div style="padding-top: 20px;">
+                <button type="button" onclick="enc()" value="enc" id="encid">编码</button>
+                <button type="button" onclick="dec()" value="dec" id="decid">解码</button>
+            </div>
+            <div style="font-size: 15px;"><a>短链接</a></div>
+            <input name="dectext" id="dec_source" style="width: 500px;"></input>
+
+        </form>
+        <div
+            style="z-index: -1; width: 400px; left: 50%; padding-top: 300px; margin-left: -200px; text-align: center; position: absolute;">
+            <a href="http://beian.miit.gov.cn/" target="_blank">豫ICP备18018043号</a>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+
+        function enc() {
+            $.ajax({
+                'url': '/api/v1/tinyurl/encode',
+                'data': {
+                    "text": $('#enc_source').val(),
+                },
+                'type': 'post',
+                'dataType': "text",
+                'success': function (data) {
+                    console.log("enc success")
+                    $('#dec_source').val(data);
+                },
+                error: function () {
+                    alert("异常！");
+                }
+            })
+        }
+
+        function dec() {
+            $.ajax({
+                'url': '/api/v1/tinyurl/decode',
+                'data': {
+                    "text": $('#dec_source').val(),
+                },
+                'type': 'post',
+                'dataType': "text",
+                'success': function (data) {
+                    console.log("dec success")
+                    $('#enc_source').val(data);
+                },
+                error: function () {
+                    alert("异常！");
+                }
+            })
+        }
+
+    </script>
+</body>
+
+</html>
