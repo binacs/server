@@ -131,7 +131,7 @@ func (ws *WebServiceImpl) setMonitorRouter(r *gin.RouterGroup) {
 // ------------------ Gin Service ------------------
 
 func (ws *WebServiceImpl) redirect(c *gin.Context) {
-	rsp, err := ws.TinyURLSvc.URLDecode(c, c.Param("turl"))
+	rsp, err := ws.TinyURLSvc.URLSearch(c, c.Param("turl"))
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl redirect", "URLDecode err", err, "turl", c.Param("turl"))
 	}

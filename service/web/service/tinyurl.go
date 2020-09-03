@@ -62,3 +62,14 @@ func (ts *WebTinyURLServiceImpl) URLDecode(ctx *gin.Context, text string) (strin
 	}
 	return url, nil
 }
+
+// URLSearch return the origin-url of tiny-url suffix
+func (ts *WebTinyURLServiceImpl) URLSearch(ctx *gin.Context, turl string) (string, error) {
+	ts.Logger.Info("WebTinyURLServiceImpl URLSearch Start", "tiny-url suffix", turl)
+	url, err := ts.RedisSvc.Get(turl)
+	if err != nil {
+		ts.Logger.Error("WebTinyURLServiceImpl URLSearch RedisSvc.Get", "error", err, "url", url, "turl", turl)
+		return "", err
+	}
+	return url, nil
+}
