@@ -3,18 +3,12 @@ version: '3.1'
 services:
   server_dc:
     container_name: server_dc
-    build: .
-    # image: binacslee/binacs-cn:latest
+    # build: .
+    image: binacslee/binacs-cn:latest
     ports:
       - 80:80
       - 443:443
       - 9500:9500
-    depends_on:
-      - mysql_dc
-      - redis_dc
-    links:
-      - mysql_dc:mysql
-      - redis_dc:redis
 
   mysql_dc:
     container_name: mysql_dc
@@ -26,6 +20,7 @@ services:
     ]
     ports:
       - 3306:3306
+      - 33060:33060
     environment:
       MYSQL_DATABASE: testdb
       MYSQL_ROOT_PASSWORD: password

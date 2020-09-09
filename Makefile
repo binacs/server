@@ -8,3 +8,6 @@ clean:
 
 build:
 	go build $(BUILD_FLAGS) -tags '$(BUILD_TAGS)' -o bin/server ./cmd
+
+docker:
+	docker build -t binacslee/binacs-cn:latest . 

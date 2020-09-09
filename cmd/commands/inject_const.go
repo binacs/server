@@ -17,9 +17,11 @@ const (
 
 	Inject_Node_Service = "NodeService"
 
-	Inject_Web_Service        = "WebService"
-	Inject_WebCrypto_Service  = "WebCryptoService"
-	Inject_WebTinyURL_Service = "WebTinyURLService"
+	Inject_Web_Service         = "WebService"
+	Inject_WebBasic_Service    = "WebBasicService"
+	Inject_WebCrypto_Service   = "WebCryptoService"
+	Inject_WebTinyURL_Service  = "WebTinyURLService"
+	Inject_WebPastebin_Service = "WebPastebin_Service"
 
 	Inject_GRPC_Service     = "GRPCService"
 	Inject_GRPCUser_Service = "GRPCUserService"

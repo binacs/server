@@ -71,6 +71,7 @@ func (ms *MysqlServiceImpl) checkLoop() {
 func (ms *MysqlServiceImpl) Sync2() error {
 	if err := ms.EngineG.Master().Sync2(
 		new(table.User),
+		new(table.Page),
 	); err != nil {
 		return fmt.Errorf("MysqlService Create table, err: %v\n", err)
 	}

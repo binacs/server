@@ -3,16 +3,12 @@ package service
 import (
 	"context"
 
-	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc"
-
 	//pb "github.com/BinacsLee/server/api/crypto/v1"
 	pb "github.com/BinacsLee/Cryptology/api/cryptofunc"
 	"github.com/BinacsLee/server/config"
+	"google.golang.org/grpc"
 
-	//"github.com/BinacsLee/server/libs/errcode"
 	"github.com/binacsgo/log"
-	//"github.com/BinacsLee/server/service/db"
 )
 
 // WebCryptoServiceImpl Web crypto service implement
@@ -52,7 +48,7 @@ func (cs *WebCryptoServiceImpl) AfterInject() error {
 }
 
 // CryptoEncrypt encrypt
-func (cs *WebCryptoServiceImpl) CryptoEncrypt(ctx *gin.Context, text, tp string) (string, error) {
+func (cs *WebCryptoServiceImpl) CryptoEncrypt(text, tp string) (string, error) {
 	cs.Logger.Info("WebCryptoServiceImpl CryptoEncrypt Start", "text", text, "tpye", tp)
 	var client pb.CryptoFuncClient
 	switch tp {
@@ -66,7 +62,11 @@ func (cs *WebCryptoServiceImpl) CryptoEncrypt(ctx *gin.Context, text, tp string)
 		cs.Logger.Error("CryptoEncrypt: NOT BASE64/AES/DES", "type", tp)
 		return "TypeNotSupport", nil
 	}
-
+	if client == nil {
+		cs.Logger.Error("CryptoEncrypt client nil")
+		// TODO return nil for now
+		return "client nil", nil
+	}
 	req := &pb.EncryptReq{
 		Src: text,
 	}
@@ -79,7 +79,7 @@ func (cs *WebCryptoServiceImpl) CryptoEncrypt(ctx *gin.Context, text, tp string)
 }
 
 // CryptoDecrypt decrypt
-func (cs *WebCryptoServiceImpl) CryptoDecrypt(ctx *gin.Context, text, tp string) (string, error) {
+func (cs *WebCryptoServiceImpl) CryptoDecrypt(text, tp string) (string, error) {
 	cs.Logger.Info("WebCryptoServiceImpl CryptoDecrypt Start", "text", text, "tpye", tp)
 	var client pb.CryptoFuncClient
 	switch tp {
@@ -93,7 +93,11 @@ func (cs *WebCryptoServiceImpl) CryptoDecrypt(ctx *gin.Context, text, tp string)
 		cs.Logger.Error("CryptoDecrypt: NOT BASE64/AES/DES", "type", tp)
 		return "TypeNotSupport", nil
 	}
-
+	if client == nil {
+		cs.Logger.Error("CryptoDecrypt client nil")
+		// TODO return nil for now
+		return "client nil", nil
+	}
 	req := &pb.DecryptReq{
 		Src: text,
 	}

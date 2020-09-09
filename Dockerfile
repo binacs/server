@@ -16,4 +16,4 @@ COPY --from=binacsGoBuild /src/bin/server \
 
 EXPOSE 9500 443 80
 
-CMD sleep 30s && ./work/server start --configFile /work/docker-compose/config.toml
+CMD ./work/server start --configFile /work/docker-compose/config.toml
