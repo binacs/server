@@ -174,9 +174,13 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 		})
 	}
 	body := ws.PastebinSvc.Parse(rsp.Content, rsp.Syntax)
-	c.HTML(http.StatusOK, "global", gin.H{
-		"Title": "binacs.cn - Pages",
-		"Body":  template.HTML(body),
+	c.HTML(http.StatusOK, "pages", gin.H{
+		"Title":    "binacs.cn - Pages",
+		"TinyURL":  rsp.TinyURL,
+		"Poster":   rsp.Poster,
+		"Syntax":   rsp.Syntax,
+		"CreateAt": rsp.CreatedAt,
+		"Content":  template.HTML(body),
 	})
 }
 
@@ -222,7 +226,7 @@ func (ws *WebServiceImpl) apiV1TinyURLDecode(c *gin.Context) {
 
 // -------- PasteBin Service --------
 func (ws *WebServiceImpl) apiV1PastebinSubmit(c *gin.Context) {
-	content := c.Request.FormValue("text")
+	content := c.Request.FormValue("content")
 	turl := ws.TinyURLSvc.Encode(content + string(time.Now().Unix()))
 	p := &table.Page{
 		Poster:  c.Request.FormValue("poster"),
@@ -236,7 +240,7 @@ func (ws *WebServiceImpl) apiV1PastebinSubmit(c *gin.Context) {
 		c.String(http.StatusNotFound, "Submit to database failed!")
 		return
 	}
-	c.String(http.StatusOK, ws.Config.WebConfig.Host+"/p/"+turl)
+	c.String(http.StatusOK, "/p/"+turl)
 	//c.Redirect(http.StatusMovedPermanently, ws.Config.WebConfig.Host+"/p/"+turl)
 }
 
