@@ -87,14 +87,6 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 
 // Serve start grpc serve
 func (gs *GRPCServiceImpl) Serve() error {
-	gs.Logger.Info("Check DB connection")
-	if err := gs.RedisSvc.Ping(); err != nil {
-		return err
-	}
-	if err := gs.MysqlSvc.Sync2(); err != nil {
-		return err
-	}
-
 	gs.Logger.Info("GRPCService service register")
 	ctx := context.Background()
 	if err := gs.UserSvc.Register(ctx, gs.gsrv, gs.gwmux); err != nil {

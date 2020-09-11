@@ -31,6 +31,7 @@ type MysqlServiceImpl struct {
 // AfterInject inject
 func (ms *MysqlServiceImpl) AfterInject() error {
 	ms.EngineG, _ = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
+	_ = ms.Sync2()
 	go ms.checkLoop()
 	return nil
 }
@@ -63,6 +64,7 @@ func (ms *MysqlServiceImpl) checkLoop() {
 	for range ticker.C {
 		if err := ms.EngineG.Ping(); err != nil {
 			ms.EngineG, _ = NewMysqlCli(ms.Config.MysqlConfig, ms.ZapLogger)
+			_ = ms.Sync2()
 		}
 	}
 }
