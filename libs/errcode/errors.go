@@ -9,7 +9,7 @@ import (
 
 // ---------------------------- web ------------------------------
 
-// Response the reponse
+// Response the response
 type Response struct {
 	Code int64       `json:"code"`
 	Msg  string      `json:"msg"`
