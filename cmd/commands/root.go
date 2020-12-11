@@ -10,8 +10,9 @@ import (
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 
-	"github.com/BinacsLee/server/config"
 	"github.com/binacsgo/log"
+
+	"github.com/BinacsLee/server/config"
 )
 
 var (
@@ -40,14 +41,12 @@ var (
 			}
 
 			fmt.Println("LoadFromFile: ", configFile)
-			cfg, err = config.LoadFromFile(configFile)
-			if err != nil {
+			if cfg, err = config.LoadFromFile(configFile); err != nil {
 				fmt.Println("LoadFromFile err: ", err)
 			}
 
 			zaplogger = initLogger(cfg.WorkSpace, cfg.LogConfig)
 			logger = log.NewZapLoggerWrapper(zaplogger.Sugar())
-			//zaplogger.Info("zaologger")
 			logger.Info("Init finished")
 
 			return nil
@@ -55,17 +54,17 @@ var (
 	}
 )
 
-func initLogger(rootPath string, logConfig config.LogConfig) *zap.Logger {
-	logpath := logConfig.File
+func initLogger(rootPath string, cfg config.LogConfig) *zap.Logger {
+	logpath := cfg.File
 	if !path.IsAbs(logpath) {
-		logpath = path.Join(rootPath, logConfig.File)
+		logpath = path.Join(rootPath, cfg.File)
 	}
 	fmt.Printf("Log path : %s\n", logpath)
 	hook := lumberjack.Logger{
 		Filename:   logpath,
-		MaxSize:    logConfig.Maxsize,
-		MaxBackups: logConfig.MaxBackups,
-		MaxAge:     logConfig.Maxage,
+		MaxSize:    cfg.Maxsize,
+		MaxBackups: cfg.MaxBackups,
+		MaxAge:     cfg.Maxage,
 		Compress:   true,
 	}
 	encoderConfig := zapcore.EncoderConfig{
@@ -82,7 +81,7 @@ func initLogger(rootPath string, logConfig config.LogConfig) *zap.Logger {
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 	atomicLevel := zap.NewAtomicLevel()
-	atomicLevel.SetLevel(stringToXZapLoggerLevel(logConfig.Level))
+	atomicLevel.SetLevel(stringToXZapLoggerLevel(cfg.Level))
 	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(&hook), atomicLevel)
 	logger := zap.New(core)
 	return logger

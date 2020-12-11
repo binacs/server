@@ -27,6 +27,7 @@ const (
 	Inject_GRPCUser_Service = "GRPCUserService"
 
 	Inject_Config_Service = "ConfigService"
+	Inject_Trace_Service  = "TraceService"
 	Inject_Redis_Service  = "RedisService"
 	Inject_Mysql_Service  = "MysqlService"
 	Inject_Nsq_Service    = "NsqService"

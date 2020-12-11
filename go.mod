@@ -9,6 +9,7 @@ require (
 	github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e
 	github.com/binacsgo/pastebin v0.0.0-20200906141428-4db36c7ae458
 	github.com/binacsgo/tinyurl v0.0.0-20200903091813-eee3fcd71bb1
+	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
@@ -16,7 +17,9 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
 	github.com/grpc-ecosystem/grpc-gateway v1.14.8
+	github.com/opentracing/opentracing-go v1.2.0
 	github.com/spf13/cobra v1.0.0
+	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/unrolled/secure v1.0.8
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20200904194848-62affa334b73

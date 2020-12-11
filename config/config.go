@@ -13,12 +13,11 @@ type Config struct {
 	Mode        string      `toml:"mode"`
 	WebConfig   WebConfig   `toml:"WebConfig"`
 	GRPCConfig  GRPCConfig  `toml:"GRPCConfig"`
+	TraceConfig TraceConfig `toml:"TraceConfig"`
 	LogConfig   LogConfig   `toml:"LogConfig"`
 	RedisConfig RedisConfig `toml:"RedisConfig"`
 	MysqlConfig MysqlConfig `toml:"MysqlConfig"`
-	//Redis
-	//Mysql
-	rwmtx *sync.RWMutex
+	rwmtx       *sync.RWMutex
 }
 
 func defaultConfig() Config {

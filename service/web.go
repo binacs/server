@@ -3,18 +3,16 @@ package service
 import (
 	"html/template"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/unrolled/secure"
-
-	"github.com/BinacsLee/server/config"
-	web_service "github.com/BinacsLee/server/service/web/service"
-	"github.com/BinacsLee/server/types/table"
 
 	"github.com/binacsgo/log"
+
+	"github.com/BinacsLee/server/config"
+	web_middleware "github.com/BinacsLee/server/service/web/middleware"
+	web_service "github.com/BinacsLee/server/service/web/service"
+	"github.com/BinacsLee/server/types/table"
 )
 
 // WebService the web service
@@ -26,6 +24,7 @@ type WebService interface {
 type WebServiceImpl struct {
 	Config *config.Config `inject-name:"Config"`
 	Logger log.Logger     `inject-name:"WebLogger"`
+	Trace  TraceService   `inject-name:"TraceService"`
 
 	BasicSvc    *web_service.WebBasicServiceImpl    `inject-name:"WebBasicService`
 	CryptoSvc   *web_service.WebCryptoServiceImpl   `inject-name:"WebCryptoService"`
@@ -40,7 +39,8 @@ type WebServiceImpl struct {
 func (ws *WebServiceImpl) AfterInject() error {
 	ws.r = gin.New()
 	ws.r.Use(gin.Recovery())
-	ws.r.Use(ws.tlsTransfer())
+	ws.r.Use(web_middleware.TLSTransfer(ws.Config.WebConfig.Host + ":" + ws.Config.WebConfig.HttpsPort))
+	ws.r.Use(web_middleware.JaegerTrace(ws.Trace.GetTracer()))
 	ws.r.LoadHTMLGlob(ws.Config.WebConfig.TmplPath + "*.html")
 	ws.setRouter(ws.r)
 	ws.s = &http.Server{
@@ -69,50 +69,19 @@ func (ws *WebServiceImpl) Serve() error {
 	return nil
 }
 
-func (ws *WebServiceImpl) tlsTransfer() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		middleware := secure.New(secure.Options{
-			SSLRedirect: true,
-			SSLHost:     ws.Config.WebConfig.Host + ":" + ws.Config.WebConfig.HttpsPort,
-		})
-		err := middleware.Process(c.Writer, c.Request)
-		if err != nil {
-			ws.Logger.Error("WebService tlsTransfer", "Process err", err)
-			c.Abort()
-			return
-		}
-		// Avoid header rewrite if response is a redirection.
-		//if status := c.Writer.Status(); status > 300 && status < 399 {
-		//	c.Abort()
-		//}
-		c.Next()
-	}
-}
-
 // ------------------ Gin Router ------------------
 
 // setRouter set all router
 func (ws *WebServiceImpl) setRouter(r *gin.Engine) {
 	ws.setBasicRouter(r)
-	ws.setApiRouter(r.Group("api"))
+	ws.setAPIRouter(r.Group("api"))
 	ws.setRedirectRouter(r.Group("r"))
 	ws.setPagesRouter(r.Group("p"))
-	ws.setManagerRouter(r.Group("manager"))
-	ws.setMonitorRouter(r.Group("monitor"))
+
+	// ws.setManagerRouter(r.Group("manager"))
+	// ws.setMonitorRouter(r.Group("monitor"))
 }
 
-/*
-// setBasicRouter set basic router
-func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
-	r.StaticFile("/", ws.Config.WebConfig.StaticPath+"index")
-	r.StaticFile("/toys", ws.Config.WebConfig.StaticPath+"toys")
-	r.StaticFile("/toys/crypto", ws.Config.WebConfig.StaticPath+"crypto")
-	r.StaticFile("/toys/tinyurl", ws.Config.WebConfig.StaticPath+"tinyurl")
-	r.StaticFile("/about", ws.Config.WebConfig.StaticPath+"about")
-}
-*/
-
-// setBasicRouter set basic router
 func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
 	r.GET("/", ws.BasicSvc.ServeHome)
 	r.GET("/toys", ws.BasicSvc.ServeToys)
@@ -122,18 +91,15 @@ func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
 	r.GET("/about", ws.BasicSvc.ServeAbout)
 }
 
-// setRedirectRouter set RESTful api router
 func (ws *WebServiceImpl) setRedirectRouter(r *gin.RouterGroup) {
 	r.GET("/:turl", ws.redirect)
 }
 
-// setPagesRouter set RESTful api router
 func (ws *WebServiceImpl) setPagesRouter(r *gin.RouterGroup) {
 	r.GET("/:turl", ws.pages)
 }
 
-// setApiRouter set RESTful api router
-func (ws *WebServiceImpl) setApiRouter(r *gin.RouterGroup) {
+func (ws *WebServiceImpl) setAPIRouter(r *gin.RouterGroup) {
 	r.POST("/v1/crypto/encrypto", ws.apiV1CryptoEncrypto)
 	r.POST("/v1/crypto/decrypto", ws.apiV1CryptoDecrypto)
 
@@ -143,29 +109,23 @@ func (ws *WebServiceImpl) setApiRouter(r *gin.RouterGroup) {
 	r.POST("/v1/pastebin/submit", ws.apiV1PastebinSubmit)
 }
 
-// setManagerRouter set manager router
-func (ws *WebServiceImpl) setManagerRouter(r *gin.RouterGroup) {
-	//r.POST("/reload", Reload)
-}
-
-// setMonitorRouter set monitor router
-func (ws *WebServiceImpl) setMonitorRouter(r *gin.RouterGroup) {
-	//r.Any("/prometheus/*path", ws.prometheusReverseProxy())
-	//r.GET("/grafana/*path", ws.grafanaReverseProxy())
-}
-
 // ------------------ Gin Service ------------------
 
 func (ws *WebServiceImpl) redirect(c *gin.Context) {
+	span := ws.Trace.FromGinContext(c, "TinyURLSvc URLSearch")
 	rsp, err := ws.TinyURLSvc.URLSearch(c.Param("turl"))
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl redirect", "URLSearch err", err, "turl", c.Param("turl"))
 	}
+
 	c.Redirect(http.StatusMovedPermanently, rsp)
 }
 
 func (ws *WebServiceImpl) pages(c *gin.Context) {
+	span := ws.Trace.FromGinContext(c, "PastebinSvc URLSearch")
 	rsp, err := ws.PastebinSvc.URLSearch(c.Param("turl"))
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl pages", "URLSearch err", err, "turl", c.Param("turl"))
 		c.HTML(http.StatusOK, "global", gin.H{
@@ -173,7 +133,11 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 			"Body":  template.HTML(err.Error()),
 		})
 	}
+
+	span = ws.Trace.FromGinContext(c, "PastebinSvc Parse")
 	body := ws.PastebinSvc.Parse(rsp.Content, rsp.Syntax)
+	span.Finish()
+
 	c.HTML(http.StatusOK, "pages", gin.H{
 		"Title":    "binacs.cn - Pages",
 		"TinyURL":  rsp.TinyURL,
@@ -188,64 +152,102 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 func (ws *WebServiceImpl) apiV1CryptoEncrypto(c *gin.Context) {
 	text := c.Request.FormValue("text")
 	tp := c.Request.FormValue("type")
+
+	span := ws.Trace.FromGinContext(c, "CryptoSvc CryptoEncrypt")
 	rsp, err := ws.CryptoSvc.CryptoEncrypt(text, tp)
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1CryptoEncrypto", "err", err, "text", text, "type", tp)
 	}
+
 	c.String(http.StatusOK, rsp)
 }
 
 func (ws *WebServiceImpl) apiV1CryptoDecrypto(c *gin.Context) {
 	text := c.Request.FormValue("text")
 	tp := c.Request.FormValue("type")
+
+	span := ws.Trace.FromGinContext(c, "CryptoSvc CryptoDecrypto")
 	rsp, err := ws.CryptoSvc.CryptoDecrypt(text, tp)
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1CryptoDecrypto", "err", err, "text", text, "type", tp)
 	}
+
 	c.String(http.StatusOK, rsp)
 }
 
 // -------- TinyURL Service --------
 func (ws *WebServiceImpl) apiV1TinyURLEncode(c *gin.Context) {
 	text := c.Request.FormValue("text")
+
+	span := ws.Trace.FromGinContext(c, "TinyURLSvc TinyURLEncode")
 	rsp, err := ws.TinyURLSvc.URLEncode(text)
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1TinyURLEncode", "err", err, "text", text)
 	}
+
 	c.String(http.StatusOK, rsp)
 }
 
 func (ws *WebServiceImpl) apiV1TinyURLDecode(c *gin.Context) {
 	text := c.Request.FormValue("text")
+
+	span := ws.Trace.FromGinContext(c, "TinyURLSvc TinyURLDecode")
 	rsp, err := ws.TinyURLSvc.URLDecode(text)
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl apiV1TinyURLDecode", "err", err, "text", text)
 	}
+
 	c.String(http.StatusOK, rsp)
 }
 
 // -------- PasteBin Service --------
 func (ws *WebServiceImpl) apiV1PastebinSubmit(c *gin.Context) {
 	content := c.Request.FormValue("content")
+
+	span := ws.Trace.FromGinContext(c, "TinyURLSvc Encode")
 	turl := ws.TinyURLSvc.Encode(content + string(time.Now().Unix()))
+	span.Finish()
+
 	p := &table.Page{
 		Poster:  c.Request.FormValue("poster"),
 		Syntax:  c.Request.FormValue("syntax"),
 		Content: content,
 		TinyURL: turl,
 	}
+
+	span = ws.Trace.FromGinContext(c, "PastebinSvc Submit")
 	err := ws.PastebinSvc.Submit(p)
+	span.Finish()
 	if err != nil {
 		ws.Logger.Error("apiV1PastebinSubmit Submit", "err", err)
 		c.String(http.StatusNotFound, "Submit to database failed!")
 		return
 	}
+
 	c.String(http.StatusOK, "/p/"+turl)
-	//c.Redirect(http.StatusMovedPermanently, ws.Config.WebConfig.Host+"/p/"+turl)
+	// c.Redirect(http.StatusMovedPermanently, ws.Config.WebConfig.Host+"/p/"+turl)
 }
 
-// ------------------ ReverseProxy ------------------
-
+/* ------------------ NO USE FOR NOW ------------------
+func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
+	r.StaticFile("/", ws.Config.WebConfig.StaticPath+"index")
+	r.StaticFile("/toys", ws.Config.WebConfig.StaticPath+"toys")
+	r.StaticFile("/toys/crypto", ws.Config.WebConfig.StaticPath+"crypto")
+	r.StaticFile("/toys/tinyurl", ws.Config.WebConfig.StaticPath+"tinyurl")
+	r.StaticFile("/about", ws.Config.WebConfig.StaticPath+"about")
+}
+func (ws *WebServiceImpl) setManagerRouter(r *gin.RouterGroup) {
+	// r.POST("/reload", Reload)
+}
+func (ws *WebServiceImpl) setMonitorRouter(r *gin.RouterGroup) {
+	// r.Any("/prometheus/*path", ws.prometheusReverseProxy())
+	// r.GET("/grafana/*path", ws.grafanaReverseProxy())
+}
+ ------------------ ReverseProxy ------------------
 func (ws *WebServiceImpl) prometheusReverseProxy() gin.HandlerFunc {
 	target := ws.Config.WebConfig.ReverseProxy["prometheus"]
 	//target := "http://127.0.0.1:9000" //转向的host
@@ -260,8 +262,6 @@ func (ws *WebServiceImpl) prometheusReverseProxy() gin.HandlerFunc {
 		proxy.ServeHTTP(c.Writer, c.Request)
 	}
 }
-
-/*
 func (ws *WebServiceImpl) grafanaReverseProxy() gin.HandlerFunc {
 	target := ws.Config.WebConfig.ReverseProxy["grafana"]
 	return func(c *gin.Context) {
@@ -275,4 +275,4 @@ func (ws *WebServiceImpl) grafanaReverseProxy() gin.HandlerFunc {
 		proxy.ServeHTTP(c.Writer, c.Request)
 	}
 }
-*/
+ ------------------ ReverseProxy ------------------ */

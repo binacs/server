@@ -3,8 +3,9 @@ package service
 import (
 	"sync"
 
-	"github.com/BinacsLee/server/config"
 	"github.com/binacsgo/log"
+
+	"github.com/BinacsLee/server/config"
 )
 
 // NodeService the node service

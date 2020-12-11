@@ -19,11 +19,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
+	"github.com/binacsgo/log"
+
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/service/db"
 	grpc_service "github.com/BinacsLee/server/service/grpc/service"
 	"github.com/BinacsLee/server/types"
-	"github.com/binacsgo/log"
 )
 
 // GRPCService interface

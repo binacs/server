@@ -27,6 +27,10 @@ Host       = "server.grpc.io"         # for test
 File  = "/work/server.log"
 Level = "debug"
 
+[TraceConfig]
+"ServiceName"   = "binacs-cn"
+"AgentHostPort" = "127.0.0.1:6831"
+
 [RedisConfig]
 Network      = "tcp"
 Addr         = "redis.namepace:6379"

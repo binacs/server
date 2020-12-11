@@ -5,14 +5,15 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/binacsgo/inject"
+	"github.com/binacsgo/log"
+
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/libs/base"
 	"github.com/BinacsLee/server/service"
 	"github.com/BinacsLee/server/service/db"
 	grpc_service "github.com/BinacsLee/server/service/grpc/service"
 	web_service "github.com/BinacsLee/server/service/web/service"
-	"github.com/binacsgo/inject"
-	"github.com/binacsgo/log"
 )
 
 var (
@@ -51,6 +52,8 @@ func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl
 	//inject.Regist(Inject_Service_LOGGER, logger.With("module", "service"))
 
 	inject.Regist(Inject_Node_Service, &nodeSvc)
+	inject.Regist(Inject_Trace_Service, &service.TraceServiceImpl{})
+
 	inject.Regist(Inject_Web_Service, &service.WebServiceImpl{})
 	inject.Regist(Inject_WebBasic_Service, &web_service.WebBasicServiceImpl{})
 	inject.Regist(Inject_WebCrypto_Service, &web_service.WebCryptoServiceImpl{})
