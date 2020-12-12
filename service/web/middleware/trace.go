@@ -32,6 +32,9 @@ func JaegerTrace(tracer trace.Trace) gin.HandlerFunc {
 			)
 		}
 		defer parentSpan.Finish()
+		parentSpan.SetTag("client-ip", c.ClientIP())
+		parentSpan.SetTag("user-agent", c.GetHeader("User-Agent"))
+		parentSpan.SetTag("via", c.GetHeader("Via"))
 		c.Set(NameOfGinCtxTracer, tracer)
 		c.Set(NameOfGinCtxTracerCtx, opentracing.ContextWithSpan(context.Background(), parentSpan))
 		c.Next()
