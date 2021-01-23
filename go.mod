@@ -1,6 +1,6 @@
 module github.com/BinacsLee/server
 
-go 1.14
+go 1.15
 
 require (
 	github.com/BinacsLee/Cryptology v0.0.0-20200517140202-53faadbf68aa
@@ -14,19 +14,17 @@ require (
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-xorm/xorm v0.7.9
-	github.com/golang/protobuf v1.4.2
+	github.com/golang/protobuf v1.4.3
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
-	github.com/grpc-ecosystem/grpc-gateway v1.14.8
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/opentracing/opentracing-go v1.2.0
-	github.com/spf13/cobra v1.0.0
+	github.com/spf13/cobra v1.1.1
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/unrolled/secure v1.0.8
 	go.uber.org/zap v1.16.0
-	golang.org/x/net v0.0.0-20200904194848-62affa334b73
-	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
-	google.golang.org/genproto v0.0.0-20200904004341-0bd0a958aa1d
-	google.golang.org/grpc v1.32.0
-	google.golang.org/grpc/examples v0.0.0-20200902210233-8630cac324bf // indirect
+	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
+	google.golang.org/genproto v0.0.0-20210122163508-8081c04a3579
+	google.golang.org/grpc v1.35.0
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	xorm.io/core v0.7.3
