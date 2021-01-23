@@ -1,10 +1,10 @@
-FROM golang:1.14-alpine AS binacsGoBuild
+FROM golang:1.15-alpine AS binacsGoBuild
 
 # ENV GO111MODULE=on
 
 COPY . /src
 
-RUN apk add --no-cache make git && go env -w GOPROXY=https://goproxy.cn \
+RUN apk add --no-cache make git \
     && cd /src \
     && make
 
