@@ -1,14 +1,17 @@
 
-.PHONY:all static user crypto
-
-static:
-	cd static/v1 && go generate; cd -
-
-user:
-	cd user/v1 && go generate; cd -
+.PHONY:all crypto pastebin tinyurl user
 
 crypto:
-	cd crypto/v1 && go generate; cd -
+	cd crypto && go generate; cd -
 
-all : static user crypto
+pastebin:
+	cd pastebin && go generate; cd -
+
+tinyurl:
+	cd tinyurl && go generate; cd -
+
+user:
+	cd user && go generate; cd -
+
+all : crypto pastebin tinyurl user
 	@echo "pb complied"

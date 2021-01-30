@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+// package api_user;
+option go_package = ".;api_user";
+
+import "google/api/annotations.proto";
+
+
+
+service User {
+    rpc UserTest(UserTestReq) returns (UserTestResp) {
+        option (google.api.http) = {
+            post: "/user/test"
+            body: "*"
+        };
+    };
+
+    rpc UserRegister(UserRegisterReq) returns (UserRegisterResp) {
+        option (google.api.http) = {
+            post: "/user/register"
+            body: "*"
+        };
+    };
+
+    rpc UserAuth(UserAuthReq) returns (UserAuthResp) {
+        option (google.api.http) = {
+            post: "/user/auth"
+            body: "*"
+        };
+    };
+    
+    rpc UserRefresh(UserRefreshReq) returns (UserRefreshResp) {
+        option (google.api.http) = {
+            post: "/user/refresh"
+            body: "*"
+        };
+    };
+
+    rpc UserInfo(UserInfoReq) returns (UserInfoResp) {
+        option (google.api.http) = {
+            post: "/user/info"
+            body: "*"
+        };
+    };
+}
+
+// UserTest
+message UserTestReq {
+}
+
+message UserTestResp {
+    int64 code = 1;
+    string msg = 2;
+}
+
+// UserRegister
+message UserRegisterDataObj {
+    string id = 1;
+    string pwd = 2;
+}
+
+message UserRegisterReq {
+    string id = 1;
+    string pwd = 2;
+}
+
+message UserRegisterResp {
+    int64 code = 1;
+    string msg = 2;
+    UserRegisterDataObj data = 3;
+}
+
+// UserAuth
+message UserTokenObj {
+    string access_token = 1;
+    int64 expire_time = 2;
+    string refresh_token = 3;
+}
+
+message UserAuthReq {
+    string id = 1;
+    string pwd = 2;
+}
+
+message UserAuthResp {
+    int64 code = 1;
+    string msg = 2;
+    UserTokenObj data = 3;
+}
+
+// UserRefresh
+message UserRefreshReq {
+    string refresh_token = 1;
+}
+
+message UserRefreshResp {
+    int64 code = 1;
+    string msg = 2;
+    UserTokenObj data = 3;
+}
+
+// UserInfo
+message UserInfoObj {
+    string id = 1;
+    string role = 2;
+    string desc = 3;
+    string ctime = 4;
+    repeated string more = 5;
+}
+
+message UserInfoReq {
+    string access_token = 1;
+}
+
+message UserInfoResp {
+    int64 code = 1;
+    string msg = 2;
+    UserInfoObj data = 3;
+}

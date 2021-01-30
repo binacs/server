@@ -6,6 +6,12 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+const (
+	ALL  = "all"
+	WEB  = "web"
+	GRPC = "grpc"
+)
+
 // Config global config
 type Config struct {
 	WorkSpace   string      `toml:"workspace"`

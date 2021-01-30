@@ -1,0 +1,178 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "tinyurl.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tinyurl/decode": {
+      "post": {
+        "operationId": "TinyURL_TinyURLDecode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TinyURLDecodeResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TinyURLDecodeReq"
+            }
+          }
+        ],
+        "tags": [
+          "TinyURL"
+        ]
+      }
+    },
+    "/tinyurl/encode": {
+      "post": {
+        "operationId": "TinyURL_TinyURLEncode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TinyURLEncodeResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TinyURLEncodeReq"
+            }
+          }
+        ],
+        "tags": [
+          "TinyURL"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "TinyURLDecodeReq": {
+      "type": "object",
+      "properties": {
+        "turl": {
+          "type": "string"
+        }
+      }
+    },
+    "TinyURLDecodeResObj": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      },
+      "title": "TinyURLDecode"
+    },
+    "TinyURLDecodeResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/TinyURLDecodeResObj"
+        }
+      }
+    },
+    "TinyURLEncodeReq": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "TinyURLEncodeResObj": {
+      "type": "object",
+      "properties": {
+        "turl": {
+          "type": "string"
+        }
+      },
+      "title": "TinyURLEncode"
+    },
+    "TinyURLEncodeResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/TinyURLEncodeResObj"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

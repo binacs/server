@@ -1,19 +1,12 @@
 package commands
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
 	"github.com/binacsgo/inject"
-	"github.com/binacsgo/log"
 
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/libs/base"
+	"github.com/BinacsLee/server/gateway"
 	"github.com/BinacsLee/server/service"
-	"github.com/BinacsLee/server/service/db"
-	grpc_service "github.com/BinacsLee/server/service/grpc/service"
-	web_service "github.com/BinacsLee/server/service/web/service"
 )
 
 var (
@@ -22,55 +15,49 @@ var (
 		Use:   "start",
 		Short: "Start Command",
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-
-			fmt.Println(*cfg)
-			node := initService(logger, cfg)
-			fmt.Println("node = ", node)
-			if err = node.OnStart(); err != nil {
-				fmt.Println(err)
+			var node gateway.NodeService
+			if node, err = initService(); err != nil {
+				return err
+			} else if err = node.OnStart(); err != nil {
+				return err
 			}
-			base.Forever()
-
 			return nil
 		},
 	}
 )
 
-func initService(logger log.Logger, cfg *config.Config) *service.NodeServiceImpl {
-	nodeSvc := service.NodeServiceImpl{}
+func initService() (gateway.NodeService, error) {
+	nodeSvc := gateway.NodeServiceImpl{}
 
+	// Config
 	inject.Regist(Inject_Config, cfg)
 
+	// Loggers
 	inject.Regist(Inject_ZAPLOGGER, zaplogger)
 	inject.Regist(Inject_LOGGER, logger)
 	inject.Regist(Inject_Node_LOGGER, logger.With("module", "node"))
 	inject.Regist(Inject_Web_LOGGER, logger.With("module", "web"))
 	inject.Regist(Inject_GRPC_LOGGER, logger.With("module", "grpc"))
-	inject.Regist(Inject_Config_LOGGER, logger.With("module", "config"))
 	inject.Regist(Inject_Redis_LOGGER, logger.With("module", "redis"))
 	inject.Regist(Inject_Mysql_LOGGER, logger.With("module", "mysql"))
-	//inject.Regist(Inject_Service_LOGGER, logger.With("module", "service"))
 
-	inject.Regist(Inject_Node_Service, &nodeSvc)
+	// Services
+	inject.Regist(Inject_Redis_Service, &service.RedisServiceImpl{})
+	inject.Regist(Inject_Mysql_Service, &service.MysqlServiceImpl{})
+
 	inject.Regist(Inject_Trace_Service, &service.TraceServiceImpl{})
+	inject.Regist(Inject_Basic_Service, &service.BasicServiceImpl{})
+	inject.Regist(Inject_User_Service, &service.UserServiceImpl{})
+	inject.Regist(Inject_Crypto_Service, &service.CryptoServiceImpl{})
+	inject.Regist(Inject_TinyURL_Service, &service.TinyURLServiceImpl{})
+	inject.Regist(Inject_Pastebin_Service, &service.PastebinServiceImpl{})
 
-	inject.Regist(Inject_Web_Service, &service.WebServiceImpl{})
-	inject.Regist(Inject_WebBasic_Service, &web_service.WebBasicServiceImpl{})
-	inject.Regist(Inject_WebCrypto_Service, &web_service.WebCryptoServiceImpl{})
-	inject.Regist(Inject_WebTinyURL_Service, &web_service.WebTinyURLServiceImpl{})
-	inject.Regist(Inject_WebPastebin_Service, &web_service.WebPastebinServiceImpl{})
+	inject.Regist(Inject_Web_Service, &gateway.WebServiceImpl{})
+	inject.Regist(Inject_GRPC_Service, &gateway.GRPCServiceImpl{})
+	inject.Regist(Inject_Node_Service, &nodeSvc)
 
-	inject.Regist(Inject_GRPC_Service, &service.GRPCServiceImpl{})
-	inject.Regist(Inject_GRPCUser_Service, &grpc_service.GRPCUserServiceImpl{})
-
-	inject.Regist(Inject_Redis_Service, &db.RedisServiceImpl{})
-	inject.Regist(Inject_Mysql_Service, &db.MysqlServiceImpl{})
-	inject.Regist(Inject_Config_Service, &service.ConfigServiceImpl{})
-	//inject.Regist(Inject_ServiceHub, controller.Services)
-
-	err := inject.DoInject()
-	if err != nil {
-		panic(err.Error())
+	if err := inject.DoInject(); err != nil {
+		return nil, err
 	}
-	return &nodeSvc
+	return &nodeSvc, nil
 }

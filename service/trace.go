@@ -10,24 +10,8 @@ import (
 	"github.com/binacsgo/trace"
 
 	"github.com/BinacsLee/server/config"
-	web_middleware "github.com/BinacsLee/server/service/web/middleware"
+	"github.com/BinacsLee/server/middleware"
 )
-
-const (
-	FatalPscNilInGinContext = "fatal-psc-nil-in-gin-context"
-	// ...
-)
-
-// TraceService trace service
-type TraceService interface {
-	StartSpan(operationName string) opentracing.Span
-	Inject(sm opentracing.SpanContext, format interface{}, carrier interface{}) error
-	Extract(format interface{}, carrier interface{}) (opentracing.SpanContext, error)
-	Close() error
-
-	GetTracer() trace.Trace
-	FromGinContext(c *gin.Context, serviceName string) opentracing.Span
-}
 
 // TraceServiceImpl inplement of TraceService
 type TraceServiceImpl struct {
@@ -82,12 +66,12 @@ func (ts *TraceServiceImpl) GetTracer() trace.Trace {
 
 // FromGinContext start a new span from gin context
 func (ts *TraceServiceImpl) FromGinContext(c *gin.Context, serviceName string) opentracing.Span {
-	psc, _ := c.Get(web_middleware.NameOfGinCtxTracerCtx)
+	psc, _ := c.Get(middleware.NameOfGinCtxTracerCtx)
 	ctx, ok := psc.(context.Context)
 	if ok {
 		span, _ := opentracing.StartSpanFromContext(ctx, serviceName)
 		return span
 	}
-	span := ts.StartSpan(FatalPscNilInGinContext)
+	span := ts.StartSpan(fatalPscNilInGinContext)
 	return span
 }

@@ -5,20 +5,16 @@ mode = "all"
 
 [GRPCConfig]
 HttpPort = "9500"
-CertPath = "test/tls/server.crt"
-KeyPath  = "test/tls/server.key"
-Host     = "server.grpc.io"         # for test
+CertPath = "test/tls/api.server.crt"
+KeyPath  = "test/tls/api.server.key"
+Host     = "server.grpc.io"           # for test
 [WebConfig]
 HttpPort   = "80"
 HttpsPort  = "443"
-StaticPath = "./test/static/"
 TmplPath   = "./test/template/"
 CertPath   = "test/tls/server.crt"
 KeyPath    = "test/tls/server.key"
 Host       = "server.grpc.io"         # for test
-[WebConfig.ReverseProxy]
-"prometheus" = "http://127.0.0.1:9000"
-#"grafana"   = "http://127.0.0.1:3000"
 [WebConfig.K8sService]
 "CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc"
 "CryptoAES"    = "cryptfunc-aes-svc.cryptfunc"
@@ -48,9 +44,3 @@ Password = "password"
 Host     = "127.0.0.1"
 Port     = "3306"
 DB       = "testdb"
-# [[MysqlConfig.Conns]]
-# User     = "user1"
-# Password = "password"
-# Host     = "127.0.0.1"
-# Port     = "3306"
-# DB       = "db"

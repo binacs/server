@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+// package api_tinyurl;
+option go_package = ".;api_tinyurl";
+
+import "google/api/annotations.proto";
+
+service TinyURL {
+    rpc TinyURLEncode(TinyURLEncodeReq) returns (TinyURLEncodeResp) {
+        option (google.api.http) = {
+            post: "/tinyurl/encode"
+            body: "*"
+        };
+    };
+
+    rpc TinyURLDecode(TinyURLDecodeReq) returns (TinyURLDecodeResp) {
+        option (google.api.http) = {
+            post: "/tinyurl/decode"
+            body: "*"
+        };
+    };
+}
+
+// TinyURLEncode
+message TinyURLEncodeResObj {
+    string turl = 1;
+}
+
+message TinyURLEncodeReq {
+    string url = 1;
+}
+
+message TinyURLEncodeResp {
+    int64 code = 1;
+    string msg = 2;
+    TinyURLEncodeResObj data = 3;
+}
+
+// TinyURLDecode
+message TinyURLDecodeResObj {
+    string url = 1;
+}
+
+message TinyURLDecodeReq {
+    string turl = 1;
+}
+
+message TinyURLDecodeResp {
+    int64 code = 1;
+    string msg = 2;
+    TinyURLDecodeResObj data = 3;
+}

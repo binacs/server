@@ -9,6 +9,7 @@ require (
 	github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e
 	github.com/binacsgo/pastebin v0.0.0-20200906141428-4db36c7ae458
 	github.com/binacsgo/tinyurl v0.0.0-20200903091813-eee3fcd71bb1
+	github.com/binacsgo/token v0.0.0-20210130085117-5eb03d8d650d
 	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.9+incompatible
@@ -23,9 +24,11 @@ require (
 	github.com/unrolled/secure v1.0.8
 	go.uber.org/zap v1.16.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
-	google.golang.org/genproto v0.0.0-20210122163508-8081c04a3579
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
+	google.golang.org/genproto v0.0.0-20210126160654-44e461bb6506
 	google.golang.org/grpc v1.35.0
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	xorm.io/core v0.7.3
 )

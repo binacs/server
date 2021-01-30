@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"path"
 	"strings"
 
@@ -40,13 +39,11 @@ var (
 				return nil
 			}
 
-			fmt.Println("LoadFromFile: ", configFile)
 			if cfg, err = config.LoadFromFile(configFile); err != nil {
-				fmt.Println("LoadFromFile err: ", err)
+				return err
 			}
 
-			zaplogger = initLogger(cfg.WorkSpace, cfg.LogConfig)
-			logger = log.NewZapLoggerWrapper(zaplogger.Sugar())
+			initLogger()
 			logger.Info("Init finished")
 
 			return nil
@@ -54,19 +51,19 @@ var (
 	}
 )
 
-func initLogger(rootPath string, cfg config.LogConfig) *zap.Logger {
-	logpath := cfg.File
-	if !path.IsAbs(logpath) {
-		logpath = path.Join(rootPath, cfg.File)
+func initLogger() {
+	logpath := cfg.LogConfig.File
+	if !path.IsAbs(cfg.LogConfig.File) {
+		logpath = path.Join(cfg.WorkSpace, cfg.LogConfig.File)
 	}
-	fmt.Printf("Log path : %s\n", logpath)
 	hook := lumberjack.Logger{
 		Filename:   logpath,
-		MaxSize:    cfg.Maxsize,
-		MaxBackups: cfg.MaxBackups,
-		MaxAge:     cfg.Maxage,
+		MaxSize:    cfg.LogConfig.Maxsize,
+		MaxBackups: cfg.LogConfig.MaxBackups,
+		MaxAge:     cfg.LogConfig.Maxage,
 		Compress:   true,
 	}
+
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "_time",
 		LevelKey:       "_level",
@@ -81,10 +78,11 @@ func initLogger(rootPath string, cfg config.LogConfig) *zap.Logger {
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 	atomicLevel := zap.NewAtomicLevel()
-	atomicLevel.SetLevel(stringToXZapLoggerLevel(cfg.Level))
+	atomicLevel.SetLevel(stringToXZapLoggerLevel(cfg.LogConfig.Level))
 	core := zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(&hook), atomicLevel)
-	logger := zap.New(core)
-	return logger
+	zaplogger = zap.New(core)
+
+	logger = log.NewZapLoggerWrapper(zaplogger.Sugar())
 }
 
 func stringToXZapLoggerLevel(level string) zapcore.Level {

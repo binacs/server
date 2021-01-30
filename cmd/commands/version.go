@@ -14,7 +14,7 @@ var (
 		Use:   "version",
 		Short: "Version Command",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("Version: %s-%s-%s, CommitHash: %s\n", version.Maj, version.Min, version.Fix, version.GitCommit)
+			fmt.Printf("Version: %s.%s.%s, CommitHash: %s\n", version.Maj, version.Min, version.Fix, version.GitCommit)
 		},
 	}
 )

@@ -2,6 +2,7 @@
 
 计划使用go**优雅**地重构个人server
 
+[![License](https://img.shields.io/github/license/BinacsLee/server?color=%2387CEFA)](https://github.com/BinacsLee/server/blob/master/LICENSE)
 [![Build Status](https://travis-ci.com/BinacsLee/server.svg?branch=master)](https://travis-ci.com/BinacsLee/server)
 [![Go Report Card](https://goreportcard.com/badge/github.com/BinacsLee/server)](https://goreportcard.com/report/github.com/BinacsLee/server)
 
@@ -27,45 +28,60 @@
 
 ```
 server
-├── api	    	# 服务定义 此目录下执行make以依据proto文件生成go和swagger文档
+├── api            # 服务定义 此目录下执行make以依据proto文件生成go和swagger文档
 │   ├── Makefile
 │   ├── ...
 │   └── ...
-├── cmd	    	# 程序入口 使用cobra以及自写 依赖注入* 组件
+├── cmd            # 程序入口 使用cobra以及自写 依赖注入* 组件
 │   ├── commands
 │   └── main.go
-├── config	# 配置相关 支持热加载
+├── config         # 配置相关 支持热加载
 │   ├── config.go
 │   ├── grpc.go
+│   ├── log.go
 │   ├── web.go
 │   ├── mysql.go
 │   ├── redis.go
-│   └── log.go
-├── config.toml	# 配置文件示例
-├── libs	# 基础库
-│   ├── base
-│   ├── errcode
-│   ├── inject
-│   ├── log
-│   ├── mycrypto
-│   └── treemap
-├── service	# 抽象为服务的各项功能
-│   ├── db	# 存储服务
-│   ├── grpc	# grpc服务
-│   ├── web     # web服务
+│   ├── trace.go
+│   └── web.go
+├── config.toml    # 配置文件示例
+├── gateway        # 路由
 │   ├── grpc.go
 │   ├── web.go
 │   └── node.go
-├── test	# 测试使用
-│   ├── client	# grpc测试client端
-│   ├── static
-│   └── tls	# TLS证书
-├── types	# 数据结构定义 常量定义
-│   ├── table	# 数据库表定义
+├── middleware     # 中间件
+│   ├── auth.go
+│   ├── tls.go
+│   └── trace.go
+├── service        # 服务
+│   ├── basic.go
+│   ├── const.go
+│   ├── crypto.go
+│   ├── interface.go
+│   ├── mysql.go
+│   ├── pastebin.go
+│   ├── redis.go
+│   ├── tinyurl.go
+│   ├── trace.go
+│   └── user.go
+├── scripts        # 部署相关
+│   ├── docker-compose
+│   │   ├── config.toml
+│   │   └── docker-compose.yml
+│   └── kubernetes
+│       ├── binacs-cn.yml
+│       └── config.toml
+├── test           # 测试
+│   ├── client     # grpc 测试 client 端
+│   ├── template
+│   └── tls        # TLS证书
+├── types          # 数据结构定义 常量定义
+│   ├── table      # 数据库表定义
 │   ├── grpc.go
 │   ├── redis.go
-│   └── types.go
-└── version 	# 版本
+│   ├── regexp.go
+    └── types.go
+└── version     # 版本
     └── version.go
 
 ```
@@ -99,60 +115,15 @@ server
 
 # 快速开始
 
-## 1. 一键构建
+## 1. 数据库配置相关 (TODO update)
 
-在当前路径执行：
+在启动 `server` 之前, 需要在 mysql 中先行建立DB, 使用 `collation : utf8mb4` 的配置并新建 testdb。
 
-```shell
-docker-compose up
-```
-
-借助 `docker-compose.yml` 配置快速搭建全套服务环境。
-
-随后在浏览器中访问本机 80 / 443 端口即可。
-
-
-
-## 2. 分块构建
-
-分块构建 `server` , `redis` 与 `mysql` , 需要注意的是, `server` 构建需在 `redis` 与 `mysql` 构建完成之后。
-
-### 2.1 redis
-
-```shell
-docker pull redis:latest
-docker run -itd --name redis-test -p 6379:6379 redis --requirepass "password"
-```
-
-如果你需要在docker中直接操作redis, 请执行
-
-```shell
-$ docker exec -it redis-test /bin/bash
-[redis容器] $ redis-cli
-> auth password
-```
-
-
-
-### 2.2 mysql
-
-```shell
-docker pull mysql
-docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=testdb mysql 
-```
-
-在启动 server 之前, 你需要在 mysql 中先行建立DB, 使用 `collation : utf8mb4` 的配置并新建 testdb。需要注意的是，前文 `docker run` 指令中的 `-e MYSQL_DATABASE=testdb` 与下列mysql指令等效：
-
-```mysql
-CREATE SCHEMA `testdb` DEFAULT CHARACTER SET utf8mb4 ;
-```
-
-如果你需要在 Docker 中直接操作 mysql , 请执行
-
-```shell
-$ docker exec -it mysql-test /bin/bash
-[mysql容器] $ mysql -uroot -ppassword
-```
+> `-e MYSQL_DATABASE=testdb` 与下列mysql指令等效：
+>
+> ```mysql
+> CREATE SCHEMA `testdb` DEFAULT CHARACTER SET utf8mb4 ;
+> ```
 
 1. linux 可视化管理工具: Workbench
 
@@ -166,35 +137,8 @@ sudo apt-get install mysql-workbench
 
 
 
-### 2.3 server
 
-#### 2.3.1 本地构建
-
-宿主机需要有Go语言环境。
-
-请依次执行：
-
-```shell
-make
-
-./start.sh
-```
-
-#### 2.3.2 镜像构建
-
-在项目目录下执行：
-
-```shell
-docker build -t binacs/server:v1 .
-
-docker run -itd --name server -p 443:443 -p 9500:9500 binacs/server:v1
-```
-
-随后在浏览器中访问本机 80 / 443 端口即可。
-
-
-
-## 3. Kubernetes 部署
+## 2. Kubernetes 线上部署
 
 Dockerfile 来自本项目。
 

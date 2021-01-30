@@ -7,9 +7,8 @@ import (
 )
 
 const (
-	TokenSalt          = "Binacs_Token_Salt" // TokenSalt used in user create
-	AccessTokenExpire  = int64(1 * 60)       // AccessTokenExpire time
-	RefreshTokenExpire = int64(1 * 24 * 60)  // RefreshTokenExpire time
+	AccessTokenExpire  = int64(1 * 60)      // AccessTokenExpire time
+	RefreshTokenExpire = int64(1 * 24 * 60) // RefreshTokenExpire time
 
 	TokenType_Bearer = "Bearer" // TokenType_Bearer
 
@@ -17,8 +16,8 @@ const (
 	RefreshTokenContextKey = "refresh_token" // RefreshTokenContextKey context key
 	AuthMethodName         = "MethodName"    // AuthMethodName
 
-	//GrantType_ClientCredentials = "client_credentials"
-	//GrantType_RefreshToken      = "refresh_token"
+	// GrantType_ClientCredentials = "client_credentials"
+	// GrantType_RefreshToken      = "refresh_token"
 
 	Prefix_CredentialKey   = "/SVR/USR/CRED/%s/%s"   // Prefix_CredentialKey used in db service
 	Prefix_AccessTokenKey  = "/SVR/USR/TOKEN/ACC/%s" // Prefix_AccessTokenKey used in db service

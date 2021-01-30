@@ -16,6 +16,7 @@ type RedisConfig struct {
 	//Limiter Limiter
 
 	// HA
+	SentinelOn        bool     `toml:"SentinelOn"`
 	SentinelMaster    string   `toml:"SentinelMaster"`
 	SentinelEndpoints []string `toml:"SentinelEndpoints"`
 }
@@ -28,5 +29,6 @@ func defaultRedisConfig() RedisConfig {
 		DB:           0,
 		PoolSize:     10,
 		MinIdleConns: 3,
+		SentinelOn:   false,
 	}
 }

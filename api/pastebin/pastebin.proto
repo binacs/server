@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+// package api_pastebin;
+option go_package = ".;api_pastebin";
+
+import "google/api/annotations.proto";
+
+service Pastebin {
+    rpc PastebinSubmit(PastebinSubmitReq) returns (PastebinSubmitResp) {
+        option (google.api.http) = {
+            post: "/pastebin/submit"
+            body: "*"
+        };
+    };
+}
+
+// PastebinSubmit
+message PastebinSubmitResObj {
+    string purl = 1;
+}
+
+message PastebinSubmitReq {
+    string author = 1;
+    string syntax = 2;
+    string text = 3;
+}
+
+message PastebinSubmitResp {
+    int64 code = 1;
+    string msg = 2;
+    PastebinSubmitResObj data = 3;
+}
