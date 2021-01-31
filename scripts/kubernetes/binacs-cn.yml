@@ -23,6 +23,7 @@ spec:
         kubernetes.io/os: linux
         # binacs: select qcloud master
         labelName: master
+      # depends on ingress
       hostNetwork: true
       containers:
       - name: binacs-cn-root

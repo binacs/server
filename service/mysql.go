@@ -69,10 +69,19 @@ func (ms *MysqlServiceImpl) checkLoop() {
 		select {
 		case <-timer.C:
 			if err := ms.EngineG.Ping(); err != nil {
-				ms.Logger.Error("MysqlServiceImpl checkLoop", "err", err)
+				ms.Logger.Error("MysqlServiceImpl checkLoop Ping", "err", err)
 				if err := ms.buildClient(); err != nil {
-					ms.Logger.Error("MysqlServiceImpl checkLoop", "err", err)
+					ms.Logger.Error("MysqlServiceImpl checkLoop buildClient", "err", err)
+				} else {
+					ms.Logger.Error("MysqlServiceImpl checkLoop buildClient success")
 				}
+			} else {
+				ms.Logger.Info("MysqlServiceImpl checkLoop Ping success")
+			}
+			if err := ms.Sync2(); err != nil {
+				ms.Logger.Error("MysqlServiceImpl checkLoop Sync2", "err", err)
+			} else {
+				ms.Logger.Error("MysqlServiceImpl checkLoop Sync2 success")
 			}
 		}
 	}

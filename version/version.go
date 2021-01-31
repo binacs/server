@@ -2,7 +2,7 @@ package version
 
 const (
 	// Maj major version
-	Maj = "1"
+	Maj = "2"
 	// Min minimum version
 	Min = "0"
 	// Fix fix version
