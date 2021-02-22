@@ -9,5 +9,11 @@ clean:
 build:
 	go build $(BUILD_FLAGS) -tags '$(BUILD_TAGS)' -o bin/server ./cmd
 
+mock:
+	cd gateway && go generate; cd -
+	cd service && go generate; cd -
+
 docker:
 	docker build -t binacslee/binacs-cn:latest . 
+
+.PHONY: mock
