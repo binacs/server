@@ -40,11 +40,16 @@ type WebServiceImpl struct {
 // AfterInject inject
 func (ws *WebServiceImpl) AfterInject() error {
 	ws.r = gin.New()
+
 	ws.r.Use(gin.Recovery())
-	ws.r.Use(middleware.TLSTransfer(ws.Config.WebConfig.Host + ":" + ws.Config.WebConfig.HttpsPort))
 	ws.r.Use(middleware.JaegerTrace(ws.TraceSvc.GetTracer()))
+	if ws.Config.WebConfig.SSLRedirect {
+		ws.r.Use(middleware.TLSTransfer(ws.Config.WebConfig.Host + ":" + ws.Config.WebConfig.HttpsPort))
+	}
+
 	ws.r.LoadHTMLGlob(ws.Config.WebConfig.TmplPath + "*.html")
 	ws.setRouter(ws.r)
+
 	ws.s = &http.Server{
 		Addr:           ":" + ws.Config.WebConfig.HttpPort,
 		Handler:        ws.r,
@@ -58,18 +63,23 @@ func (ws *WebServiceImpl) AfterInject() error {
 // Serve start web serve
 func (ws *WebServiceImpl) Serve() error {
 	ws.Logger.Info("WebService Serve", "HttpPort", ws.Config.WebConfig.HttpPort, "HttpsPort", ws.Config.WebConfig.HttpsPort)
+
+	if ws.Config.WebConfig.SSLRedirect {
+		ws.Logger.Info("WebService Serve ", "ListenAndServeTLS", true)
+		go func() {
+			if err := ws.r.RunTLS(":"+ws.Config.WebConfig.HttpsPort, ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath); err != nil {
+				ws.Logger.Error("WebService Serve", "ListenAndServeTLS err", err)
+			}
+		}()
+	}
+
 	// In fact, there is no need for `ws.s` (http server),
 	// `Kubernetes Ingress` will handle the requests.
-	go func() {
-		if err := ws.s.ListenAndServe(); err != nil {
-			ws.Logger.Error("WebService Serve", "ListenAndServe err", err)
-		}
-	}()
-
-	if err := ws.r.RunTLS(":"+ws.Config.WebConfig.HttpsPort, ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath); err != nil {
-		ws.Logger.Error("WebService Serve", "ListenAndServeTLS err", err)
+	if err := ws.s.ListenAndServe(); err != nil {
+		ws.Logger.Error("WebService Serve", "ListenAndServe err", err)
 		return err
 	}
+
 	return nil
 }
 

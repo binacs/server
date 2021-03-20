@@ -7,15 +7,15 @@ mode = "all"
 HttpPort = "9500"
 CertPath = "/work/tls/api.server.crt"
 KeyPath  = "/work/tls/api.server.key"
-Host     = "server.grpc.io"         # for test
+Host     = "server.grpc.io"            # for test
 [WebConfig]
-HttpPort   = "80"
-HttpsPort  = "443"
-StaticPath = "/work/static/"
-TmplPath   = "/work/template/"
-CertPath   = "/work/tls/server.crt"
-KeyPath    = "/work/tls/server.key"
-Host       = "server.grpc.io"         # for test
+HttpPort    = "80"
+HttpsPort   = "443"
+SSLRedirect = true
+TmplPath    = "/work/template/"
+CertPath    = "/work/tls/server.crt"
+KeyPath     = "/work/tls/server.key"
+Host        = "server.grpc.io"         # for test
 [WebConfig.K8sService]
 "CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc:8888" # only docker-compose
 "CryptoAES"    = "cryptfunc-aes-svc.cryptfunc:8888"
@@ -27,7 +27,7 @@ Level = "debug"
 
 [TraceConfig]
 "ServiceName"   = "binacs-cn"
-"AgentHostPort" = "127.0.0.1:6831"
+"AgentHostPort" = "jaeger_dc:6831"
 
 [RedisConfig]
 Network      = "tcp"

@@ -1,10 +1,4 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: binacs-cn
-
----
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: binacs-cn
@@ -21,14 +15,10 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/os: linux
-        # binacs: select qcloud master
-        labelName: master
-      # depends on ingress
-      hostNetwork: true
+        labelName: server-1
       containers:
       - name: binacs-cn-root
         image: binacslee/binacs-cn:latest
-        #command: ["/bin/sh","-c","/work/server start --configFile /work/config.toml"]
         command: ["/bin/sh","-c","/work/server start --configFile /kubernetes/config.toml"]
         ports:
           - name: http
@@ -43,9 +33,38 @@ spec:
             containerPort: 9500
             protocol: TCP
         volumeMounts:
-        - name: binacs-cn-hostpath
-          mountPath: /kubernetes
+          - name: tls
+            mountPath: /kubernetes/tls
+            readOnly: true
+      - name: binacs-cn-root-redis
+        image: redis:latest
+        command: ["redis-server", "--requirepass", "password"]
+        ports:
+          - name: rds
+            containerPort: 6379
+            protocol: TCP
       volumes:
-      - name: binacs-cn-hostpath
-        hostPath:
-          path: /root/binacs/go-server/kubernetes-hostpath
+        - name: tls
+          secret:
+            secretName: tls-api
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: binacs-cn-service
+  namespace: binacs-cn
+spec:
+  type: ClusterIP
+  selector:
+    app: binacs-cn
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+  - name: https
+    port: 443
+    targetPort: 443
+  - name: grpc
+    port: 9500
+    targetPort: 9500

@@ -1,24 +1,25 @@
+
 workspace = "/work/"
-file = "/work/kubernetes/config.toml"
+file = "/kubernetes/config.toml"
 mode = "all"
 
 [GRPCConfig]
 HttpPort = "9500"
-CertPath = "test/tls/api_server.crt"
-KeyPath  = "test/tls/api_server.key"
-Host     = "server.grpc.io"           # for test
+CertPath = "/kubernetes/tls/tls.crt"  # kubernetes secret keys
+KeyPath  = "/kubernetes/tls/tls.key"
+Host     = "api.binacs-cn"            # for test
 [WebConfig]
-HttpPort   = "80"
-HttpsPort  = "443"
-StaticPath = "/work/static/"
-TmplPath   = "./test/template/"
-CertPath   = "/work/tls/server.crt"
-KeyPath    = "/work/tls/server.key"
-Host       = "server.grpc.io"         # for test
+HttpPort    = "80"
+HttpsPort   = "443"
+SSLRedirect = false
+TmplPath    = "/work/template/"
+CertPath    = "/kubernetes/tls/binacs.cn.crt"
+KeyPath     = "/kubernetes/tls/binacs.cn.key"
+Host        = "binacs.cn"             # for test
 [WebConfig.K8sService]
-"CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc"
-"CryptoAES"    = "cryptfunc-aes-svc.cryptfunc"
-"CryptoDES"    = "cryptfunc-des-svc.cryptfunc"
+"CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc.svc.cluster.local:8888"
+"CryptoAES"    = "cryptfunc-aes-svc.cryptfunc.svc.cluster.local:8888"
+"CryptoDES"    = "cryptfunc-des-svc.cryptfunc.svc.cluster.local:8888"
 
 [LogConfig]
 File  = "/work/server.log"
@@ -26,11 +27,11 @@ Level = "debug"
 
 [TraceConfig]
 "ServiceName"   = "binacs-cn"
-"AgentHostPort" = "127.0.0.1:6831"
+"AgentHostPort" = "jaeger-agent.binacs-cn.svc.cluster.local:6831"
 
 [RedisConfig]
 Network      = "tcp"
-Addr         = "redis.namepace:6379"
+Addr         = "127.0.0.1:6379"
 Password     = "password"
 DB           = 0
 PoolSize     = 10
@@ -42,6 +43,6 @@ MaxOpenConns = 100
 [[MysqlConfig.Conns]]
 User     = "root"
 Password = "password"
-Host     = "mysql.namepace"
+Host     = "mysqladdr"
 Port     = "3306"
 DB       = "testdb"
