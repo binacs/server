@@ -18,7 +18,7 @@ spec:
         labelName: server-1
       containers:
       - name: binacs-cn-root
-        image: binacslee/binacs-cn:latest
+        image: binacslee/binacs-cn:github-ci
         command: ["/bin/sh","-c","/work/server start --configFile /kubernetes/config.toml"]
         ports:
           - name: http
@@ -33,8 +33,11 @@ spec:
             containerPort: 9500
             protocol: TCP
         volumeMounts:
+          - name: config
+            mountPath: /kubernetes
+            readOnly: true
           - name: tls
-            mountPath: /kubernetes/tls
+            mountPath: /tls
             readOnly: true
       - name: binacs-cn-root-redis
         image: redis:latest
@@ -47,6 +50,9 @@ spec:
         - name: tls
           secret:
             secretName: tls-api
+        - name: config
+          hostPath:
+            path: /root/binacs/web
 
 ---
 apiVersion: v1

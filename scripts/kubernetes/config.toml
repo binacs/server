@@ -5,16 +5,16 @@ mode = "all"
 
 [GRPCConfig]
 HttpPort = "9500"
-CertPath = "/kubernetes/tls/tls.crt"  # kubernetes secret keys
-KeyPath  = "/kubernetes/tls/tls.key"
+CertPath = "/tls/tls.crt"  # kubernetes secret keys
+KeyPath  = "/tls/tls.key"
 Host     = "api.binacs-cn"            # for test
 [WebConfig]
 HttpPort    = "80"
 HttpsPort   = "443"
 SSLRedirect = false
 TmplPath    = "/work/template/"
-CertPath    = "/kubernetes/tls/binacs.cn.crt"
-KeyPath     = "/kubernetes/tls/binacs.cn.key"
+CertPath    = "/tls/binacs.cn.crt"
+KeyPath     = "/tls/binacs.cn.key"
 Host        = "binacs.cn"             # for test
 [WebConfig.K8sService]
 "CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc.svc.cluster.local:8888"
@@ -43,6 +43,6 @@ MaxOpenConns = 100
 [[MysqlConfig.Conns]]
 User     = "root"
 Password = "password"
-Host     = "mysqladdr"
+Host     = "mysql"
 Port     = "3306"
 DB       = "testdb"
