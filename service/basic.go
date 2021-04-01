@@ -33,6 +33,11 @@ func (bs *BasicServiceImpl) ServePastebin() string {
 	return pastebinBody
 }
 
+// ServeStorage return the `toys/storage`
+func (bs *BasicServiceImpl) ServeStorage() string {
+	return storageBody
+}
+
 // ServeAbout return the `about`
 func (bs *BasicServiceImpl) ServeAbout() string {
 	return aboutBody
@@ -93,6 +98,8 @@ const (
 				<a href="toys/pastebin" target="_blank">语法高亮的粘贴板 Pastebin</a>
 				<br>
 				<a href="toys/tinyurl" target="_blank">短链接服务 TinyURL</a>
+				<br>
+				<a href="toys/storage" target="_blank">对象存储 Storage</a>
 				<br>
 				<a href="https://prometheus.binacs.cn" target="_blank">Prometheus</a>
 				<br>
@@ -268,7 +275,7 @@ const (
 								<label for="sub_poster">Poster</label>
 							</div>
 							<div class="input-field col s6">
-								<input id="sub_syntax" type="text" id="sub_syntax">
+								<input id="sub_syntax" type="text">
 								<label for="sub_syntax">Syntax</label>
 							</div>
 						</div>
@@ -301,6 +308,70 @@ const (
 								console.log("submit success")
 								console.log(data)
 								window.location.href=data; 
+							},
+							error: function() {
+								alert("异常！");
+							}
+						})
+					}
+				</script>
+			</div>
+		</div>
+	</div>
+`
+	storageBody = `
+	<div class="container valign-wrapper" style="height: 90vh;">
+		<div class="section center valign" style="width: 100%;">
+			<h5>Storage</h5>
+			<div class="section" style="height: 10vh;">
+				<div class="row">
+					<div class="col s12 grey-text text-darken-1">COS Storage</div>
+				</div>
+			</div>
+			<div style="font-size: 12px;">
+				<div class="row">
+					<form class="col s12" name="cosForm" enctype="multipart/form-data">
+						<div class="file-field input-field">
+							<div class="btn">
+								<span>文件</span>
+								<input type="file" id="file" multiple="">
+							</div>
+							<div class="file-path-wrapper">
+								<input class="file-path validate" type="text" placeholder="上传一个或多个文件">
+							</div>
+						</div>
+						<div class="input-field">
+							<input id="pass_key" type="text">
+							<label for="pass_key">PassKey</label>
+						</div>
+						<div class="row" style="font-size: 20px;">
+							<button class="white" type="button" onclick="cos_put()" value="submit" id="submitid">提交</button>
+						</div>
+					</form>
+				</div>
+
+				<script type="text/javascript">
+					function cos_put() {
+						var formData = new FormData();
+						console.log($('#file')[0].files.length);
+						for (var i = 0; i < $('#file')[0].files.length; i++) {
+							formData.append('file', $("#file")[0].files[i]);
+						}
+						formData.append('key', $('#pass_key').val())
+
+						$.ajax({
+							'url': '/api/cos/put',
+							'async': false,
+							'data': formData,
+							'type': 'post',
+							'dataType': "text",
+							'cache': false,
+							'processData': false,
+							'contentType': false,
+							'success': function(data) {
+								console.log("put success")
+								console.log(data)
+								alert(data);
 							},
 							error: function() {
 								alert("异常！");

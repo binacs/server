@@ -1,7 +1,10 @@
 package gateway
 
 import (
+	"bytes"
+	"context"
 	"html/template"
+	"io"
 	"net/http"
 	"time"
 
@@ -9,6 +12,7 @@ import (
 
 	"github.com/binacsgo/log"
 
+	api_cos "github.com/BinacsLee/server/api/cos"
 	api_crypto "github.com/BinacsLee/server/api/crypto"
 	api_pastebin "github.com/BinacsLee/server/api/pastebin"
 	api_tinyurl "github.com/BinacsLee/server/api/tinyurl"
@@ -32,6 +36,7 @@ type WebServiceImpl struct {
 	CryptoSvc   service.CryptoService   `inject-name:"CryptoService"`
 	TinyURLSvc  service.TinyURLService  `inject-name:"TinyURLService"`
 	PastebinSvc service.PastebinService `inject-name:"PastebinService"`
+	CosSvc      service.CosService      `inject-name:"CosService"`
 
 	r *gin.Engine
 	s *http.Server
@@ -124,6 +129,12 @@ func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
 			"Body":  template.HTML(ws.BasicSvc.ServePastebin()),
 		})
 	})
+	r.GET("/toys/storage", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "global", gin.H{
+			"Title": "binacs.cn - Storage",
+			"Body":  template.HTML(ws.BasicSvc.ServeStorage()),
+		})
+	})
 	r.GET("/about", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
 			"Title": "binacs.cn - About",
@@ -187,6 +198,8 @@ func (ws *WebServiceImpl) setAPIRouter(r *gin.RouterGroup) {
 	r.POST("/tinyurl/decode", ws.apiTinyURLDecode)
 
 	r.POST("/pastebin/submit", ws.apiPastebinSubmit)
+
+	r.POST("/cos/put", ws.apiCosPut)
 }
 
 func (ws *WebServiceImpl) apiCryptoEncrypto(c *gin.Context) {
@@ -271,6 +284,66 @@ func (ws *WebServiceImpl) apiPastebinSubmit(c *gin.Context) {
 
 	c.String(http.StatusOK, "/p/"+rsp.Data.Purl)
 	// c.Redirect(http.StatusMovedPermanently, ws.Config.WebConfig.Host+"/p/"+turl)
+}
+
+// -------- Cos Service --------
+func (ws *WebServiceImpl) apiCosPut(c *gin.Context) {
+	span := ws.TraceSvc.FromGinContext(c, "CosSvc Put")
+	form, err := c.MultipartForm()
+	if err != nil {
+		ws.Logger.Error("apiCosPut MultipartForm", "err", err)
+		c.String(http.StatusNotFound, "Get MultipartForm failed!")
+		span.Finish()
+		return
+	}
+
+	key := form.Value["key"]
+	if len(key) != 1 || key[0] != ws.Config.CosConfig.PassKey {
+		ws.Logger.Error("apiCosPut PassKey incorrect", "key", key)
+		c.String(http.StatusOK, "PassKey incorrect!")
+		span.Finish()
+		return
+	}
+
+	if len(form.File) == 0 {
+		ws.Logger.Error("apiCosPut form.File empty")
+		c.String(http.StatusOK, "No file selected!")
+		span.Finish()
+		return
+	}
+
+	var URIS string
+	files := form.File["file"]
+	for i, f := range files {
+		ws.Logger.Info("apiCosPut range files", "index", i)
+		file, err := f.Open()
+		if err != nil {
+			ws.Logger.Error("apiCosPut f.Open", "err", err)
+			c.String(http.StatusNotFound, "f.Open failed!")
+			continue
+		}
+
+		buf := bytes.NewBuffer(nil)
+		if _, err := io.Copy(buf, file); err != nil {
+			ws.Logger.Error("apiCosPut io.Copy", "err", err)
+			c.String(http.StatusNotFound, "io.Copy failed!")
+			continue
+		}
+
+		resp, err := ws.CosSvc.CosPut(context.Background(), &api_cos.CosPutReq{
+			FileName:  f.Filename,
+			FileBytes: buf.Bytes(),
+		})
+		if err != nil {
+			ws.Logger.Error("apiCosPut CosPut", "err", err)
+			continue
+		}
+		URIS += resp.Data.CosURI + "\n\n"
+	}
+	span.Finish()
+	ws.Logger.Info("apiCosPut", "URIS", URIS)
+
+	c.String(http.StatusOK, URIS)
 }
 
 /* ------------------ NO USE FOR NOW ------------------

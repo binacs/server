@@ -51,6 +51,7 @@ func initService() (gateway.NodeService, error) {
 	inject.Regist(Inject_Crypto_Service, &service.CryptoServiceImpl{})
 	inject.Regist(Inject_TinyURL_Service, &service.TinyURLServiceImpl{})
 	inject.Regist(Inject_Pastebin_Service, &service.PastebinServiceImpl{})
+	inject.Regist(Inject_Cos_Service, &service.CosServiceImpl{})
 
 	inject.Regist(Inject_Web_Service, &gateway.WebServiceImpl{})
 	inject.Regist(Inject_GRPC_Service, &gateway.GRPCServiceImpl{})

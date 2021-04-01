@@ -39,7 +39,12 @@ type GRPCServiceImpl struct {
 
 	RedisSvc service.RedisService `inject-name:"RedisService"`
 	MysqlSvc service.MysqlService `inject-name:"MysqlService"`
-	UserSvc  service.UserService  `inject-name:"UserService"`
+
+	UserSvc     service.UserService     `inject-name:"UserService"`
+	CryptoSvc   service.CryptoService   `inject-name:"CryptoService"`
+	TinyURLSvc  service.TinyURLService  `inject-name:"TinyURLService"`
+	PastebinSvc service.PastebinService `inject-name:"PastebinService"`
+	CosSvc      service.CosService      `inject-name:"CosService"`
 
 	tlsCfg *tls.Config
 	creds  credentials.TransportCredentials
@@ -96,6 +101,18 @@ func (gs *GRPCServiceImpl) Serve() error {
 
 	ctx := context.Background()
 	if err := gs.UserSvc.Register(ctx, gs.gsrv, gs.gwmux, opts); err != nil {
+		return err
+	}
+	if err := gs.CryptoSvc.Register(ctx, gs.gsrv, gs.gwmux, opts); err != nil {
+		return err
+	}
+	if err := gs.TinyURLSvc.Register(ctx, gs.gsrv, gs.gwmux, opts); err != nil {
+		return err
+	}
+	if err := gs.PastebinSvc.Register(ctx, gs.gsrv, gs.gwmux, opts); err != nil {
+		return err
+	}
+	if err := gs.CosSvc.Register(ctx, gs.gsrv, gs.gwmux, opts); err != nil {
 		return err
 	}
 

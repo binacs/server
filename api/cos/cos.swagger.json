@@ -1,0 +1,210 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "cos.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/cos/get": {
+      "post": {
+        "operationId": "Cos_CosGet",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CosGetResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CosGetReq"
+            }
+          }
+        ],
+        "tags": [
+          "Cos"
+        ]
+      }
+    },
+    "/cos/put": {
+      "post": {
+        "operationId": "Cos_CosPut",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CosPutResp"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CosPutReq"
+            }
+          }
+        ],
+        "tags": [
+          "Cos"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CosBucketURLReq": {
+      "type": "object"
+    },
+    "CosBucketURLResObj": {
+      "type": "object",
+      "properties": {
+        "bucketURL": {
+          "type": "string"
+        }
+      },
+      "title": "CosBucketURL"
+    },
+    "CosBucketURLResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/CosBucketURLResObj"
+        }
+      }
+    },
+    "CosGetReq": {
+      "type": "object",
+      "properties": {
+        "cosURI": {
+          "type": "string"
+        }
+      }
+    },
+    "CosGetResObj": {
+      "type": "object",
+      "properties": {
+        "fileBytes": {
+          "type": "string",
+          "format": "byte"
+        }
+      },
+      "title": "CosGet"
+    },
+    "CosGetResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/CosGetResObj"
+        }
+      }
+    },
+    "CosPutReq": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "fileBytes": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "CosPutResObj": {
+      "type": "object",
+      "properties": {
+        "cosURI": {
+          "type": "string"
+        }
+      },
+      "title": "CosPut"
+    },
+    "CosPutResp": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "int64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/CosPutResObj"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

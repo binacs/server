@@ -23,6 +23,7 @@ type Config struct {
 	LogConfig   LogConfig   `toml:"LogConfig"`
 	RedisConfig RedisConfig `toml:"RedisConfig"`
 	MysqlConfig MysqlConfig `toml:"MysqlConfig"`
+	CosConfig   CosConfig   `toml:"CosConfig"`
 	rwmtx       *sync.RWMutex
 }
 
@@ -36,6 +37,7 @@ func defaultConfig() Config {
 		LogConfig:   defaultLogConfig(),
 		RedisConfig: defaultRedisConfig(),
 		MysqlConfig: defaultMysqlConfig(),
+		CosConfig:   defaultCosConfig(),
 		rwmtx:       &sync.RWMutex{},
 	}
 	return ret

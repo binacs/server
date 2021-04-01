@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+// package api_cos;
+option go_package = ".;api_cos";
+
+import "google/api/annotations.proto";
+
+service Cos {
+    rpc CosBucketURL(CosBucketURLReq) returns (CosBucketURLResp) {
+        option (google.api.http) = {
+            post: "/cos/put"
+            body: "*"
+        };
+    };
+
+    rpc CosPut(CosPutReq) returns (CosPutResp) {
+        option (google.api.http) = {
+            post: "/cos/put"
+            body: "*"
+        };
+    };
+
+    rpc CosGet(CosGetReq) returns (CosGetResp) {
+        option (google.api.http) = {
+            post: "/cos/get"
+            body: "*"
+        };
+    };
+}
+
+// CosBucketURL
+message CosBucketURLResObj {
+    string bucketURL = 1;
+}
+
+message CosBucketURLReq {
+}
+
+message CosBucketURLResp {
+    int64 code = 1;
+    string msg = 2;
+    CosBucketURLResObj data = 3;
+}
+
+// CosPut
+message CosPutResObj {
+    string cosURI = 1;
+}
+
+message CosPutReq {
+    string fileName = 1;
+    bytes fileBytes = 2;
+}
+
+message CosPutResp {
+    int64 code = 1;
+    string msg = 2;
+    CosPutResObj data = 3;
+}
+
+// CosGet
+message CosGetResObj {
+    bytes fileBytes = 1;
+}
+
+message CosGetReq {
+    string cosURI = 1;
+}
+
+message CosGetResp {
+    int64 code = 1;
+    string msg = 2;
+    CosGetResObj data = 3;
+}

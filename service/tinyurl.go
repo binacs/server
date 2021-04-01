@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/binacsgo/log"
-	"github.com/binacsgo/tinyurl"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
+
+	"github.com/binacsgo/log"
+	"github.com/binacsgo/tinyurl"
 
 	pb "github.com/BinacsLee/server/api/tinyurl"
 	"github.com/BinacsLee/server/config"

@@ -1,5 +1,8 @@
 
-.PHONY:all crypto pastebin tinyurl user
+.PHONY: all cos crypto pastebin tinyurl user
+
+cos:
+	cd cos && go generate; cd -
 
 crypto:
 	cd crypto && go generate; cd -
@@ -13,5 +16,5 @@ tinyurl:
 user:
 	cd user && go generate; cd -
 
-all : crypto pastebin tinyurl user
+all : cos crypto pastebin tinyurl user
 	@echo "pb complied"

@@ -6,8 +6,9 @@ import (
 
 	"github.com/go-redis/redis"
 
-	"github.com/BinacsLee/server/config"
 	"github.com/binacsgo/log"
+
+	"github.com/BinacsLee/server/config"
 )
 
 func newRedisCli(cfg config.RedisConfig) (*redis.Client, error) {

@@ -12,6 +12,7 @@ import (
 
 	"github.com/binacsgo/trace"
 
+	pb "github.com/BinacsLee/server/api/cos"
 	crypto "github.com/BinacsLee/server/api/crypto"
 	pastebin "github.com/BinacsLee/server/api/pastebin"
 	tinyurl "github.com/BinacsLee/server/api/tinyurl"
@@ -62,6 +63,14 @@ type TinyURLService interface {
 	URLSearch(turl string) (string, error)
 }
 
+// CosService tinyurl service
+type CosService interface {
+	Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux, opts []grpc.DialOption) error
+	CosBucketURL(ctx context.Context, req *pb.CosBucketURLReq) (*pb.CosBucketURLResp, error)
+	CosPut(ctx context.Context, req *pb.CosPutReq) (*pb.CosPutResp, error)
+	CosGet(ctx context.Context, req *pb.CosGetReq) (*pb.CosGetResp, error)
+}
+
 // UserService user service
 type UserService interface {
 	Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux, opts []grpc.DialOption) error
@@ -92,5 +101,6 @@ type BasicService interface {
 	ServeCrypto() string
 	ServeTinyURL() string
 	ServePastebin() string
+	ServeStorage() string
 	ServeAbout() string
 }

@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 	time "time"
 
+	api_cos "github.com/BinacsLee/server/api/cos"
 	api_crypto "github.com/BinacsLee/server/api/crypto"
 	api_pastebin "github.com/BinacsLee/server/api/pastebin"
 	api_tinyurl "github.com/BinacsLee/server/api/tinyurl"
@@ -413,6 +414,88 @@ func (mr *MockTinyURLServiceMockRecorder) URLSearch(turl interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "URLSearch", reflect.TypeOf((*MockTinyURLService)(nil).URLSearch), turl)
 }
 
+// MockCosService is a mock of CosService interface.
+type MockCosService struct {
+	ctrl     *gomock.Controller
+	recorder *MockCosServiceMockRecorder
+}
+
+// MockCosServiceMockRecorder is the mock recorder for MockCosService.
+type MockCosServiceMockRecorder struct {
+	mock *MockCosService
+}
+
+// NewMockCosService creates a new mock instance.
+func NewMockCosService(ctrl *gomock.Controller) *MockCosService {
+	mock := &MockCosService{ctrl: ctrl}
+	mock.recorder = &MockCosServiceMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockCosService) EXPECT() *MockCosServiceMockRecorder {
+	return m.recorder
+}
+
+// CosBucketURL mocks base method.
+func (m *MockCosService) CosBucketURL(ctx context.Context, req *api_cos.CosBucketURLReq) (*api_cos.CosBucketURLResp, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CosBucketURL", ctx, req)
+	ret0, _ := ret[0].(*api_cos.CosBucketURLResp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CosBucketURL indicates an expected call of CosBucketURL.
+func (mr *MockCosServiceMockRecorder) CosBucketURL(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CosBucketURL", reflect.TypeOf((*MockCosService)(nil).CosBucketURL), ctx, req)
+}
+
+// CosGet mocks base method.
+func (m *MockCosService) CosGet(ctx context.Context, req *api_cos.CosGetReq) (*api_cos.CosGetResp, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CosGet", ctx, req)
+	ret0, _ := ret[0].(*api_cos.CosGetResp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CosGet indicates an expected call of CosGet.
+func (mr *MockCosServiceMockRecorder) CosGet(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CosGet", reflect.TypeOf((*MockCosService)(nil).CosGet), ctx, req)
+}
+
+// CosPut mocks base method.
+func (m *MockCosService) CosPut(ctx context.Context, req *api_cos.CosPutReq) (*api_cos.CosPutResp, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CosPut", ctx, req)
+	ret0, _ := ret[0].(*api_cos.CosPutResp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CosPut indicates an expected call of CosPut.
+func (mr *MockCosServiceMockRecorder) CosPut(ctx, req interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CosPut", reflect.TypeOf((*MockCosService)(nil).CosPut), ctx, req)
+}
+
+// Register mocks base method.
+func (m *MockCosService) Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux, opts []grpc.DialOption) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Register", ctx, gsrv, gwmux, opts)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Register indicates an expected call of Register.
+func (mr *MockCosServiceMockRecorder) Register(ctx, gsrv, gwmux, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Register", reflect.TypeOf((*MockCosService)(nil).Register), ctx, gsrv, gwmux, opts)
+}
+
 // MockUserService is a mock of UserService interface.
 type MockUserService struct {
 	ctrl     *gomock.Controller
@@ -710,6 +793,20 @@ func (m *MockBasicService) ServePastebin() string {
 func (mr *MockBasicServiceMockRecorder) ServePastebin() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServePastebin", reflect.TypeOf((*MockBasicService)(nil).ServePastebin))
+}
+
+// ServeStorage mocks base method.
+func (m *MockBasicService) ServeStorage() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServeStorage")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// ServeStorage indicates an expected call of ServeStorage.
+func (mr *MockBasicServiceMockRecorder) ServeStorage() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServeStorage", reflect.TypeOf((*MockBasicService)(nil).ServeStorage))
 }
 
 // ServeTinyURL mocks base method.

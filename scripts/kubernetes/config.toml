@@ -46,3 +46,9 @@ Password = "password"
 Host     = "mysql"
 Port     = "3306"
 DB       = "testdb"
+
+[CosConfig]
+BucketURL = "https://examplebucket-12345.cos.COS_REGION.myqcloud.com"
+SecretID  = "SecretID"
+SecretKey = "SecretKey"
+PassKey   = "PassKey"

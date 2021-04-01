@@ -118,3 +118,10 @@ Dockerfile 来自本项目。
 镜像来自 [Docker Hub](https://hub.docker.com/r/binacslee/binacs-cn) 。
 
 部署配置位于 [deployment-binacs-cn](https://github.com/OpenKikCoc/deployment-binacs-cn) 项目。
+
+
+
+## 终端客户端
+
+[BinacsLee/cli](https://github.com/BinacsLee/cli)
+
