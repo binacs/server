@@ -68,6 +68,10 @@ func (cs *CosServiceImpl) generateCosURI(name string) string {
 	return strings.ReplaceAll(cs.Config.CosConfig.BucketURL+"/"+name, " ", "%20")
 }
 
+func (cs *CosServiceImpl) processCosURI(name string) string {
+	return strings.TrimPrefix(name, cs.Config.CosConfig.BucketURL+"/")
+}
+
 // Register the service
 func (cs *CosServiceImpl) Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux, opts []grpc.DialOption) error {
 	if gsrv != nil {
@@ -111,12 +115,17 @@ func (cs *CosServiceImpl) CosPut(ctx context.Context, req *pb.CosPutReq) (*pb.Co
 // CosGet get file from COS storage
 // There is no need for server to do this, we can download from URI directly.
 func (cs *CosServiceImpl) CosGet(ctx context.Context, req *pb.CosGetReq) (*pb.CosGetResp, error) {
-	name := req.GetCosURI()
+	name := cs.processCosURI(req.GetCosURI())
 	resp, err := cs.cli.Object.Get(ctx, name, nil)
+	if err != nil {
+		cs.Logger.Error("CosServiceImpl", "CosGet err", err)
+		return nil, err
+	}
 	defer resp.Body.Close()
 
 	bs, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		cs.Logger.Error("CosServiceImpl", "CosGet err", err)
 		return nil, err
 	}
 

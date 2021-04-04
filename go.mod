@@ -12,24 +12,23 @@ require (
 	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-sql-driver/mysql v1.5.0
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-xorm/xorm v0.7.9
-	github.com/golang/mock v1.3.1
-	github.com/golang/protobuf v1.4.3
+	github.com/golang/mock v1.5.0
+	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/opentracing/opentracing-go v1.2.0
-	github.com/spf13/cobra v1.1.1
+	github.com/spf13/cobra v1.1.3
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.24
 	github.com/uber/jaeger-client-go v2.25.0+incompatible
 	github.com/unrolled/secure v1.0.8
 	go.uber.org/zap v1.16.0
-	golang.org/x/net v0.0.0-20210119194325-5f4716e94777
-	google.golang.org/genproto v0.0.0-20210126160654-44e461bb6506
-	google.golang.org/grpc v1.35.0
-	google.golang.org/grpc/examples v0.0.0-20210331235824-f6bb3972ed15 // indirect
-	google.golang.org/protobuf v1.25.0
+	golang.org/x/net v0.0.0-20210331212208-0fccb6fa2b5c
+	google.golang.org/genproto v0.0.0-20210402141018-6c239bbf2bb1
+	google.golang.org/grpc v1.36.1
+	google.golang.org/grpc/examples v0.0.0-20210402181922-5730f8d113ee // indirect
+	google.golang.org/protobuf v1.26.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	xorm.io/core v0.7.3
 )
