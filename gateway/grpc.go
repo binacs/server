@@ -67,11 +67,13 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 	}
 
 	grpc_zap.ReplaceGrpcLoggerV2(gs.ZapLogger)
-	gs.gsrv = grpc.NewServer(grpc.Creds(gs.creds))
 	opts := []grpc_zap.Option{
-		//grpc_zap.WithLevels(customFunc),
+		// grpc_zap.WithLevels(customFunc),
 	}
 	gs.gsrv = grpc.NewServer(
+		grpc.Creds(gs.creds),
+		grpc.MaxRecvMsgSize(types.GrpcMsgSize),
+		grpc.MaxSendMsgSize(types.GrpcMsgSize),
 		grpc_middleware.WithUnaryServerChain(
 			grpc_ctxtags.UnaryServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
 			grpc_zap.UnaryServerInterceptor(gs.ZapLogger, opts...),
@@ -82,7 +84,6 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 			grpc_zap.StreamServerInterceptor(gs.ZapLogger, opts...),
 			grpc_auth.StreamServerInterceptor(gs.auth),
 		),
-		grpc.Creds(gs.creds),
 	)
 	gs.gwmux = runtime.NewServeMux()
 

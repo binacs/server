@@ -10,6 +10,8 @@ import (
 
 const (
 	GrpcMatadataResult_Key = "debug"
+
+	GrpcMsgSize = 1024 * 1024 * 1024
 )
 
 var (
