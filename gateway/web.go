@@ -282,8 +282,8 @@ func (ws *WebServiceImpl) apiPastebinSubmit(c *gin.Context) {
 		return
 	}
 
-	c.String(http.StatusOK, "/p/"+rsp.Data.Purl)
-	// c.Redirect(http.StatusMovedPermanently, ws.Config.WebConfig.Host+"/p/"+turl)
+	c.String(http.StatusOK, rsp.Data.GetPurl())
+	// c.Redirect(http.StatusMovedPermanently, rsp.Data.GetPurl())
 }
 
 // -------- Cos Service --------

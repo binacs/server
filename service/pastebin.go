@@ -28,6 +28,7 @@ type PastebinServiceImpl struct {
 	TinyURLSvc TinyURLService `inject-name:"TinyURLService"`
 
 	instance pastebin.PasteBin
+	prefix   string
 }
 
 // AfterInject do inject
@@ -35,6 +36,7 @@ func (ps *PastebinServiceImpl) AfterInject() error {
 	// select a impl of PasteBin interface
 	// choose markdown for now
 	ps.instance = new(pastebin.MarkDownImpl)
+	ps.prefix = ps.Config.WebConfig.GetDomain() + "/p/"
 	return nil
 }
 
@@ -67,10 +69,10 @@ func (ps *PastebinServiceImpl) PastebinSubmit(ctx context.Context, req *pb.Paste
 		return nil, err
 	}
 
-	ps.Logger.Info("CryptoServiceImpl PastebinSubmit Success", "turl", turl)
+	ps.Logger.Info("PastebinServiceImpl PastebinSubmit Success", "turl", turl)
 	return &pb.PastebinSubmitResp{
 		Data: &pb.PastebinSubmitResObj{
-			Purl: turl,
+			Purl: ps.prefix + turl,
 		},
 	}, nil
 }

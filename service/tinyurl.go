@@ -25,6 +25,7 @@ type TinyURLServiceImpl struct {
 	MysqlSvc MysqlService `inject-name:"MysqlService"`
 
 	instance tinyurl.TinyURL
+	prefix   string
 }
 
 // AfterInject do inject
@@ -32,6 +33,7 @@ func (ts *TinyURLServiceImpl) AfterInject() error {
 	// Select a impl of TinyURL interface
 	// choose md5 for now
 	ts.instance = tinyurl.GetMD5Impl()
+	ts.prefix = ts.Config.WebConfig.GetDomain() + "/r/"
 	return nil
 }
 
@@ -68,7 +70,7 @@ func (ts *TinyURLServiceImpl) TinyURLEncode(ctx context.Context, req *pb.TinyURL
 	ts.Logger.Info("TinyURLServiceImpl TinyURLEncode Succeed", "turl", turl)
 	return &pb.TinyURLEncodeResp{
 		Data: &pb.TinyURLEncodeResObj{
-			Turl: ts.Config.WebConfig.Host + "/r/" + turl,
+			Turl: ts.prefix + turl,
 		},
 	}, nil
 }
@@ -78,13 +80,12 @@ func (ts *TinyURLServiceImpl) TinyURLDecode(ctx context.Context, req *pb.TinyURL
 	ts.Logger.Info("TinyURLServiceImpl TinyURLDecode Start", "tiny-url", req.GetTurl())
 
 	uri := req.GetTurl()
-	prefix := ts.Config.WebConfig.Host + "/r/"
-	if !strings.HasPrefix(uri, prefix) {
+	if !strings.HasPrefix(uri, ts.prefix) {
 		ts.Logger.Error("TinyURLServiceImpl TinyURLDecode, tiny-url illegal", "uri", uri)
 		return nil, nil
 	}
 
-	url, err := ts.RedisSvc.Get(strings.TrimPrefix(uri, prefix))
+	url, err := ts.RedisSvc.Get(strings.TrimPrefix(uri, ts.prefix))
 	if err != nil {
 		ts.Logger.Error("TinyURLServiceImpl TinyURLDecode RedisSvc.Get", "error", err, "uri", uri)
 		return nil, err

@@ -307,7 +307,7 @@ const (
 							'success': function(data) {
 								console.log("submit success")
 								console.log(data)
-								window.location.href=data; 
+								window.location.href=data;
 							},
 							error: function() {
 								alert("异常！");

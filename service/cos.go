@@ -53,7 +53,26 @@ func (cs *CosServiceImpl) AfterInject() error {
 	})
 	cs.cli = c
 	cs.timeTemplate = "2006-01-02 15:04:05"
+	go cs.stayAlive()
 	return nil
+}
+
+func (cs *CosServiceImpl) stayAlive() {
+	timer := time.NewTimer(cliCheckInterval)
+	defer timer.Stop()
+	for {
+		timer.Reset(cliCheckInterval)
+		select {
+		case <-timer.C:
+			cs.Logger.Error("CosServiceImpl Start")
+			s, _, err := cs.cli.Service.Get(context.Background())
+			if err != nil {
+				cs.Logger.Error("CosServiceImpl", "stayAlive Get get err", err)
+				continue
+			}
+			cs.Logger.Error("CosServiceImpl", "Buckets", s.Buckets)
+		}
+	}
 }
 
 func (cs *CosServiceImpl) generateFileName(name string) string {
@@ -117,7 +136,8 @@ func (cs *CosServiceImpl) CosPut(ctx context.Context, req *pb.CosPutReq) (*pb.Co
 func (cs *CosServiceImpl) CosGet(ctx context.Context, req *pb.CosGetReq) (*pb.CosGetResp, error) {
 	name := cs.processCosURI(req.GetCosURI())
 	resp, err := cs.cli.Object.Get(ctx, name, nil)
-	if err != nil {
+	// resp maybe nil in Tencent COS SDK
+	if err != nil || resp == nil {
 		cs.Logger.Error("CosServiceImpl", "CosGet err", err)
 		return nil, err
 	}

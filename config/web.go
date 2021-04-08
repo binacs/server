@@ -12,6 +12,16 @@ type WebConfig struct {
 	K8sService  map[string]string `toml:"K8sService"`
 }
 
+func (wc *WebConfig) GetDomain() string {
+	var domain string
+	if wc.SSLRedirect {
+		domain = "https://"
+	} else {
+		domain = "http://"
+	}
+	return domain + wc.Host
+}
+
 func defaultWebConfig() WebConfig {
 	return WebConfig{
 		HttpPort:    "80",
