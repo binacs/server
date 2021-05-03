@@ -84,22 +84,20 @@ const (
 	toysBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h5>一些代替了BLOG存在的小玩意儿</h5>
+			<h5>TOYS</h5>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">solutions - cryptology - pastebin - tinyurl - prometheus - grafana - jenkins - doscify</div>
 				</div>
 			</div>
 			<div style="font-size: 14px; height: 40vh;">
-				<a href="https://github.com/BinacsLee/BinacsLee.github.io/tree/master/article" target="_blank">早期题解</a>
+				<a href="toys/crypto" target="_blank">Crypto</a>
 				<br>
-				<a href="toys/crypto" target="_blank">基于密码学加解密(k8s service)</a>
+				<a href="toys/pastebin" target="_blank">Pastebin</a>
 				<br>
-				<a href="toys/pastebin" target="_blank">语法高亮的粘贴板 Pastebin</a>
+				<a href="toys/tinyurl" target="_blank">TinyURL</a>
 				<br>
-				<a href="toys/tinyurl" target="_blank">短链接服务 TinyURL</a>
-				<br>
-				<a href="toys/storage" target="_blank">对象存储 Storage</a>
+				<a href="toys/storage" target="_blank">Storage</a>
 				<br>
 				<a href="https://prometheus.binacs.cn" target="_blank">Prometheus</a>
 				<br>
@@ -116,27 +114,35 @@ const (
 	cryptoBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h5>基于密码学技术的在线加解密</h5>
+			<h5>Online encryption and decryption based on cryptography technology</h5>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
-					<div class="col s12 grey-text text-darken-1">密钥输入种类过于复杂 故暂使用服务器保留密钥 并随机使用Base64/AES/DES加解密</div>
+					<div class="col s12 grey-text text-darken-1">
+						<a>
+						The type of key input is too complicated, so use the server to reserve the key temporarily and<br>
+						 use Base64/AES/DES for encryption and decryption on the web side
+						</a>
+						<a href="https://github.com/BinacsLee/cli">
+						For more functions, please use the dedicated client
+						</a>
+					</div>
 				</div>
 			</div>
 			<div style="font-size: 12px;">
 				<form id="form" class="row">
 					<div class="input-field col s12">
 						<textarea id="enc_source" class="materialize-textarea"></textarea>
-						<label for="enc_source">明文</label>
-					</div>	
+						<label for="enc_source">Plaintext</label>
+					</div>
 
 					<div class="col s12" style="font-size: 20px;">
-						<button class="white" type="button" onclick="enc()" value="enc" id="encid">加密</button>
-						<button class="white" type="button" onclick="dec()" value="dec" id="decid">解密</button>
+						<button class="white" type="button" onclick="enc()" value="enc" id="encid">Encrypto</button>
+						<button class="white" type="button" onclick="dec()" value="dec" id="decid">Decrypto</button>
 					</div>
 
 					<div class="input-field col s12">
 						<textarea id="dec_source" class="materialize-textarea"></textarea>
-						<label for="dec_source">密文</label>
+						<label for="dec_source">Ciphertext</label>
 					</div>
 				</form>
 
@@ -155,7 +161,7 @@ const (
 								$('#dec_source').val(data);
 							},
 							error: function () {
-								alert("异常！");
+								alert("error!");
 							}
 						})
 					}
@@ -174,7 +180,7 @@ const (
 								$('#enc_source').val(data);
 							},
 							error: function () {
-								alert("异常！");p_
+								alert("error!");p_
 							}
 						})
 					}
@@ -186,10 +192,10 @@ const (
 	tinyurlBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h5>短链接生成服务</h5>
+			<h5>Tiny link generation service</h5>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
-					<div class="col s12 grey-text text-darken-1">默认使用md5算法</div>
+					<div class="col s12 grey-text text-darken-1">The md5 algorithm is used by default</div>
 				</div>
 			</div>
 			<div style="font-size: 12px;">
@@ -198,13 +204,13 @@ const (
 						<div class="row">
 							<div class="input-field col s12">
 								<input placeholder="https / http ..." id="enc_source" type="text" class="validate">
-								<label for="enc_source">原始URL</label>
+								<label for="enc_source">OriginURL</label>
 							</div>
 						</div>
 						<div class="row" style="font-size: 20px;">
 							<div class="col s12">
-								<button class="white" type="button" onclick="enc()" value="enc" id="encid">编码</button>
-								<button class="white" type="button" onclick="dec()" value="dec" id="decid">解码</button>
+								<button class="white" type="button" onclick="enc()" value="enc" id="encid">Encode</button>
+								<button class="white" type="button" onclick="dec()" value="dec" id="decid">Decode</button>
 							</div>
 						</div>
 						<div class="row">
@@ -230,7 +236,7 @@ const (
 								$('#dec_source').val(data);
 							},
 							error: function() {
-								alert("异常！");
+								alert("error!");
 							}
 						})
 					}
@@ -248,7 +254,7 @@ const (
 								$('#enc_source').val(data);
 							},
 							error: function() {
-								alert("异常！");
+								alert("error!");
 							}
 						})
 					}
@@ -263,7 +269,7 @@ const (
 			<h5>Pastebin</h5>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
-					<div class="col s12 grey-text text-darken-1">默认使用Markdown语法渲染</div>
+					<div class="col s12 grey-text text-darken-1">Render using Markdown syntax by default</div>
 				</div>
 			</div>
 			<div style="font-size: 12px;">
@@ -287,7 +293,7 @@ const (
 						</div>
 						<div class="row" style="font-size: 20px;">
 							<div class="col s12">
-								<button class="white" type="button" onclick="paste_submit()" value="submit" id="submitid">提交</button>
+								<button class="white" type="button" onclick="paste_submit()" value="submit" id="submitid">Submit</button>
 							</div>
 						</div>
 					</form>
@@ -310,7 +316,7 @@ const (
 								window.location.href=data;
 							},
 							error: function() {
-								alert("异常！");
+								alert("error!");
 							}
 						})
 					}
@@ -333,11 +339,11 @@ const (
 					<form class="col s12" name="cosForm" enctype="multipart/form-data">
 						<div class="file-field input-field">
 							<div class="btn">
-								<span>文件</span>
+								<span>File</span>
 								<input type="file" id="file" multiple="">
 							</div>
 							<div class="file-path-wrapper">
-								<input class="file-path validate" type="text" placeholder="上传一个或多个文件">
+								<input class="file-path validate" type="text" placeholder="Upload one or more files">
 							</div>
 						</div>
 						<div class="input-field">
@@ -345,7 +351,7 @@ const (
 							<label for="pass_key">PassKey</label>
 						</div>
 						<div class="row" style="font-size: 20px;">
-							<button class="white" type="button" onclick="cos_put()" value="submit" id="submitid">提交</button>
+							<button class="white" type="button" onclick="cos_put()" value="submit" id="submitid">Submit</button>
 						</div>
 					</form>
 				</div>
@@ -374,7 +380,7 @@ const (
 								alert(data);
 							},
 							error: function() {
-								alert("异常！");
+								alert("error!");
 							}
 						})
 					}
