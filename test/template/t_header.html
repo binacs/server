@@ -6,10 +6,17 @@
 
     <style type="text/css">
         body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
             font-size: 12px;
             background-color: #FFFFFF;
             color: #404040;
-            font-family: "Open Sans", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+            font-family: "Open Sans", "Helvetica", "Tahoma", "Arial", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", "sans-serif";
+        }
+
+        main {
+            flex: 1 0 auto;
         }
 
         a:visited {
@@ -33,7 +40,9 @@
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" type="text/css"
-        rel="stylesheet" media="screen,projection" />
+        rel="stylesheet" media="screen,projection">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
     <!-- TODO 附加CSS <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" /> -->
 </head>
 {{end}}
