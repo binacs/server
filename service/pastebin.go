@@ -14,6 +14,7 @@ import (
 
 	pb "github.com/BinacsLee/server/api/pastebin"
 	"github.com/BinacsLee/server/config"
+	"github.com/BinacsLee/server/types"
 	"github.com/BinacsLee/server/types/table"
 )
 
@@ -88,9 +89,12 @@ func (ps *PastebinServiceImpl) URLSearch(turl string) (*table.Page, error) {
 
 // Parse the content to markdown... etc.
 func (ps *PastebinServiceImpl) Parse(content, syntax string) string {
-	res, err := ps.instance.ParseContent(content)
-	if err != nil {
-		return err.Error()
+	if syntax != types.PastebinSyntaxRaw {
+		res, err := ps.instance.ParseContent(content)
+		if err != nil {
+			return err.Error()
+		}
+		return res
 	}
-	return res
+	return content
 }
