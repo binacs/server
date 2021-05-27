@@ -1,6 +1,6 @@
 
 
-计划使用go**优雅**地重构个人server
+计划使用 Go **优雅**地重构个人 server
 
 [![License](https://img.shields.io/github/license/BinacsLee/server?color=%2387CEFA)](https://github.com/BinacsLee/server/blob/master/LICENSE)
 [![Build Status](https://travis-ci.com/BinacsLee/server.svg?branch=master)](https://travis-ci.com/BinacsLee/server)
@@ -20,7 +20,7 @@
 | opentracing jaeger         | 分布式追踪         |
 | prometheus 全家桶+自研组件 | 监控系统           |
 | Dockfile Deployment        | 容器化             |
-| Ice                        | 飞冰前端           |
+| Materialize CSS            | CSS样式            |
 
 
 
