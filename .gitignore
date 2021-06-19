@@ -1,5 +1,6 @@
 *.toml
 *.log
+*.out
 .DS_Store
 /log
 /bin

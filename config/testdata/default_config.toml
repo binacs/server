@@ -1,0 +1,4 @@
+
+workspace = "./"
+file = "./testdata/default_config.toml"
+mode = "all"

@@ -34,6 +34,7 @@ func defaultConfig() Config {
 		Mode:        "all",
 		WebConfig:   defaultWebConfig(),
 		GRPCConfig:  defaultGRPCConfig(),
+		TraceConfig: defaultTraceConfig(),
 		LogConfig:   defaultLogConfig(),
 		RedisConfig: defaultRedisConfig(),
 		MysqlConfig: defaultMysqlConfig(),

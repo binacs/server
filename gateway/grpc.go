@@ -139,22 +139,30 @@ func (gs *GRPCServiceImpl) Serve() error {
 }
 
 func (gs *GRPCServiceImpl) auth(ctx context.Context) (context.Context, error) {
-	fmt.Println(ctx)
 	token, err := grpc_auth.AuthFromMD(ctx, types.TokenType_Bearer)
 	if err != nil {
-		fmt.Println("err=", err)
+		gs.Logger.Error("GRPCService auth AuthFromMD", "err", err)
 		return ctx, err
 	}
-	fmt.Println("token before check: ", token)
+	gs.Logger.Debug("GRPCService auth", "token", token)
 	// check token
 	/*
+		// 1. basic check
 		if types.IsBase64(token) {
 			tokenDecBytes, err := base64.StdEncoding.DecodeString(token)
 			if err != nil {
-				return ctx, grpc.Errorf(codes.Unauthenticated, "Request unauthenticated because base64 decode failed")
+				gs.Logger.Error("GRPCService auth DecodeString", "token decode err", err)
+				return ctx, err
 			}
 			token = string(tokenDecBytes)
 		}
+
+		// 2. bloomfliter
+		// TODO
+
+		// 3. redis token check
+		// rate limit
+		// TODO
 	*/
 
 	newCtx := context.WithValue(ctx, types.AccessTokenContextKey, token)

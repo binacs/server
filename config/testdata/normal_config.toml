@@ -1,0 +1,54 @@
+
+workspace = "./"
+file = "./testdata/normal_config.toml"
+mode = "all"
+
+[GRPCConfig]
+HttpPort = "9500"
+CertPath = "./test/tls/api.server.crt"
+KeyPath  = "./test/tls/api.server.key"
+Host     = "server.grpc.io"            # for test
+[WebConfig]
+HttpPort    = "80"
+HttpsPort   = "443"
+SSLRedirect = true
+TmplPath    = "./test/template/"
+CertPath    = "./test/tls/server.crt"
+KeyPath     = "./test/tls/server.key"
+Host        = "server.grpc.io"         # for test
+[WebConfig.K8sService]
+"CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc:8888" # only docker-compose
+"CryptoAES"    = "cryptfunc-aes-svc.cryptfunc:8888"
+"CryptoDES"    = "cryptfunc-des-svc.cryptfunc:8888"
+
+[LogConfig]
+File  = "./server.log"
+Level = "debug"
+
+[TraceConfig]
+"ServiceName"   = "binacs-cn"
+"AgentHostPort" = "jaeger_dc:6831"
+
+[RedisConfig]
+Network      = "tcp"
+Addr         = "redis_dc:6379"
+Password     = "password"
+DB           = 0
+PoolSize     = 10
+MinIdleConns = 3
+
+[MysqlConfig]
+MaxIdleConns = 33
+MaxOpenConns = 100
+[[MysqlConfig.Conns]]
+User     = "root"
+Password = "password"
+Host     = "mysql_dc"
+Port     = "3306"
+DB       = "testdb"
+
+[CosConfig]
+BucketURL = "https://examplebucket-12345.cos.COS_REGION.myqcloud.com"
+SecretID  = "SecretID"
+SecretKey = "SecretKey"
+PassKey   = "PassKey"

@@ -30,6 +30,7 @@ func (ns *NodeServiceImpl) AfterInject() error {
 func (ns *NodeServiceImpl) OnStart() error {
 	ns.Logger.Info("Node Service Onstart")
 
+	// TODO catch error by channel
 	var waiter sync.WaitGroup
 	if ns.Config.Mode == config.ALL || ns.Config.Mode == config.WEB {
 		waiter.Add(1)
