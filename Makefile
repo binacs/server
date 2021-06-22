@@ -16,4 +16,11 @@ mock:
 docker:
 	docker build -t binacslee/binacs-cn:latest . 
 
-.PHONY: mock
+test:
+	go test ./... -cover
+
+test-coverage:
+	go test ./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out
+
+.PHONY: mock test

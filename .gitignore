@@ -1,6 +1,7 @@
 *.toml
 *.log
 *.out
+coverage.*
 .DS_Store
 /log
 /bin
