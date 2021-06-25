@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/github/license/BinacsLee/server?color=%2387CEFA)](https://github.com/BinacsLee/server/blob/master/LICENSE)
 [![Build Status](https://travis-ci.com/BinacsLee/server.svg?branch=master)](https://travis-ci.com/BinacsLee/server)
 [![Go Report Card](https://goreportcard.com/badge/github.com/BinacsLee/server)](https://goreportcard.com/report/github.com/BinacsLee/server)
-[![Test Coverage](https://codecov.io/github/binacslee/server?branch=master)](https://img.shields.io/codecov/c/github/binacslee/server/master.svg)
+[![Test Coverage](https://codecov.io/gh/BinacsLee/server/branch/master/graph/badge.svg)](https://codecov.io/github/binacslee/server?branch=master)
 
 ### tools
 
@@ -62,6 +62,7 @@ server
 │   ├── mysql.go
 │   ├── pastebin.go
 │   ├── redis.go
+│   ├── storage.go
 │   ├── tinyurl.go
 │   ├── trace.go
 │   └── user.go
