@@ -3,6 +3,9 @@ workspace = "./"
 file = "./scripts/single/config.toml"
 mode = "all"
 
+[PerfConfig]
+HttpPort = "9999"
+
 [GRPCConfig]
 HttpPort = "9500"
 CertPath = "./test/tls/api.server.crt"

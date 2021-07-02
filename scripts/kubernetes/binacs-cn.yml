@@ -32,6 +32,9 @@ spec:
           - name: grpc
             containerPort: 9500
             protocol: TCP
+          # - name: perf
+          #   containerPort: 9999
+          #   protocol: TCP
         volumeMounts:
           - name: config
             mountPath: /kubernetes
@@ -74,3 +77,6 @@ spec:
   - name: grpc
     port: 9500
     targetPort: 9500
+  # - name: perf
+  #   port: 9999
+  #   targetPort: 9999

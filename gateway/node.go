@@ -1,6 +1,10 @@
 package gateway
 
 import (
+	"net/http"
+	_ "net/http/pprof"
+	"os"
+	"runtime/trace"
 	"sync"
 
 	"github.com/binacsgo/log"
@@ -29,6 +33,26 @@ func (ns *NodeServiceImpl) AfterInject() error {
 // OnStart start all the service
 func (ns *NodeServiceImpl) OnStart() error {
 	ns.Logger.Info("Node Service Onstart")
+
+	if ns.Config.PerfConfig.HttpPort != config.NoPerf {
+		// Go Pprof
+		{
+			ns.Logger.Info("Perf Pprof", "HttpPort", ns.Config.PerfConfig.HttpPort)
+			go func() {
+				http.ListenAndServe("0.0.0.0:"+ns.Config.PerfConfig.HttpPort, nil)
+			}()
+		}
+		// Go Trace
+		{
+			ns.Logger.Info("Perf Trace")
+			if f, err := os.Create("trace.out"); err != nil {
+				ns.Logger.Error("Perf Trace", "err", err)
+			} else {
+				trace.Start(f)
+				defer trace.Stop()
+			}
+		}
+	}
 
 	// TODO catch error by channel
 	var waiter sync.WaitGroup

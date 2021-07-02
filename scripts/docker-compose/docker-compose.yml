@@ -12,6 +12,9 @@ services:
       - 80:80
       - 443:443
       - 9500:9500
+      - 9999:9999
+    networks:
+      - binacs_local
 
   mysql_dc:
     container_name: mysql_dc
@@ -27,6 +30,8 @@ services:
     environment:
       MYSQL_DATABASE: testdb
       MYSQL_ROOT_PASSWORD: password
+    networks:
+      - binacs_local
 
   redis_dc:
     container_name: redis_dc
@@ -34,6 +39,8 @@ services:
     command: --requirepass password
     ports:
       - 6379:6379
+    networks:
+      - binacs_local
 
   jaeger_dc:
     container_name: jaeger_dc
@@ -46,18 +53,31 @@ services:
       - 16686:16686
       - 14268:14268
       - 9411:9411
+    networks:
+       - binacs_local
   
   cryptfunc_base64_dc:
     container_name: cryptfunc-base64-svc.cryptfunc
     image: binacslee/cryptfunc:latest
     command: fs --port=:8888 --algo=BASE64
+    networks:
+      - binacs_local
 
   cryptfunc_aes_dc:
     container_name: cryptfunc-aes-svc.cryptfunc
     image: binacslee/cryptfunc:latest
     command: fs --port=:8888 --algo=AES
+    networks:
+      - binacs_local
 
   cryptfunc_des_dc:
     container_name: cryptfunc-des-svc.cryptfunc
     image: binacslee/cryptfunc:latest
     command: fs --port=:8888 --algo=DES
+    networks:
+      - binacs_local
+
+networks:
+  binacs_local:
+    name: binacs_local
+    driver: bridge

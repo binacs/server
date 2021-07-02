@@ -3,6 +3,9 @@ workspace = "/work/"
 file = "/kubernetes/config.toml"
 mode = "all"
 
+[PerfConfig]
+HttpPort = "9999"
+
 [GRPCConfig]
 HttpPort = "9500"
 CertPath = "/tls/tls.crt"  # kubernetes secret keys

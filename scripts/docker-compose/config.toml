@@ -3,6 +3,9 @@ workspace = "/work/"
 file = "/docker-compose/config.toml"
 mode = "all"
 
+[PerfConfig]
+HttpPort = "9999"
+
 [GRPCConfig]
 HttpPort = "9500"
 CertPath = "/work/tls/api.server.crt"

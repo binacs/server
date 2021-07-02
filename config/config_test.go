@@ -11,6 +11,7 @@ func getDefaultConfig() *Config {
 		WorkSpace:   "./",
 		File:        "./testdata/default_config.toml",
 		Mode:        "all",
+		PerfConfig:  defaultPprofConfig(),
 		WebConfig:   defaultWebConfig(),
 		GRPCConfig:  defaultGRPCConfig(),
 		TraceConfig: defaultTraceConfig(),
@@ -40,6 +41,9 @@ func getNormalConfig() *Config {
 				"CryptoAES":    "cryptfunc-aes-svc.cryptfunc:8888",
 				"CryptoDES":    "cryptfunc-des-svc.cryptfunc:8888",
 			},
+		},
+		PerfConfig: PerfConfig{
+			HttpPort: "0",
 		},
 		GRPCConfig: GRPCConfig{
 			HttpPort: "9500",

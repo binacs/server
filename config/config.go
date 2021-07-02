@@ -10,6 +10,8 @@ const (
 	ALL  = "all"
 	WEB  = "web"
 	GRPC = "grpc"
+
+	NoPerf = "0"
 )
 
 // Config global config
@@ -17,6 +19,7 @@ type Config struct {
 	WorkSpace   string      `toml:"workspace"`
 	File        string      `toml:"configfile"`
 	Mode        string      `toml:"mode"`
+	PerfConfig  PerfConfig  `toml:"PerfConfig"`
 	WebConfig   WebConfig   `toml:"WebConfig"`
 	GRPCConfig  GRPCConfig  `toml:"GRPCConfig"`
 	TraceConfig TraceConfig `toml:"TraceConfig"`
@@ -32,6 +35,7 @@ func defaultConfig() Config {
 		WorkSpace:   ".",
 		File:        "./config.toml",
 		Mode:        "all",
+		PerfConfig:  defaultPprofConfig(),
 		WebConfig:   defaultWebConfig(),
 		GRPCConfig:  defaultGRPCConfig(),
 		TraceConfig: defaultTraceConfig(),

@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  gopprof_sidecar_dc:
+    container_name: gopprof_sidecar_dc
+    image: binacslee/gopprof-sidecar:latest
+    entrypoint: pprof
+    command: -http=0.0.0.0:10000 server_dc:9999/debug/pprof/profile
+    # command: tail -f /dev/null
+    ports:
+      - 10000:10000
+    networks:
+      - binacs_local
+
+networks:
+  binacs_local:
+    external:
+      name: binacs_local
