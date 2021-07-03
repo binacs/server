@@ -52,6 +52,7 @@ type PastebinService interface {
 	PastebinSubmit(ctx context.Context, req *pastebin.PastebinSubmitReq) (*pastebin.PastebinSubmitResp, error)
 	URLSearch(turl string) (*table.Page, error)
 	Parse(content, syntax string) string
+	RecentPosts() ([]table.Page, error)
 }
 
 // TinyURLService tinyurl service

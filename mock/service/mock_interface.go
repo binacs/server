@@ -289,6 +289,21 @@ func (mr *MockPastebinServiceMockRecorder) PastebinSubmit(ctx, req interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PastebinSubmit", reflect.TypeOf((*MockPastebinService)(nil).PastebinSubmit), ctx, req)
 }
 
+// RecentPosts mocks base method.
+func (m *MockPastebinService) RecentPosts() ([]table.Page, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RecentPosts")
+	ret0, _ := ret[0].([]table.Page)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RecentPosts indicates an expected call of RecentPosts.
+func (mr *MockPastebinServiceMockRecorder) RecentPosts() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecentPosts", reflect.TypeOf((*MockPastebinService)(nil).RecentPosts))
+}
+
 // Register mocks base method.
 func (m *MockPastebinService) Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux, opts []grpc.DialOption) error {
 	m.ctrl.T.Helper()

@@ -98,3 +98,13 @@ func (ps *PastebinServiceImpl) Parse(content, syntax string) string {
 	}
 	return content
 }
+
+// RecentPosts show the recent posts
+func (ps *PastebinServiceImpl) RecentPosts() ([]table.Page, error) {
+	counts, _ := ps.MysqlSvc.GetEngineG().Count(&table.Page{})
+	pages := make([]table.Page, counts)
+	if err := ps.MysqlSvc.GetEngineG().Find(&pages); err != nil {
+		return nil, err
+	}
+	return pages, nil
+}

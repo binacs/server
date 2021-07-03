@@ -18,7 +18,7 @@ spec:
         labelName: server-1
       containers:
       - name: binacs-cn-root
-        image: binacslee/binacs-cn:github-ci
+        image: binacslee/binacs-cn:latest
         command: ["/bin/sh","-c","/work/server start --configFile /kubernetes/config.toml"]
         ports:
           - name: http

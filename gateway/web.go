@@ -3,6 +3,7 @@ package gateway
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -19,6 +20,7 @@ import (
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/middleware"
 	"github.com/BinacsLee/server/service"
+	"github.com/BinacsLee/server/types/table"
 )
 
 // WebService the web service
@@ -96,6 +98,7 @@ func (ws *WebServiceImpl) setRouter(r *gin.Engine) {
 	ws.setAPIRouter(r.Group("api"))
 	ws.setRedirectRouter(r.Group("r"))
 	ws.setPagesRouter(r.Group("p"))
+	ws.setRecentPosts(r)
 }
 
 func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
@@ -151,6 +154,10 @@ func (ws *WebServiceImpl) setPagesRouter(r *gin.RouterGroup) {
 	r.GET("/:turl", ws.pages)
 }
 
+func (ws *WebServiceImpl) setRecentPosts(r *gin.Engine) {
+	r.GET("/posts", ws.recentPosts)
+}
+
 // ------------------ Gin Service ------------------
 func (ws *WebServiceImpl) redirect(c *gin.Context) {
 	span := ws.TraceSvc.FromGinContext(c, "TinyURLSvc URLSearch")
@@ -187,6 +194,29 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 		"CreateAt": rsp.CreatedAt,
 		"Content":  template.HTML(body),
 	})
+}
+
+func (ws *WebServiceImpl) recentPosts(c *gin.Context) {
+	span := ws.TraceSvc.FromGinContext(c, "Recent Posts")
+	pages, err := ws.PastebinSvc.RecentPosts()
+	span.Finish()
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl recent posts", "err", err)
+	}
+
+	f := func(page table.Page) string {
+		link := ws.Config.WebConfig.GetDomain() + "/p/" + page.TinyURL
+		a := fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a>", link, link)
+		return fmt.Sprintf("Poster [ %s ]:  %s  at  %s<br>", page.Poster, a, page.CreatedAt)
+	}
+
+	var ret string
+	for i := len(pages) - 1; i >= 0; i-- {
+		if len(pages[i].Content) > 0 {
+			ret += f(pages[i])
+		}
+	}
+	c.HTML(http.StatusOK, "posts", template.HTML(ret))
 }
 
 // TODO @binacs DELETE EVERYTHING BELOW when grpc-web starts to work

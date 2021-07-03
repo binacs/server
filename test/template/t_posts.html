@@ -1,0 +1,38 @@
+{{define "posts"}}
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "header"}}
+
+<title>Recent Posts</title>
+    <!-- TODO 页面主体  -->
+    <!-- ================== Body 渲染起始 ================== -->
+	<div class="container valign-wrapper">
+        <div class="section" style="width: 100%;">
+            <div class="section center valign" style="width: 100%;">
+                <h5>Recent Posts</h5>
+            </div>
+            <div class="section" style="width: 100%;">
+                <div class="section center" style="height: 80vh;">
+                    <div class="row">
+                        <div class="col s12">{{.}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+
+    <!-- ================== Body 渲染结束 ================== -->
+
+    {{template "footer"}}
+    <!--  Scripts-->
+    
+    <!--  materialize css  -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- TODO 附加js <script src="js/init.js"></script>-->
+</body>
+
+</html>
+{{end}}

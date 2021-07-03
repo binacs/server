@@ -43,7 +43,7 @@ jobs:
           # Path to the Dockerfile
           file: ./Dockerfile
           # List of tags
-          tags: binacslee/binacs-cn:github-ci
+          tags: binacslee/binacs-cn:latest
           # Do not use cache when building the image
           no-cache: true
           # List of target platforms for build
