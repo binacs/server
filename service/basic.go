@@ -64,21 +64,23 @@ const (
 			<h3>ABOUT</h3>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
-					<div class="col s12 grey-text text-darken-1">whu - cyber security - algorithm - go - cpp - cloud native - blockchain</div>
+					<div class="col s12 grey-text text-darken-1">Blockchain and Cloud Native</div>
 				</div>
 			</div>
 			<div style="font-size: 14px; height: 40vh;">
 				<div class="card grey lighten-5">
 					<div class="card-content">
 						<span class="card-title"> </span>
-						<a style="color:black">武汉大学 - 国家网络安全学院  2015 - 2019</a>
-						<br><br>
-						<a style="color:black">懂点安全   学过算法</a>
-						<br><br>
-						<a style="color:black"> Go && C++</a>
-						<br><br>
-						<a style="color:black">云原生 && 区块链</a>
-						<br><br>
+						<a style="color:black">You can download my resume on</a>
+						<a href="https://github.com/BinacsLee/resume/releases/tag/latest">GitHub Release</a>
+						<br>
+						<a style="color:black">OR</a>
+						<br>
+						<a style="color:black">preview</a>
+						<a href="https://docs.google.com/viewer?url=https://github.com/BinacsLee/resume/releases/download/latest/resume.pdf">resume.pdf</a>
+						<a href="https://docs.google.com/viewer?url=https://github.com/BinacsLee/resume/releases/download/latest/resume_zh.pdf">resume_zh.pdf</a>
+						<a style="color:black">online by Google Docs</a>
+						<br><br><br><br>
 						<a style="color:black">路漫漫其修远兮</a>
 					</div>
 				</div>
