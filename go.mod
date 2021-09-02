@@ -10,7 +10,7 @@ require (
 	github.com/binacsgo/tinyurl v0.0.0-20200903091813-eee3fcd71bb1
 	github.com/binacsgo/token v0.0.0-20210130085117-5eb03d8d650d
 	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/go-xorm/xorm v0.7.9

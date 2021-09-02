@@ -8,7 +8,6 @@ import (
 	pb "github.com/BinacsLee/server/api/cos"
 	"github.com/BinacsLee/server/config"
 	"github.com/binacsgo/log"
-	"github.com/tencentyun/cos-go-sdk-v5"
 )
 
 func getNormalConfigWithCos() *config.Config {
@@ -26,7 +25,6 @@ func TestCosServiceImpl_AfterInject(t *testing.T) {
 	type fields struct {
 		Config       *config.Config
 		Logger       log.Logger
-		cli          *cos.Client
 		timeTemplate string
 	}
 	tests := []struct {
@@ -48,7 +46,6 @@ func TestCosServiceImpl_AfterInject(t *testing.T) {
 			cs := &CosServiceImpl{
 				Config:       tt.fields.Config,
 				Logger:       tt.fields.Logger,
-				cli:          tt.fields.cli,
 				timeTemplate: tt.fields.timeTemplate,
 			}
 			if err := cs.AfterInject(); (err != nil) != tt.wantErr {
@@ -62,7 +59,6 @@ func TestCosServiceImpl_generateFileName(t *testing.T) {
 	type fields struct {
 		Config       *config.Config
 		Logger       log.Logger
-		cli          *cos.Client
 		timeTemplate string
 	}
 	type args struct {
@@ -113,7 +109,6 @@ func TestCosServiceImpl_generateFileName(t *testing.T) {
 			cs := &CosServiceImpl{
 				Config:       tt.fields.Config,
 				Logger:       tt.fields.Logger,
-				cli:          tt.fields.cli,
 				timeTemplate: tt.fields.timeTemplate,
 			}
 			if got := cs.generateFileName(tt.args.name); got != tt.want {
@@ -127,7 +122,6 @@ func TestCosServiceImpl_generateCosURI(t *testing.T) {
 	type fields struct {
 		Config       *config.Config
 		Logger       log.Logger
-		cli          *cos.Client
 		timeTemplate string
 	}
 	type args struct {
@@ -167,7 +161,6 @@ func TestCosServiceImpl_generateCosURI(t *testing.T) {
 			cs := &CosServiceImpl{
 				Config:       tt.fields.Config,
 				Logger:       tt.fields.Logger,
-				cli:          tt.fields.cli,
 				timeTemplate: tt.fields.timeTemplate,
 			}
 			if got := cs.generateCosURI(tt.args.name); got != tt.want {
@@ -181,7 +174,6 @@ func TestCosServiceImpl_processCosURI(t *testing.T) {
 	type fields struct {
 		Config       *config.Config
 		Logger       log.Logger
-		cli          *cos.Client
 		timeTemplate string
 	}
 	type args struct {
@@ -221,7 +213,6 @@ func TestCosServiceImpl_processCosURI(t *testing.T) {
 			cs := &CosServiceImpl{
 				Config:       tt.fields.Config,
 				Logger:       tt.fields.Logger,
-				cli:          tt.fields.cli,
 				timeTemplate: tt.fields.timeTemplate,
 			}
 			if got := cs.processCosURI(tt.args.name); got != tt.want {
@@ -235,7 +226,6 @@ func TestCosServiceImpl_CosBucketURL(t *testing.T) {
 	type fields struct {
 		Config       *config.Config
 		Logger       log.Logger
-		cli          *cos.Client
 		timeTemplate string
 	}
 	type args struct {
@@ -272,7 +262,6 @@ func TestCosServiceImpl_CosBucketURL(t *testing.T) {
 			cs := &CosServiceImpl{
 				Config:       tt.fields.Config,
 				Logger:       tt.fields.Logger,
-				cli:          tt.fields.cli,
 				timeTemplate: tt.fields.timeTemplate,
 			}
 			got, err := cs.CosBucketURL(tt.args.ctx, tt.args.req)

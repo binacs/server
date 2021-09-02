@@ -28,7 +28,9 @@ type CosServiceImpl struct {
 	Config *config.Config `inject-name:"Config"`
 	Logger log.Logger     `inject-name:"WebLogger"`
 
-	cli          *cos.Client
+	u *url.URL
+	t *cos.AuthorizationTransport
+
 	timeTemplate string
 }
 
@@ -38,23 +40,31 @@ func (cs *CosServiceImpl) AfterInject() error {
 	if err != nil {
 		return err
 	}
-	b := &cos.BaseURL{BucketURL: u}
-	c := cos.NewClient(b, &http.Client{
-		Transport: &cos.AuthorizationTransport{
-			SecretID:  cs.Config.CosConfig.SecretID,
-			SecretKey: cs.Config.CosConfig.SecretKey,
-			Transport: &debug.DebugRequestTransport{
-				RequestHeader:  true,
-				RequestBody:    true,
-				ResponseHeader: true,
-				ResponseBody:   false,
-			},
+	cs.u = u
+
+	cs.t = &cos.AuthorizationTransport{
+		SecretID:  cs.Config.CosConfig.SecretID,
+		SecretKey: cs.Config.CosConfig.SecretKey,
+		Transport: &debug.DebugRequestTransport{
+			RequestHeader:  true,
+			RequestBody:    true,
+			ResponseHeader: true,
+			ResponseBody:   false,
 		},
-	})
-	cs.cli = c
+	}
+
 	cs.timeTemplate = "2006-01-02 15:04:05"
-	go cs.stayAlive()
 	return nil
+}
+
+func (cs *CosServiceImpl) makeCosClient() *cos.Client {
+	return cos.NewClient(
+		&cos.BaseURL{
+			BucketURL: cs.u,
+		},
+		&http.Client{
+			Transport: cs.t,
+		})
 }
 
 func (cs *CosServiceImpl) stayAlive() {
@@ -65,7 +75,7 @@ func (cs *CosServiceImpl) stayAlive() {
 		select {
 		case <-timer.C:
 			cs.Logger.Error("CosServiceImpl Start")
-			s, _, err := cs.cli.Service.Get(context.Background())
+			s, _, err := cs.makeCosClient().Service.Get(context.Background())
 			if err != nil {
 				cs.Logger.Error("CosServiceImpl", "stayAlive Get get err", err)
 				continue
@@ -119,7 +129,7 @@ func (cs *CosServiceImpl) CosPut(ctx context.Context, req *pb.CosPutReq) (*pb.Co
 	name := cs.generateFileName(req.GetFileName())
 	f := bytes.NewReader(req.GetFileBytes())
 
-	if _, err := cs.cli.Object.Put(ctx, name, f, nil); err != nil {
+	if _, err := cs.makeCosClient().Object.Put(ctx, name, f, nil); err != nil {
 		cs.Logger.Error("CosServiceImpl", "CosPut err", err)
 		return nil, err
 	}
@@ -135,7 +145,7 @@ func (cs *CosServiceImpl) CosPut(ctx context.Context, req *pb.CosPutReq) (*pb.Co
 // There is no need for server to do this, we can download from URI directly.
 func (cs *CosServiceImpl) CosGet(ctx context.Context, req *pb.CosGetReq) (*pb.CosGetResp, error) {
 	name := cs.processCosURI(req.GetCosURI())
-	resp, err := cs.cli.Object.Get(ctx, name, nil)
+	resp, err := cs.makeCosClient().Object.Get(ctx, name, nil)
 	// resp maybe nil in Tencent COS SDK
 	if err != nil || resp == nil {
 		cs.Logger.Error("CosServiceImpl", "CosGet err", err)
