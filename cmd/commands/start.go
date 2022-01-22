@@ -57,8 +57,7 @@ func initService() (gateway.NodeService, error) {
 	inject.Regist(Inject_GRPC_Service, &gateway.GRPCServiceImpl{})
 	inject.Regist(Inject_Node_Service, &nodeSvc)
 
-	if err := inject.DoInject(); err != nil {
-		return nil, err
-	}
+	inject.DoInject()
+
 	return &nodeSvc, nil
 }

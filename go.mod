@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/BurntSushi/toml v0.3.1
-	github.com/binacsgo/inject v0.0.0-20200626113918-c47dac618e7c
+	github.com/binacsgo/inject v0.0.0-20211121070049-6fd0aad6b52a
 	github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e
 	github.com/binacsgo/pastebin v0.0.0-20200906141428-4db36c7ae458
 	github.com/binacsgo/tinyurl v0.0.0-20200903091813-eee3fcd71bb1

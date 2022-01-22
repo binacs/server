@@ -32,8 +32,10 @@ github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
-github.com/binacsgo/inject v0.0.0-20200626113918-c47dac618e7c h1:wp0DHAfJ+6pyUU/ahXj7bVweZ4y3K+96J+NWqZzm2VM=
-github.com/binacsgo/inject v0.0.0-20200626113918-c47dac618e7c/go.mod h1:y6s5Mc8Z5qatGOOCvRJyBVblQ91UChAhDUgMAcrcW0c=
+github.com/binacsgo/graph v0.0.0-20211121034315-55d98084536f h1:btwa4qy6KQx6IT1jfxq6qic3ca7uOp3Os0EUYObiuug=
+github.com/binacsgo/graph v0.0.0-20211121034315-55d98084536f/go.mod h1:oBFZyrx378neYcyXimCy7VpCuk/9uuBfHVszTL9tiuE=
+github.com/binacsgo/inject v0.0.0-20211121070049-6fd0aad6b52a h1:UNYEOfDF1nPOBTDGsWR+OlEeesgUS+1w7kzYX5dKsAc=
+github.com/binacsgo/inject v0.0.0-20211121070049-6fd0aad6b52a/go.mod h1:xxYVtTrw5x/AqDyMFoxQkeWQwkCVvvwXIF7YnhvPMjg=
 github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e h1:6taPIcv86jW7tuE2NN8wBErJwFtm5RzwxITy4JTKcmA=
 github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e/go.mod h1:p+PaxGF8XlyWU4ZkTmxItLIOAJ2dRz9r0YZq0+lgTGA=
 github.com/binacsgo/pastebin v0.0.0-20200906141428-4db36c7ae458 h1:rvQMXZq3BEfjnp0zfe5bDh2zqUoF9IofORuHm4w4UAo=
