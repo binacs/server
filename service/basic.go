@@ -49,10 +49,11 @@ const (
 		<div class="section center valign" style="width: 100%;">
 			<div class="section center valign" style="width: 100%;">
 				<h6>
-					<a style="margin: 10px;" href="toys" target="_blank">TOYS</a>
-					<a style="margin: 10px;" href="https://github.com/BinacsLee" target="_blank">GITHUB</a>
-					<a style="margin: 10px;" href="mailto:binacs055@vip.qq.om">EMAIL</a>
-					<a style="margin: 10px;" href="about" target="_blank">ABOUT</a>
+					<a style="margin: 16px;" href="toys" target="_blank">TOYS</a>
+					<a style="margin: 16px;" href="blogs" target="_blank">BLOGS</a>
+					<a style="margin: 16px;" href="https://github.com/BinacsLee" target="_blank">GITHUB</a>
+					<a style="margin: 16px;" href="mailto:binacs055@vip.qq.om">EMAIL</a>
+					<a style="margin: 16px;" href="about" target="_blank">ABOUT</a>
 				</h6>
 			</div>
 		</div>
@@ -61,7 +62,7 @@ const (
 	aboutBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h3>ABOUT</h3>
+			<h4>ABOUT</h4>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">Blockchain and Cloud Native</div>
@@ -91,22 +92,26 @@ const (
 	toysBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h3>TOYS</h3>
+			<h4>TOYS</h4>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 				</div>
 			</div>
 			<div class="container">
 				<div class="row">
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/crypto" target="_blank">Crypto</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/pastebin" target="_blank">Pastebin</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/tinyurl" target="_blank">TinyURL</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/storage" target="_blank">Storage</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://prometheus.binacs.cn" target="_blank">Prometheus</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://grafana.binacs.cn" target="_blank">Grafana</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://jenkins.binacs.cn" target="_blank">Jenkins</a>
-					<a class="col s12 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://docs.binacs.cn" target="_blank">Docs</a>
-					</a>
+					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/crypto" target="_blank">Crypto</a>
+				</div>
+				<div class="row">
+					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/pastebin" target="_blank">Pastebin</a>
+				</div>
+				<div class="row">
+					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/tinyurl" target="_blank">TinyURL</a>
+				</div>
+				<div class="row">
+					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/storage" target="_blank">Storage</a>
+				</div>
+				<div class="row">
+					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://docs.binacs.cn" target="_blank">Docs</a>
 				</div>
 			</div>
 		</div>
@@ -115,7 +120,7 @@ const (
 	cryptoBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h3>Crypto</h3>
+			<h4>Crypto</h4>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">
@@ -197,7 +202,7 @@ const (
 	tinyurlBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h3>TinyURL</h3>
+			<h4>TinyURL</h4>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">The md5 algorithm is used by default</div>
@@ -277,7 +282,7 @@ const (
 	pastebinBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h3>Pastebin</h3>
+			<h4>Pastebin</h4>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">Render using Markdown syntax by default</div>
@@ -343,7 +348,7 @@ const (
 	storageBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h3>Storage</h3>
+			<h4>Storage</h4>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">COS Storage</div>

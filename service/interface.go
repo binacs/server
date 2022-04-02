@@ -17,6 +17,7 @@ import (
 	pastebin "github.com/BinacsLee/server/api/pastebin"
 	tinyurl "github.com/BinacsLee/server/api/tinyurl"
 	user "github.com/BinacsLee/server/api/user"
+	"github.com/BinacsLee/server/types"
 	"github.com/BinacsLee/server/types/table"
 )
 
@@ -53,6 +54,13 @@ type PastebinService interface {
 	URLSearch(turl string) (*table.Page, error)
 	Parse(content, syntax string) string
 	RecentPosts() ([]table.Page, error)
+}
+
+// BlogService blog service
+type BlogService interface {
+	URLSearch(uri string) (types.Blog, error)
+	Parse(content string) string
+	RecentBlogs() ([]types.Blog, error)
 }
 
 // TinyURLService tinyurl service

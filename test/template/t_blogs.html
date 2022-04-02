@@ -1,4 +1,4 @@
-{{define "pages"}}
+{{define "blogs"}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,23 +8,14 @@
     <title>{{.Title}}</title>
     <!-- TODO 页面主体  -->
     <!-- ================== Body 渲染起始 ================== -->
-    <div class="container valign-wrapper">
+	<div class="container valign-wrapper">
         <div class="section" style="width: 100%;">
             <div class="section center valign" style="width: 100%;">
-                <h5>Pastebin Pages  {{.TinyURL}}</h5>
-                <div class="section" style="height: 10vh;">
-                    <div class="row grey-text text-darken-1">
-                        <div class="col s12">Render using Markdown syntax by default</div>
-                    </div>
-                    <div class="row blue-text text-darken-2">
-                        <div class="col s4">Poster: {{.Poster}}</div>
-                        <div class="col s4">Syntax: {{.Syntax}}</div>
-                        <div class="col s4">Create At: {{.CreateAt}}</div>
-                    </div>
-                </div>
+                <h5><a href={{.OriginURL}}>{{.Name}}</a></h5>
             </div>
             <div class="section" style="width: 100%;">
-                <div class="section" style="height: 10vh;">
+                <!-- <div class="section center" style="height: 80vh;"> -->
+                <div class="section" style="height: 80vh;">
                     <div class="row">
                         <div class="col s1"></div>
                         <div class="col s10">
@@ -35,7 +26,7 @@
                 </div>
             </div>
         </div>
-    </div>
+	</div>
 
     <!-- ================== Body 渲染结束 ================== -->
 
@@ -45,7 +36,7 @@
     <!--  materialize css  -->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+    
     <!--  code highlight css  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>

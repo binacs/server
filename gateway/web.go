@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +21,7 @@ import (
 	"github.com/BinacsLee/server/config"
 	"github.com/BinacsLee/server/middleware"
 	"github.com/BinacsLee/server/service"
+	"github.com/BinacsLee/server/types"
 	"github.com/BinacsLee/server/types/table"
 )
 
@@ -38,6 +40,7 @@ type WebServiceImpl struct {
 	CryptoSvc   service.CryptoService   `inject-name:"CryptoService"`
 	TinyURLSvc  service.TinyURLService  `inject-name:"TinyURLService"`
 	PastebinSvc service.PastebinService `inject-name:"PastebinService"`
+	BlogService service.BlogService     `inject-name:"BlogService"`
 	CosSvc      service.CosService      `inject-name:"CosService"`
 
 	r *gin.Engine
@@ -98,7 +101,9 @@ func (ws *WebServiceImpl) setRouter(r *gin.Engine) {
 	ws.setAPIRouter(r.Group("api"))
 	ws.setRedirectRouter(r.Group("r"))
 	ws.setPagesRouter(r.Group("p"))
+	ws.setBlogsRouter(r.Group("blog"))
 	ws.setRecentPosts(r)
+	ws.setRecentBlogs(r)
 }
 
 func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
@@ -154,8 +159,16 @@ func (ws *WebServiceImpl) setPagesRouter(r *gin.RouterGroup) {
 	r.GET("/:turl", ws.pages)
 }
 
+func (ws *WebServiceImpl) setBlogsRouter(r *gin.RouterGroup) {
+	r.GET("/:uri", ws.blogs)
+}
+
 func (ws *WebServiceImpl) setRecentPosts(r *gin.Engine) {
 	r.GET("/posts", ws.recentPosts)
+}
+
+func (ws *WebServiceImpl) setRecentBlogs(r *gin.Engine) {
+	r.GET("/blogs", ws.recentBlogs)
 }
 
 // ------------------ Gin Service ------------------
@@ -196,6 +209,30 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 	})
 }
 
+func (ws *WebServiceImpl) blogs(c *gin.Context) {
+	span := ws.TraceSvc.FromGinContext(c, "BlogSvc URLSearch")
+	blog, err := ws.BlogService.URLSearch(c.Param("uri"))
+	span.Finish()
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl blogs", "URLSearch err", err, "uri", c.Param("turl"))
+		c.HTML(http.StatusOK, "blogs", gin.H{
+			"Title": "binacs.cn - Blogs",
+			"Body":  template.HTML(err.Error()),
+		})
+	}
+
+	span = ws.TraceSvc.FromGinContext(c, "BlogSvc Parse")
+	body := ws.BlogService.Parse(blog.Content)
+	span.Finish()
+
+	c.HTML(http.StatusOK, "blogs", gin.H{
+		"Title":     "binacs.cn - Blogs",
+		"Name":      blog.Name,
+		"OriginURL": blog.Url,
+		"Content":   template.HTML(body),
+	})
+}
+
 func (ws *WebServiceImpl) recentPosts(c *gin.Context) {
 	span := ws.TraceSvc.FromGinContext(c, "Recent Posts")
 	pages, err := ws.PastebinSvc.RecentPosts()
@@ -214,6 +251,32 @@ func (ws *WebServiceImpl) recentPosts(c *gin.Context) {
 	for i := len(pages) - 1; i >= 0; i-- {
 		if len(pages[i].Content) > 0 {
 			ret += f(pages[i])
+		}
+	}
+	c.HTML(http.StatusOK, "posts", template.HTML(ret))
+}
+
+func (ws *WebServiceImpl) recentBlogs(c *gin.Context) {
+	span := ws.TraceSvc.FromGinContext(c, "Recent Blogs")
+	blogs, err := ws.BlogService.RecentBlogs()
+	span.Finish()
+	if err != nil {
+		ws.Logger.Error("WebServiceImpl recent blogs", "err", err)
+	}
+
+	f := func(blog types.Blog) string {
+		link := ws.Config.WebConfig.GetDomain() + "/blog/" + blog.Name
+		return fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a><br>", link, blog.Name)
+	}
+
+	var ret string
+	sort.Slice(blogs, func(i, j int) bool {
+		// 按字典逆序
+		return blogs[i].Name > blogs[j].Name
+	})
+	for i := 0; i < len(blogs); i++ {
+		if len(blogs[i].Name) > 0 {
+			ret += f(blogs[i])
 		}
 	}
 	c.HTML(http.StatusOK, "posts", template.HTML(ret))
