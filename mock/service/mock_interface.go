@@ -14,6 +14,7 @@ import (
 	api_pastebin "github.com/BinacsLee/server/api/pastebin"
 	api_tinyurl "github.com/BinacsLee/server/api/tinyurl"
 	api_user "github.com/BinacsLee/server/api/user"
+	types "github.com/BinacsLee/server/types"
 	table "github.com/BinacsLee/server/types/table"
 	trace "github.com/binacsgo/trace"
 	gin "github.com/gin-gonic/gin"
@@ -331,6 +332,73 @@ func (m *MockPastebinService) URLSearch(turl string) (*table.Page, error) {
 func (mr *MockPastebinServiceMockRecorder) URLSearch(turl interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "URLSearch", reflect.TypeOf((*MockPastebinService)(nil).URLSearch), turl)
+}
+
+// MockBlogService is a mock of BlogService interface.
+type MockBlogService struct {
+	ctrl     *gomock.Controller
+	recorder *MockBlogServiceMockRecorder
+}
+
+// MockBlogServiceMockRecorder is the mock recorder for MockBlogService.
+type MockBlogServiceMockRecorder struct {
+	mock *MockBlogService
+}
+
+// NewMockBlogService creates a new mock instance.
+func NewMockBlogService(ctrl *gomock.Controller) *MockBlogService {
+	mock := &MockBlogService{ctrl: ctrl}
+	mock.recorder = &MockBlogServiceMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockBlogService) EXPECT() *MockBlogServiceMockRecorder {
+	return m.recorder
+}
+
+// Parse mocks base method.
+func (m *MockBlogService) Parse(content string) string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Parse", content)
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Parse indicates an expected call of Parse.
+func (mr *MockBlogServiceMockRecorder) Parse(content interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parse", reflect.TypeOf((*MockBlogService)(nil).Parse), content)
+}
+
+// RecentBlogs mocks base method.
+func (m *MockBlogService) RecentBlogs() ([]types.Blog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RecentBlogs")
+	ret0, _ := ret[0].([]types.Blog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// RecentBlogs indicates an expected call of RecentBlogs.
+func (mr *MockBlogServiceMockRecorder) RecentBlogs() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RecentBlogs", reflect.TypeOf((*MockBlogService)(nil).RecentBlogs))
+}
+
+// URLSearch mocks base method.
+func (m *MockBlogService) URLSearch(uri string) (types.Blog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "URLSearch", uri)
+	ret0, _ := ret[0].(types.Blog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// URLSearch indicates an expected call of URLSearch.
+func (mr *MockBlogServiceMockRecorder) URLSearch(uri interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "URLSearch", reflect.TypeOf((*MockBlogService)(nil).URLSearch), uri)
 }
 
 // MockTinyURLService is a mock of TinyURLService interface.

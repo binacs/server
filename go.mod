@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/BurntSushi/toml v1.0.0
-	github.com/binacsgo/inject v0.0.0-20211121070049-6fd0aad6b52a
+	github.com/binacsgo/inject v0.0.0-20220604135548-1c17b3b6c038
 	github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e
-	github.com/binacsgo/pastebin v0.0.0-20200906141428-4db36c7ae458
+	github.com/binacsgo/pastebin v0.0.0-20220605074934-40d2fe581aba
 	github.com/binacsgo/tinyurl v0.0.0-20200903091813-eee3fcd71bb1
 	github.com/binacsgo/token v0.0.0-20210130085117-5eb03d8d650d
 	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
@@ -34,7 +34,8 @@ require (
 )
 
 require (
-	github.com/binacsgo/graph v0.0.0-20211121034315-55d98084536f // indirect
+	github.com/abhinav/goldmark-mermaid v0.1.1 // indirect
+	github.com/binacsgo/graph v0.0.0-20220604094945-8cd8fcf6f414 // indirect
 	github.com/clbanning/mxj v1.8.4 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
@@ -54,6 +55,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/uber/jaeger-lib v2.4.0+incompatible // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
+	github.com/yuin/goldmark v1.4.12 // indirect
+	github.com/yuin/goldmark-emoji v1.0.1 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect

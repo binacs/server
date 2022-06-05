@@ -62,7 +62,7 @@ const (
 	aboutBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h4>ABOUT</h4>
+			<h1>ABOUT</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">Blockchain and Cloud Native</div>
@@ -92,7 +92,7 @@ const (
 	toysBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h4>TOYS</h4>
+			<h1>TOYS</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 				</div>
@@ -120,7 +120,7 @@ const (
 	cryptoBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h4>Crypto</h4>
+			<h1>Crypto</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">
@@ -202,7 +202,7 @@ const (
 	tinyurlBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h4>TinyURL</h4>
+			<h1>TinyURL</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">The md5 algorithm is used by default</div>
@@ -282,7 +282,7 @@ const (
 	pastebinBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h4>Pastebin</h4>
+			<h1>Pastebin</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">Render using Markdown syntax by default</div>
@@ -319,6 +319,7 @@ const (
 					</div>
 
 					<script type="text/javascript">
+						M.textareaAutoResize($('#sub_content'));
 						function paste_submit() {
 							$.ajax({
 								'url': '/api/pastebin/submit',
@@ -348,7 +349,7 @@ const (
 	storageBody = `
 	<div class="container valign-wrapper" style="height: 90vh;">
 		<div class="section center valign" style="width: 100%;">
-			<h4>Storage</h4>
+			<h1>Storage</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
 					<div class="col s12 grey-text text-darken-1">COS Storage</div>
