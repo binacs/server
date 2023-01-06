@@ -72,7 +72,7 @@ type TinyURLService interface {
 	URLSearch(turl string) (string, error)
 }
 
-// CosService tinyurl service
+// CosService cos service
 type CosService interface {
 	Register(ctx context.Context, gsrv *grpc.Server, gwmux *runtime.ServeMux, opts []grpc.DialOption) error
 	CosBucketURL(ctx context.Context, req *pb.CosBucketURLReq) (*pb.CosBucketURLResp, error)

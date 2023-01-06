@@ -13,7 +13,7 @@ var (
 	VersionCmd = &cobra.Command{
 		Use:   "version",
 		Short: "Version Command",
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(_ *cobra.Command, _ []string) {
 			fmt.Printf("Version: %s.%s.%s, CommitHash: %s\n", version.Maj, version.Min, version.Fix, version.GitCommit)
 		},
 	}

@@ -1,8 +1,8 @@
-FROM golang:1.17-alpine AS binacsGoBuild
+FROM golang:1.19-alpine AS binacsGoBuild
 
 COPY . /src
 
-RUN apk add --no-cache make git && \
+RUN apk add --no-cache make git build-base && \
     \
     cd /src && \
     \

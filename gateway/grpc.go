@@ -131,7 +131,7 @@ func (gs *GRPCServiceImpl) Serve() error {
 	if err != nil {
 		return err
 	}
-	//reflection.Register(gs.gsrv)
+	// reflection.Register(gs.gsrv)
 	if err := gs.srv.Serve(tls.NewListener(listener, gs.tlsCfg)); err != nil {
 		return err
 	}
