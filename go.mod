@@ -24,7 +24,7 @@ require (
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.34
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/unrolled/secure v1.10.0
-	go.uber.org/zap v1.21.0
+	go.uber.org/zap v1.24.0
 	golang.org/x/net v0.5.0
 	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f
 	google.golang.org/grpc v1.53.0
