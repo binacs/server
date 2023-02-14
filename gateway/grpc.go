@@ -21,9 +21,9 @@ import (
 
 	"github.com/binacsgo/log"
 
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/service"
-	"github.com/BinacsLee/server/types"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/service"
+	"github.com/binacs/server/types"
 )
 
 // GRPCService interface

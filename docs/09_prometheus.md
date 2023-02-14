@@ -61,7 +61,7 @@ PromQL (Prometheus Query Language) 是 Prometheus 自己开发的数据查询 DS
 
 `AlertManager` ：接收 prometheus 依据规则产生的告警信息，可以转发至 `webhook` 以及直接触发邮件等告警机制。**由于 `alert manager` 的告警渠道支持并不完善，在需要同时支持多个告警渠道的场景下建议写一个新的组件作为 `webhook` ，由新组件触发各场景下的告警消息推送。如需要同时支持邮件、微信、钉钉、消息队列等渠道时。**
 
-在本项目中，prometheus 采集的数据均来自push gateway，而后者的数据均由物理节点运行的 [ProPush](https://github.com/BinacsLee/ProPush) 主动上报。
+在本项目中，prometheus 采集的数据均来自push gateway，而后者的数据均由物理节点运行的 [ProPush](https://github.com/binacs/ProPush) 主动上报。
 
 ## 5. Advanced
 

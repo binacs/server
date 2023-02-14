@@ -11,9 +11,9 @@ import (
 	"github.com/binacsgo/log"
 	"github.com/binacsgo/tinyurl"
 
-	pb "github.com/BinacsLee/server/api/tinyurl"
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/types"
+	pb "github.com/binacs/server/api/tinyurl"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/types"
 )
 
 // TinyURLServiceImpl Web TinyURL service implement

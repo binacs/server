@@ -14,15 +14,15 @@ import (
 
 	"github.com/binacsgo/log"
 
-	api_cos "github.com/BinacsLee/server/api/cos"
-	api_crypto "github.com/BinacsLee/server/api/crypto"
-	api_pastebin "github.com/BinacsLee/server/api/pastebin"
-	api_tinyurl "github.com/BinacsLee/server/api/tinyurl"
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/middleware"
-	"github.com/BinacsLee/server/service"
-	"github.com/BinacsLee/server/types"
-	"github.com/BinacsLee/server/types/table"
+	api_cos "github.com/binacs/server/api/cos"
+	api_crypto "github.com/binacs/server/api/crypto"
+	api_pastebin "github.com/binacs/server/api/pastebin"
+	api_tinyurl "github.com/binacs/server/api/tinyurl"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/middleware"
+	"github.com/binacs/server/service"
+	"github.com/binacs/server/types"
+	"github.com/binacs/server/types/table"
 )
 
 // WebService the web service

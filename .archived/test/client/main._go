@@ -9,7 +9,7 @@ import (
 	//"encoding/json"
 	"net/http"
 
-	"github.com/BinacsLee/server/test/client/go/swagger"
+	"github.com/binacs/server/test/client/go/swagger"
 )
 
 var (

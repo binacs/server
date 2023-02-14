@@ -12,8 +12,8 @@ import (
 
 	"github.com/binacsgo/log"
 
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/types/table"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/types/table"
 )
 
 func newMysqlCli(cfg config.MysqlConfig, logger *zap.Logger) (*xorm.EngineGroup, error) {

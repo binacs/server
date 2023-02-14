@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/go-github/github"
 
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/types"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/types"
 	"github.com/binacsgo/log"
 	"github.com/binacsgo/pastebin"
 )
@@ -31,7 +31,7 @@ type BlogServiceImpl struct {
 func (bs *BlogServiceImpl) AfterInject() error {
 	bs.instance = new(pastebin.MarkDownImpl)
 	bs.prefix = bs.Config.WebConfig.GetDomain() + "/blog/"
-	bs.gitOwner, bs.gitRepo = "BinacsLee", "blog"
+	bs.gitOwner, bs.gitRepo = "binacs", "blog"
 	bs.opt = github.RepositoryContentGetOptions{Ref: "main"}
 	bs.client = github.NewClient(nil)
 	return nil

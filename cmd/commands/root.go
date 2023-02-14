@@ -11,7 +11,7 @@ import (
 
 	"github.com/binacsgo/log"
 
-	"github.com/BinacsLee/server/config"
+	"github.com/binacs/server/config"
 )
 
 var (

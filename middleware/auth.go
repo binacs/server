@@ -5,7 +5,7 @@ import (
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 
-	"github.com/BinacsLee/server/types"
+	"github.com/binacs/server/types"
 )
 
 // GlobalAuthFunc global auth function

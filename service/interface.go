@@ -12,13 +12,13 @@ import (
 
 	"github.com/binacsgo/trace"
 
-	pb "github.com/BinacsLee/server/api/cos"
-	crypto "github.com/BinacsLee/server/api/crypto"
-	pastebin "github.com/BinacsLee/server/api/pastebin"
-	tinyurl "github.com/BinacsLee/server/api/tinyurl"
-	user "github.com/BinacsLee/server/api/user"
-	"github.com/BinacsLee/server/types"
-	"github.com/BinacsLee/server/types/table"
+	pb "github.com/binacs/server/api/cos"
+	crypto "github.com/binacs/server/api/crypto"
+	pastebin "github.com/binacs/server/api/pastebin"
+	tinyurl "github.com/binacs/server/api/tinyurl"
+	user "github.com/binacs/server/api/user"
+	"github.com/binacs/server/types"
+	"github.com/binacs/server/types/table"
 )
 
 // ----------------- DB service -----------------

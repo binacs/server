@@ -1,4 +1,4 @@
-module github.com/BinacsLee/server
+module github.com/binacs/server
 
 go 1.19
 

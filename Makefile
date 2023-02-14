@@ -1,5 +1,5 @@
 BUILD_TAGS?=
-BUILD_FLAGS = -ldflags "-X github.com/BinacsLee/server/version.GitCommit=`git rev-parse HEAD`"
+BUILD_FLAGS = -ldflags "-X github.com/binacs/server/version.GitCommit=`git rev-parse HEAD`"
 
 default: clean build
 

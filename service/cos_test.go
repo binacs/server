@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	pb "github.com/BinacsLee/server/api/cos"
-	"github.com/BinacsLee/server/config"
+	pb "github.com/binacs/server/api/cos"
+	"github.com/binacs/server/config"
 	"github.com/binacsgo/log"
 )
 

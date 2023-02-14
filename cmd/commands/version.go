@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/BinacsLee/server/version"
+	"github.com/binacs/server/version"
 )
 
 var (

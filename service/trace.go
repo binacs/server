@@ -9,8 +9,8 @@ import (
 
 	"github.com/binacsgo/trace"
 
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/middleware"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/middleware"
 )
 
 // TraceServiceImpl inplement of TraceService

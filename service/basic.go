@@ -51,7 +51,7 @@ const (
 				<h6>
 					<a style="margin: 16px;" href="toys" target="_blank">TOYS</a>
 					<a style="margin: 16px;" href="blogs" target="_blank">BLOGS</a>
-					<a style="margin: 16px;" href="https://github.com/BinacsLee" target="_blank">GITHUB</a>
+					<a style="margin: 16px;" href="https://github.com/binacs" target="_blank">GITHUB</a>
 					<a style="margin: 16px;" href="mailto:binacs055@vip.qq.om">EMAIL</a>
 					<a style="margin: 16px;" href="about" target="_blank">ABOUT</a>
 				</h6>
@@ -73,13 +73,13 @@ const (
 					<div class="card-content">
 						<span class="card-title"> </span>
 						<a style="color:black">You can download my resume on</a>
-						<a href="https://github.com/BinacsLee/resume/releases/tag/latest">GitHub Release</a>
+						<a href="https://github.com/binacs/resume/releases/tag/latest">GitHub Release</a>
 						<br>
 						<a style="color:black">OR</a>
 						<br>
 						<a style="color:black">preview</a>
-						<a href="https://docs.google.com/viewer?url=https://github.com/BinacsLee/resume/releases/download/latest/resume.pdf">resume.pdf</a>
-						<a href="https://docs.google.com/viewer?url=https://github.com/BinacsLee/resume/releases/download/latest/resume_zh.pdf">resume_zh.pdf</a>
+						<a href="https://docs.google.com/viewer?url=https://github.com/binacs/resume/releases/download/latest/resume.pdf">resume.pdf</a>
+						<a href="https://docs.google.com/viewer?url=https://github.com/binacs/resume/releases/download/latest/resume_zh.pdf">resume_zh.pdf</a>
 						<a style="color:black">online by Google Docs</a>
 						<br><br><br><br>
 						<a style="color:black">路漫漫其修远兮</a>
@@ -126,7 +126,7 @@ const (
 					<div class="col s12 grey-text text-darken-1">
 						The type of key input is too complicated, so use the server to reserve the key temporarily and use Base64/AES/DES<br>
 						 for encryption and decryption on the web side.
-						<a href="https://github.com/BinacsLee/cli">
+						<a href="https://github.com/binacs/cli">
 						<u>For more functions, please use the dedicated client</u>
 						</a>
 					</div>

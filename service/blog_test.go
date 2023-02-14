@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/types"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/types"
 	"github.com/binacsgo/log"
 	"github.com/binacsgo/pastebin"
 	"github.com/google/go-github/github"
@@ -44,7 +44,7 @@ func TestBlogServiceImpl_RecentBlogs(t *testing.T) {
 				Logger:   log.NewNopLogger(),
 				instance: new(pastebin.MarkDownImpl),
 				prefix:   "test.binacs.cn" + "/blog/",
-				gitOwner: "BinacsLee",
+				gitOwner: "binacs",
 				gitRepo:  "blog",
 				opt:      github.RepositoryContentGetOptions{Ref: "main"},
 				client:   github.NewClient(nil),
@@ -105,7 +105,7 @@ func TestBlogServiceImpl_URLSearch(t *testing.T) {
 				Logger:   log.NewNopLogger(),
 				instance: new(pastebin.MarkDownImpl),
 				prefix:   "test.binacs.cn" + "/blog/",
-				gitOwner: "BinacsLee",
+				gitOwner: "binacs",
 				gitRepo:  "blog",
 				opt:      github.RepositoryContentGetOptions{Ref: "main"},
 				client:   github.NewClient(nil),

@@ -5,8 +5,8 @@ import (
 
 	"github.com/binacsgo/inject"
 
-	"github.com/BinacsLee/server/gateway"
-	"github.com/BinacsLee/server/service"
+	"github.com/binacs/server/gateway"
+	"github.com/binacs/server/service"
 )
 
 var (

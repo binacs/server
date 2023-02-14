@@ -5,8 +5,8 @@ import (
 
 	"github.com/binacsgo/log"
 
-	pb "github.com/BinacsLee/server/api/crypto"
-	"github.com/BinacsLee/server/config"
+	pb "github.com/binacs/server/api/crypto"
+	"github.com/binacs/server/config"
 )
 
 func getNormalConfigWithCrypto() *config.Config {

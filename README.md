@@ -2,10 +2,10 @@
 
 计划使用 Go **优雅**地重构个人 server
 
-[![License](https://img.shields.io/github/license/BinacsLee/server?color=%2387CEFA)](https://github.com/BinacsLee/server/blob/master/LICENSE)
-[![Build Status](https://travis-ci.com/BinacsLee/server.svg?branch=master)](https://travis-ci.com/BinacsLee/server)
-[![Go Report Card](https://goreportcard.com/badge/github.com/BinacsLee/server)](https://goreportcard.com/report/github.com/BinacsLee/server)
-[![Test Coverage](https://codecov.io/gh/BinacsLee/server/branch/master/graph/badge.svg)](https://codecov.io/github/binacslee/server?branch=master)
+[![License](https://img.shields.io/github/license/binacs/server?color=%2387CEFA)](https://github.com/binacs/server/blob/master/LICENSE)
+[![Build Status](https://travis-ci.com/binacs/server.svg?branch=master)](https://travis-ci.com/binacs/server)
+[![Go Report Card](https://goreportcard.com/badge/github.com/binacs/server)](https://goreportcard.com/report/github.com/binacs/server)
+[![Test Coverage](https://codecov.io/gh/binacs/server/branch/master/graph/badge.svg)](https://codecov.io/github/binacs/server?branch=master)
 
 ### tools
 
@@ -82,7 +82,7 @@ server
 │   ├── grpc.go
 │   ├── redis.go
 │   ├── regexp.go
-    └── types.go
+│   └── types.go
 └── version     # 版本
     └── version.go
 
@@ -117,7 +117,7 @@ server
 
 Dockerfile 来自本项目。
 
-镜像来自 [Docker Hub](https://hub.docker.com/r/binacslee/binacs-cn) 。
+镜像来自 [Docker Hub](https://hub.docker.com/r/binacs/binacs-cn) 。
 
 部署配置位于 [deployment-binacs-cn](https://github.com/OpenKikCoc/deployment-binacs-cn) 项目。
 
@@ -125,5 +125,5 @@ Dockerfile 来自本项目。
 
 ## 终端客户端
 
-[BinacsLee/cli](https://github.com/BinacsLee/cli)
+[binacs/cli](https://github.com/binacs/cli)
 

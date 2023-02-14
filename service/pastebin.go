@@ -12,10 +12,10 @@ import (
 	"github.com/binacsgo/log"
 	"github.com/binacsgo/pastebin"
 
-	pb "github.com/BinacsLee/server/api/pastebin"
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/types"
-	"github.com/BinacsLee/server/types/table"
+	pb "github.com/binacs/server/api/pastebin"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/types"
+	"github.com/binacs/server/types/table"
 )
 
 // PastebinServiceImpl Web PasteBin service implement

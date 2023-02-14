@@ -19,8 +19,8 @@ import (
 
 	"github.com/binacsgo/log"
 
-	pb "github.com/BinacsLee/server/api/cos"
-	"github.com/BinacsLee/server/config"
+	pb "github.com/binacs/server/api/cos"
+	"github.com/binacs/server/config"
 )
 
 // CosServiceImpl COS service implement

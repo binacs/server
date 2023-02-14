@@ -8,8 +8,8 @@ import (
 
 	"github.com/binacsgo/log"
 
-	"github.com/BinacsLee/server/config"
-	mock_gateway "github.com/BinacsLee/server/mock/gateway"
+	"github.com/binacs/server/config"
+	mock_gateway "github.com/binacs/server/mock/gateway"
 )
 
 var (

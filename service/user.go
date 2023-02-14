@@ -10,10 +10,10 @@ import (
 	"github.com/binacsgo/log"
 	"github.com/binacsgo/token"
 
-	pb "github.com/BinacsLee/server/api/user"
-	"github.com/BinacsLee/server/config"
-	"github.com/BinacsLee/server/types"
-	"github.com/BinacsLee/server/types/table"
+	pb "github.com/binacs/server/api/user"
+	"github.com/binacs/server/config"
+	"github.com/binacs/server/types"
+	"github.com/binacs/server/types/table"
 )
 
 // UserServiceImpl GRPC user service implement

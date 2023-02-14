@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"testing"
 
-	pb "github.com/BinacsLee/server/api/tinyurl"
-	"github.com/BinacsLee/server/config"
-	mock_service "github.com/BinacsLee/server/mock/service"
+	pb "github.com/binacs/server/api/tinyurl"
+	"github.com/binacs/server/config"
+	mock_service "github.com/binacs/server/mock/service"
 	"github.com/binacsgo/log"
 	"github.com/binacsgo/tinyurl"
 	"github.com/golang/mock/gomock"

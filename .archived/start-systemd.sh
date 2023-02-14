@@ -5,7 +5,7 @@ sudo cp ./bin/server /usr/sbin/binacsserver
 cat <<EOF | sudo tee /etc/systemd/system/binacsserver.service
 [Unit]
 Description=BinacsServer
-Documentation=https://github.com/BinacsLee/server
+Documentation=https://github.com/binacs/server
 [Service]
 ExecStart=/usr/sbin/binacsserver start \\
   --configFile=${configfile} 
