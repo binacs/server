@@ -3,7 +3,7 @@ module github.com/binacs/server
 go 1.19
 
 require (
-	github.com/BurntSushi/toml v1.2.1
+	github.com/BurntSushi/toml v1.3.0
 	github.com/binacsgo/inject v0.0.0-20220604135548-1c17b3b6c038
 	github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e
 	github.com/binacsgo/pastebin v0.0.0-20220605074934-40d2fe581aba
