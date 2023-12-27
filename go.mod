@@ -23,7 +23,7 @@ require (
 	github.com/spf13/cobra v1.8.0
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.45
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
-	github.com/unrolled/secure v1.13.0
+	github.com/unrolled/secure v1.14.0
 	go.uber.org/zap v1.26.0
 	golang.org/x/net v0.19.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20231002182017-d307bd883b97
