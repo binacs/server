@@ -52,7 +52,7 @@ func getNormalConfig() *Config {
 			Host:     "server.grpc.io",
 		},
 		TraceConfig: TraceConfig{
-			ServiceName:   "binacs-cn",
+			ServiceName:   "binacs-space",
 			AgentHostPort: "jaeger_dc:6831",
 		},
 		LogConfig: LogConfig{

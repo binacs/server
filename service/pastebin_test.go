@@ -14,7 +14,7 @@ func getNormalConfigWithPastebin() *config.Config {
 	return &config.Config{
 		WebConfig: config.WebConfig{
 			SSLRedirect: false,
-			Host:        "test.binacs.cn",
+			Host:        "test.binacs.space",
 		},
 	}
 }
@@ -85,7 +85,7 @@ func TestPastebinServiceImpl_Parse(t *testing.T) {
 				Config:   getNormalConfigWithPastebin(),
 				Logger:   log.NewNopLogger(),
 				instance: new(pastebin.MarkDownImpl),
-				prefix:   "test.binacs.cn",
+				prefix:   "test.binacs.space",
 			},
 			args: args{
 				content: "something",
@@ -99,7 +99,7 @@ func TestPastebinServiceImpl_Parse(t *testing.T) {
 				Config:   getNormalConfigWithPastebin(),
 				Logger:   log.NewNopLogger(),
 				instance: new(pastebin.MarkDownImpl),
-				prefix:   "test.binacs.cn",
+				prefix:   "test.binacs.space",
 			},
 			args: args{
 				content: "something",

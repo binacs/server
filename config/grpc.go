@@ -13,6 +13,6 @@ func defaultGRPCConfig() GRPCConfig {
 		HttpPort: "9500",
 		CertPath: "api.server.crt",
 		KeyPath:  "api.server.key",
-		Host:     "api.binacs.cn",
+		Host:     "api.binacs.space",
 	}
 }

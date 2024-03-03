@@ -29,7 +29,7 @@ File  = "/work/server.log"
 Level = "debug"
 
 [TraceConfig]
-"ServiceName"   = "binacs-cn"
+"ServiceName"   = "binacs-space"
 "AgentHostPort" = "jaeger_dc:6831"
 
 [RedisConfig]

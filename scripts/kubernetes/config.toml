@@ -10,15 +10,15 @@ HttpPort = "9999"
 HttpPort = "9500"
 CertPath = "/tls/tls.crt"  # kubernetes secret keys
 KeyPath  = "/tls/tls.key"
-Host     = "api.binacs-cn"            # for test
+Host     = "api.binacs.space"            # for test
 [WebConfig]
 HttpPort    = "80"
 HttpsPort   = "443"
 SSLRedirect = false
 TmplPath    = "/work/template/"
-CertPath    = "/tls/binacs.cn.crt"
-KeyPath     = "/tls/binacs.cn.key"
-Host        = "binacs.cn"             # for test
+CertPath    = "/tls/binacs.space.crt"
+KeyPath     = "/tls/binacs.space.key"
+Host        = "binacs.space"             # for test
 [WebConfig.K8sService]
 "CryptoBASE64" = "cryptfunc-base64-svc.cryptfunc.svc.cluster.local:8888"
 "CryptoAES"    = "cryptfunc-aes-svc.cryptfunc.svc.cluster.local:8888"
@@ -29,8 +29,8 @@ File  = "/work/server.log"
 Level = "debug"
 
 [TraceConfig]
-"ServiceName"   = "binacs-cn"
-"AgentHostPort" = "jaeger-agent.binacs-cn.svc.cluster.local:6831"
+"ServiceName"   = "binacs-space"
+"AgentHostPort" = "jaeger-agent.binacs-space.svc.cluster.local:6831"
 
 [RedisConfig]
 Network      = "tcp"

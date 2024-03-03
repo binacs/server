@@ -68,10 +68,6 @@
             <input name="dectext" id="dec_source" style="width: 500px;"></input>
 
         </form>
-        <div
-            style="z-index: -1; width: 400px; left: 50%; padding-top: 300px; margin-left: -200px; text-align: center; position: absolute;">
-            <a href="http://beian.miit.gov.cn/" target="_blank">豫ICP备18018043号</a>
-        </div>
 
     </div>
     <script type="text/javascript">

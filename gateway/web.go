@@ -109,43 +109,43 @@ func (ws *WebServiceImpl) setRouter(r *gin.Engine) {
 func (ws *WebServiceImpl) setBasicRouter(r *gin.Engine) {
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - Home",
+			"Title": "binacs.space - Home",
 			"Body":  template.HTML(ws.BasicSvc.ServeHome()),
 		})
 	})
 	r.GET("/toys", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - Toys",
+			"Title": "binacs.space - Toys",
 			"Body":  template.HTML(ws.BasicSvc.ServeToys()),
 		})
 	})
 	r.GET("/toys/crypto", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - Crypto",
+			"Title": "binacs.space - Crypto",
 			"Body":  template.HTML(ws.BasicSvc.ServeCrypto()),
 		})
 	})
 	r.GET("/toys/tinyurl", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - TinyURL",
+			"Title": "binacs.space - TinyURL",
 			"Body":  template.HTML(ws.BasicSvc.ServeTinyURL()),
 		})
 	})
 	r.GET("/toys/pastebin", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - Pastebin",
+			"Title": "binacs.space - Pastebin",
 			"Body":  template.HTML(ws.BasicSvc.ServePastebin()),
 		})
 	})
 	r.GET("/toys/storage", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - Storage",
+			"Title": "binacs.space - Storage",
 			"Body":  template.HTML(ws.BasicSvc.ServeStorage()),
 		})
 	})
 	r.GET("/about", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - About",
+			"Title": "binacs.space - About",
 			"Body":  template.HTML(ws.BasicSvc.ServeAbout()),
 		})
 	})
@@ -190,7 +190,7 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl pages", "URLSearch err", err, "turl", c.Param("turl"))
 		c.HTML(http.StatusOK, "global", gin.H{
-			"Title": "binacs.cn - Pages",
+			"Title": "binacs.space - Pages",
 			"Body":  template.HTML(err.Error()),
 		})
 	}
@@ -200,7 +200,7 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 	span.Finish()
 
 	c.HTML(http.StatusOK, "pages", gin.H{
-		"Title":    "binacs.cn - Pages",
+		"Title":    "binacs.space - Pages",
 		"TinyURL":  rsp.TinyURL,
 		"Poster":   rsp.Poster,
 		"Syntax":   rsp.Syntax,
@@ -216,7 +216,7 @@ func (ws *WebServiceImpl) blogs(c *gin.Context) {
 	if err != nil {
 		ws.Logger.Error("WebServiceImpl blogs", "URLSearch err", err, "uri", c.Param("turl"))
 		c.HTML(http.StatusOK, "blogs", gin.H{
-			"Title": "binacs.cn - Blogs",
+			"Title": "binacs.space - Blogs",
 			"Body":  template.HTML(err.Error()),
 		})
 	}
@@ -226,7 +226,7 @@ func (ws *WebServiceImpl) blogs(c *gin.Context) {
 	span.Finish()
 
 	c.HTML(http.StatusOK, "blogs", gin.H{
-		"Title":     "binacs.cn - Blogs",
+		"Title":     "binacs.space - Blogs",
 		"Name":      blog.Name,
 		"OriginURL": blog.Url,
 		"Content":   template.HTML(body),

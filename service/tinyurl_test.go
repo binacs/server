@@ -23,7 +23,7 @@ func getNormalConfigWithTinyURL() *config.Config {
 	return &config.Config{
 		WebConfig: config.WebConfig{
 			SSLRedirect: false,
-			Host:        "test.binacs.cn",
+			Host:        "test.binacs.space",
 		},
 	}
 }
@@ -126,12 +126,12 @@ func TestTinyURLServiceImpl_TinyURLEncode(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &pb.TinyURLEncodeReq{
-					Url: "http://test.binacs.cn",
+					Url: "http://test.binacs.space",
 				},
 			},
 			want: &pb.TinyURLEncodeResp{
 				Data: &pb.TinyURLEncodeResObj{
-					Turl: "http://test.binacs.cn/r/RfA77r",
+					Turl: "http://test.binacs.space/r/vMN7vi",
 				},
 			},
 			wantErr: false,
@@ -145,7 +145,7 @@ func TestTinyURLServiceImpl_TinyURLEncode(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &pb.TinyURLEncodeReq{
-					Url: "test.binacs.cn",
+					Url: "test.binacs.space",
 				},
 			},
 			want:    nil,
@@ -163,7 +163,7 @@ func TestTinyURLServiceImpl_TinyURLEncode(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &pb.TinyURLEncodeReq{
-					Url: "https://test.binacs.cn",
+					Url: "https://test.binacs.space",
 				},
 			},
 			want:    nil,
@@ -227,7 +227,7 @@ func TestTinyURLServiceImpl_TinyURLDecode(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &pb.TinyURLDecodeReq{
-					Turl: "http://test.binacs.cn/r/RfA77r",
+					Turl: "http://test.binacs.space/r/vMN7vi",
 				},
 			},
 			want: &pb.TinyURLDecodeResp{
@@ -247,7 +247,7 @@ func TestTinyURLServiceImpl_TinyURLDecode(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &pb.TinyURLDecodeReq{
-					Turl: "test.binacs.cn/r/RfA77r",
+					Turl: "test.binacs.space/r/vMN7vi",
 				},
 			},
 			want:    nil,
@@ -265,7 +265,7 @@ func TestTinyURLServiceImpl_TinyURLDecode(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				req: &pb.TinyURLDecodeReq{
-					Turl: "http://test.binacs.cn/r/RfA77r",
+					Turl: "http://test.binacs.space/r/vMN7vi",
 				},
 			},
 			want:    nil,
@@ -318,9 +318,9 @@ func TestTinyURLServiceImpl_Encode(t *testing.T) {
 				instance: tinyurl.GetMD5Impl(),
 			},
 			args: args{
-				url: "http://test.binacs.cn",
+				url: "http://test.binacs.space",
 			},
-			want: "RfA77r",
+			want: "vMN7vi",
 		},
 	}
 	for _, tt := range tests {

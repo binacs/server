@@ -14,7 +14,7 @@ mock:
 	cd service && go generate; cd -
 
 docker:
-	docker build -t binacslee/binacs-cn:latest . 
+	docker build -t binacslee/binacs-space:latest . 
 
 test:
 	go test ./... -cover

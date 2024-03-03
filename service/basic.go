@@ -111,7 +111,7 @@ const (
 					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="toys/storage" target="_blank">Storage</a>
 				</div>
 				<div class="row">
-					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://docs.binacs.cn" target="_blank">Docs</a>
+					<a class="col s8 offset-s2 waves-effect waves-teal btn-large grey lighten-5" style="height: 5vh;" href="https://docs.binacs.space" target="_blank">Docs</a>
 				</div>
 			</div>
 		</div>
@@ -230,7 +230,7 @@ const (
 							</div>
 							<div class="row">
 								<div class="input-field col s12">
-									<input placeholder="binacs.cn/r/ ..." id="dec_source" type="text" class="validate">
+									<input placeholder="binacs.space/r/ ..." id="dec_source" type="text" class="validate">
 									<label for="dec_source">TinyURL</label>
 								</div>
 							</div>

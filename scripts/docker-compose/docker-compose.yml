@@ -4,7 +4,7 @@ services:
   server_dc:
     container_name: server_dc
     build: ../../
-    # image: binacslee/binacs-cn:latest
+    # image: binacslee/binacs-space:latest
     command: ./work/server start --configFile /docker-compose/config.toml
     volumes:
       - ./:/docker-compose

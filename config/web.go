@@ -30,6 +30,6 @@ func defaultWebConfig() WebConfig {
 		TmplPath:    "./",
 		CertPath:    "server.crt",
 		KeyPath:     "server.key",
-		Host:        "binacs.cn",
+		Host:        "binacs.space",
 	}
 }

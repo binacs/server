@@ -15,7 +15,7 @@ func getNormalConfigWithBlogs() *config.Config {
 	return &config.Config{
 		WebConfig: config.WebConfig{
 			SSLRedirect: false,
-			Host:        "test.binacs.cn",
+			Host:        "test.binacs.space",
 		},
 	}
 }
@@ -43,7 +43,7 @@ func TestBlogServiceImpl_RecentBlogs(t *testing.T) {
 				Config:   getNormalConfigWithBlogs(),
 				Logger:   log.NewNopLogger(),
 				instance: new(pastebin.MarkDownImpl),
-				prefix:   "test.binacs.cn" + "/blog/",
+				prefix:   "test.binacs.space" + "/blog/",
 				gitOwner: "binacs",
 				gitRepo:  "blog",
 				opt:      github.RepositoryContentGetOptions{Ref: "main"},
@@ -104,7 +104,7 @@ func TestBlogServiceImpl_URLSearch(t *testing.T) {
 				Config:   getNormalConfigWithBlogs(),
 				Logger:   log.NewNopLogger(),
 				instance: new(pastebin.MarkDownImpl),
-				prefix:   "test.binacs.cn" + "/blog/",
+				prefix:   "test.binacs.space" + "/blog/",
 				gitOwner: "binacs",
 				gitRepo:  "blog",
 				opt:      github.RepositoryContentGetOptions{Ref: "main"},
@@ -132,10 +132,9 @@ func TestBlogServiceImpl_URLSearch(t *testing.T) {
 			got, err := bs.URLSearch(tt.args.uri)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("BlogServiceImpl.URLSearch() error = %v, wantErr %v", err, tt.wantErr)
-				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				// t.Errorf("BlogServiceImpl.URLSearch() = %v, want %v", got, tt.want)
+				// 	t.Errorf("BlogServiceImpl.URLSearch() = %v, want %v", got, tt.want)
 			}
 		})
 	}

@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: binacs-cn
-  namespace: binacs-cn
+  name: binacs-space
+  namespace: binacs-space
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: binacs-cn
+      app: binacs-space
   template:
     metadata:
       labels:
-        app: binacs-cn
+        app: binacs-space
     spec:
       nodeSelector:
         kubernetes.io/os: linux
         labelName: master
       containers:
       - name: server
-        image: binacslee/binacs-cn:latest
+        image: binacslee/binacs-space:latest
         command: ["/bin/sh","-c","/work/server start --configFile /kubernetes/config.toml"]
         ports:
           - name: http
@@ -83,12 +83,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: binacs-cn-service
-  namespace: binacs-cn
+  name: binacs-space-service
+  namespace: binacs-space
 spec:
   type: ClusterIP
   selector:
-    app: binacs-cn
+    app: binacs-space
   ports:
   - name: http
     port: 80

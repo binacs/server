@@ -1,4 +1,9 @@
-# ChangeLog Of [binacs.cn](binacs.cn) Server
+# ChangeLog Of [binacs.space](binacs.space) Server
+
+## Version 3.0.0 [ 2024 ]
+
+binacs.space
+
 
 
 

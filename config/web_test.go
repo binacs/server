@@ -22,17 +22,17 @@ func TestWebConfig_GetDomain(t *testing.T) {
 			name: "noSSLRedirect",
 			fields: fields{
 				SSLRedirect: false,
-				Host:        "test.binacs.cn",
+				Host:        "test.binacs.space",
 			},
-			want: "http://test.binacs.cn",
+			want: "http://test.binacs.space",
 		},
 		{
 			name: "doSSLRedirect",
 			fields: fields{
 				SSLRedirect: true,
-				Host:        "test.binacs.cn",
+				Host:        "test.binacs.space",
 			},
-			want: "https://test.binacs.cn",
+			want: "https://test.binacs.space",
 		},
 	}
 	for _, tt := range tests {
