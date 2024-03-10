@@ -15,7 +15,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/go-xorm/xorm v0.7.9
 	github.com/golang/mock v1.6.0
-	github.com/golang/protobuf v1.5.3
+	github.com/golang/protobuf v1.5.4
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
