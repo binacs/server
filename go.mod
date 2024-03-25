@@ -12,7 +12,7 @@ require (
 	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-sql-driver/mysql v1.7.1
+	github.com/go-sql-driver/mysql v1.8.0
 	github.com/go-xorm/xorm v0.7.9
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.4
@@ -34,6 +34,7 @@ require (
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/abhinav/goldmark-mermaid v0.1.1 // indirect
 	github.com/binacsgo/graph v0.0.0-20220604094945-8cd8fcf6f414 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
