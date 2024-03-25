@@ -23,7 +23,7 @@ message & service
 ```shell
 go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-go get -u github.com/golang/protobuf/protoc-gen-go
+go get -u google.golang.org/protobuf/protoc-gen-go
 ```
 
 对于mac：
@@ -35,7 +35,7 @@ brew install protobuf
 出现：
 
 ```
-/Users/xxx/go/src/github.com/google/protobuf/src: warning: directory does not exist.
+/Users/xxx/go/src/github.com/protocolbuffers/protobuf/src: warning: directory does not exist.
 
 /Users/xxx/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis: warning: directory does not exist.
 ```
@@ -61,13 +61,13 @@ git clone https://github.com/grpc-ecosystem/grpc-gateway.git
 package package_name
 
 //generate grpc stub code
-//go:generate protoc -I. -I$GOPATH/src -I$GOPATH/src/github.com/google/protobuf/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc:. file-name.proto
+//go:generate protoc -I. -I$GOPATH/pkg/mod -I$GOPATH/pkg/mod/github.com/protocolbuffers/protobuf/src -I$GOPATH/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go-grpc_out=. file-name.proto
 
 //generate grpc gateway reverse proxy
-//go:generate protoc -I. -I$GOPATH/src -I$GOPATH/src/github.com/google/protobuf/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --grpc-gateway_out=logtostderr=true:. service.proto
+//go:generate protoc -I. -I$GOPATH/pkg/mod -I$GOPATH/pkg/mod/github.com/protocolbuffers/protobuf/src -I$GOPATH/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --grpc-gateway_out=logtostderr=true:. service.proto
 
 //generate grpc swagger definition
-//go:generate protoc -I. -I$GOPATH/src -I$GOPATH/src/github.com/google/protobuf/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:. service.proto
+//go:generate protoc -I. -I$GOPATH/pkg/mod -I$GOPATH/pkg/mod/github.com/protocolbuffers/protobuf/src -I$GOPATH/pkg/mod/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:. service.proto
 
 ```
 

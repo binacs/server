@@ -1,4 +1,4 @@
-FROM golang:1.19-alpine AS binacsGoBuild
+FROM golang:1.22-alpine AS binacsGoBuild
 
 COPY . /src
 
