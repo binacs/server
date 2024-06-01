@@ -52,7 +52,7 @@ const (
 					<a style="margin: 16px;" href="toys" target="_blank">TOYS</a>
 					<a style="margin: 16px;" href="blogs" target="_blank">BLOGS</a>
 					<a style="margin: 16px;" href="https://github.com/binacs" target="_blank">GITHUB</a>
-					<a style="margin: 16px;" href="mailto:binacs055@vip.qq.om">EMAIL</a>
+					<a style="margin: 16px;" href="mailto:bin646891055@gmail.com">EMAIL</a>
 					<a style="margin: 16px;" href="about" target="_blank">ABOUT</a>
 				</h6>
 			</div>
@@ -65,7 +65,7 @@ const (
 			<h1>ABOUT</h1>
 			<div class="section" style="height: 10vh;">
 				<div class="row">
-					<div class="col s12 grey-text text-darken-1">Blockchain and Cloud Native</div>
+					<div class="col s12 grey-text text-darken-1">Blockchain and Kubernetes</div>
 				</div>
 			</div>
 			<div style="font-size: 14px; height: 40vh;">
