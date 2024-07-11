@@ -21,7 +21,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/spf13/cobra v1.8.1
-	github.com/tencentyun/cos-go-sdk-v5 v0.7.52
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.54
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/unrolled/secure v1.14.0
 	go.uber.org/zap v1.27.0
