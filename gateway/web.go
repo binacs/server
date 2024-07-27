@@ -266,7 +266,7 @@ func (ws *WebServiceImpl) recentBlogs(c *gin.Context) {
 
 	f := func(blog types.Blog) string {
 		link := ws.Config.WebConfig.GetDomain() + "/blog/" + blog.Name
-		return fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a><br>", link, blog.Name)
+		return fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a><br>", link, blog.FormatName())
 	}
 
 	var ret string
