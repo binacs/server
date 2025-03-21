@@ -12,7 +12,7 @@ require (
 	github.com/binacsgo/trace v0.0.0-20201210143809-634ad7cf63f5
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/go-sql-driver/mysql v1.8.1
+	github.com/go-sql-driver/mysql v1.9.1
 	github.com/go-xorm/xorm v0.7.9
 	github.com/golang/mock v1.6.0
 	github.com/golang/protobuf v1.5.4
