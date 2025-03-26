@@ -1,7 +1,7 @@
 module github.com/binacs/server
 
 go 1.22
-toolchain go1.23.7
+toolchain go1.24.1
 
 require (
 	github.com/BurntSushi/toml v1.4.0
@@ -22,7 +22,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/spf13/cobra v1.8.1
-	github.com/tencentyun/cos-go-sdk-v5 v0.7.62
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.64
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/unrolled/secure v1.17.0
 	go.uber.org/zap v1.27.0
