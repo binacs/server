@@ -27,9 +27,9 @@ require (
 	github.com/unrolled/secure v1.17.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/net v0.38.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20241202173237-19429a94021a
-	google.golang.org/grpc v1.70.0
-	google.golang.org/protobuf v1.36.1
+	google.golang.org/genproto/googleapis/api v0.0.0-20250106144421-5f5ef82da422
+	google.golang.org/grpc v1.71.0
+	google.golang.org/protobuf v1.36.4
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	xorm.io/core v0.7.3
 )
@@ -75,7 +75,7 @@ require (
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	google.golang.org/genproto v0.0.0-20240318140521-94a12d6c2237 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241202173237-19429a94021a // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	xorm.io/builder v0.3.6 // indirect
