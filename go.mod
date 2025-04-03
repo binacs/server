@@ -4,7 +4,7 @@ go 1.22
 toolchain go1.24.1
 
 require (
-	github.com/BurntSushi/toml v1.4.0
+	github.com/BurntSushi/toml v1.5.0
 	github.com/binacsgo/inject v0.0.0-20220604135548-1c17b3b6c038
 	github.com/binacsgo/log v0.0.0-20200827012301-4f49b8c3150e
 	github.com/binacsgo/pastebin v0.0.0-20240831145258-cdc9db00595f
