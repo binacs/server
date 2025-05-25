@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS binacsGoBuild
+FROM golang:1.24-alpine AS binacsgobuild
 
 COPY . /src
 
@@ -10,6 +10,6 @@ RUN apk add --no-cache make git build-base && \
 
 FROM alpine
 
-COPY --from=binacsGoBuild /src/bin/server /src/test /work/
+COPY --from=binacsgobuild /src/bin/server /src/test /work/
 
-CMD ./work/server version
+CMD ["./work/server", "version"]
