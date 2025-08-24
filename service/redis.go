@@ -46,7 +46,6 @@ type RedisServiceImpl struct {
 	Config *config.Config `inject-name:"Config"`
 	Logger log.Logger     `inject-name:"RedisLogger"`
 	client *redis.Client
-	name   string
 	// state
 }
 
@@ -73,13 +72,11 @@ func (rs *RedisServiceImpl) checkLoop() {
 	defer timer.Stop()
 	for {
 		timer.Reset(dbCheckInterval)
-		select {
-		case <-timer.C:
-			if err := rs.Ping(); err != nil {
+		<-timer.C
+		if err := rs.Ping(); err != nil {
+			rs.Logger.Error("RedisServiceImpl checkLoop", "err", err)
+			if err = rs.buildClient(); err != nil {
 				rs.Logger.Error("RedisServiceImpl checkLoop", "err", err)
-				if err = rs.buildClient(); err != nil {
-					rs.Logger.Error("RedisServiceImpl checkLoop", "err", err)
-				}
 			}
 		}
 	}

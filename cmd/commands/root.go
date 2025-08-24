@@ -56,12 +56,14 @@ func initLogger() {
 	if !path.IsAbs(cfg.LogConfig.File) {
 		logpath = path.Join(cfg.WorkSpace, cfg.LogConfig.File)
 	}
+
 	hook := lumberjack.Logger{
 		Filename:   logpath,
-		MaxSize:    cfg.LogConfig.Maxsize,
+		MaxSize:    cfg.LogConfig.MaxSize,
 		MaxBackups: cfg.LogConfig.MaxBackups,
-		MaxAge:     cfg.LogConfig.Maxage,
-		Compress:   true,
+		MaxAge:     cfg.LogConfig.MaxAge,
+		Compress:   true, // Enable compression
+		LocalTime:  true, // Use local time
 	}
 
 	encoderConfig := zapcore.EncoderConfig{

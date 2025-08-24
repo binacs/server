@@ -6,15 +6,18 @@ import (
 	"time"
 )
 
+// ContextKey is a custom type for context keys to avoid collisions
+type ContextKey string
+
 const (
 	AccessTokenExpire  = int64(1 * 60)      // AccessTokenExpire time
 	RefreshTokenExpire = int64(1 * 24 * 60) // RefreshTokenExpire time
 
 	TokenType_Bearer = "Bearer" // TokenType_Bearer
 
-	AccessTokenContextKey  = "access_token"  // AccessTokenContextKey context key
-	RefreshTokenContextKey = "refresh_token" // RefreshTokenContextKey context key
-	AuthMethodName         = "MethodName"    // AuthMethodName
+	AccessTokenContextKey  = ContextKey("access_token")  // AccessTokenContextKey context key
+	RefreshTokenContextKey = ContextKey("refresh_token") // RefreshTokenContextKey context key
+	AuthMethodName         = "MethodName"                // AuthMethodName
 
 	// GrantType_ClientCredentials = "client_credentials"
 	// GrantType_RefreshToken      = "refresh_token"

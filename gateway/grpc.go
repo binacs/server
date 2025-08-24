@@ -4,12 +4,11 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
@@ -74,12 +73,12 @@ func (gs *GRPCServiceImpl) AfterInject() error {
 		grpc.Creds(gs.creds),
 		grpc.MaxRecvMsgSize(types.GrpcMsgSize),
 		grpc.MaxSendMsgSize(types.GrpcMsgSize),
-		grpc_middleware.WithUnaryServerChain(
+		grpc.ChainUnaryInterceptor(
 			grpc_ctxtags.UnaryServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
 			grpc_zap.UnaryServerInterceptor(gs.ZapLogger, opts...),
 			grpc_auth.UnaryServerInterceptor(gs.auth),
 		),
-		grpc_middleware.WithStreamServerChain(
+		grpc.ChainStreamInterceptor(
 			grpc_ctxtags.StreamServerInterceptor(grpc_ctxtags.WithFieldExtractor(grpc_ctxtags.CodeGenRequestFieldExtractor)),
 			grpc_zap.StreamServerInterceptor(gs.ZapLogger, opts...),
 			grpc_auth.StreamServerInterceptor(gs.auth),
@@ -180,12 +179,12 @@ func handlerFunc(gsrv *grpc.Server, gwmux http.Handler) http.Handler {
 }
 
 func tlsConfig(certPath, keyPath string) (*tls.Config, error) {
-	cert, err := ioutil.ReadFile(certPath)
+	cert, err := os.ReadFile(certPath)
 	if err != nil {
 		return nil, fmt.Errorf("Read TLS cert file %s, err: %v", certPath, err)
 	}
 
-	key, err := ioutil.ReadFile(keyPath)
+	key, err := os.ReadFile(keyPath)
 	if err != nil {
 		return nil, fmt.Errorf("Read TLS key file %s, err: %v", keyPath, err)
 	}

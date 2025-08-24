@@ -19,10 +19,11 @@ type NodeService interface {
 
 // NodeServiceImpl the implement of node service
 type NodeServiceImpl struct {
-	Config  *config.Config `inject-name:"Config"`
-	Logger  log.Logger     `inject-name:"NodeLogger"`
-	WebSvc  WebService     `inject-name:"WebService"`
-	GRPCSvc GRPCService    `inject-name:"GRPCService"`
+	Config     *config.Config    `inject-name:"Config"`
+	Logger     log.Logger        `inject-name:"NodeLogger"`
+	WebSvc     WebService        `inject-name:"WebService"`
+	GRPCSvc    GRPCService       `inject-name:"GRPCService"`
+	LogCleaner LogCleanerService `inject-name:"LogCleanerService"`
 }
 
 // AfterInject do inject
@@ -34,12 +35,21 @@ func (ns *NodeServiceImpl) AfterInject() error {
 func (ns *NodeServiceImpl) OnStart() error {
 	ns.Logger.Info("Node Service Onstart")
 
+	// Start log cleanup service
+	if err := ns.LogCleaner.Start(); err != nil {
+		ns.Logger.Error("Failed to start log cleanup service", "error", err)
+	} else {
+		ns.Logger.Info("Log cleanup service started successfully")
+	}
+
 	if ns.Config.PerfConfig.HttpPort != config.NoPerf {
 		// Go Pprof
 		{
 			ns.Logger.Info("Perf Pprof", "HttpPort", ns.Config.PerfConfig.HttpPort)
 			go func() {
-				http.ListenAndServe("0.0.0.0:"+ns.Config.PerfConfig.HttpPort, nil)
+				if err := http.ListenAndServe("0.0.0.0:"+ns.Config.PerfConfig.HttpPort, nil); err != nil {
+					ns.Logger.Error("Pprof server failed", "error", err)
+				}
 			}()
 		}
 		// Go Trace
@@ -48,8 +58,11 @@ func (ns *NodeServiceImpl) OnStart() error {
 			if f, err := os.Create("trace.out"); err != nil {
 				ns.Logger.Error("Perf Trace", "err", err)
 			} else {
-				trace.Start(f)
-				defer trace.Stop()
+				if err := trace.Start(f); err != nil {
+					ns.Logger.Error("Trace start failed", "error", err)
+				} else {
+					defer trace.Stop()
+				}
 			}
 		}
 	}
@@ -58,26 +71,24 @@ func (ns *NodeServiceImpl) OnStart() error {
 	var waiter sync.WaitGroup
 	if ns.Config.Mode == config.ALL || ns.Config.Mode == config.WEB {
 		waiter.Add(1)
-		go func(wg *sync.WaitGroup) error {
+		go func(wg *sync.WaitGroup) {
 			defer wg.Done()
 			if err := ns.WebSvc.Serve(); err != nil {
 				ns.Logger.Error("Web Serve Done", "err", err)
-				return err
+			} else {
+				ns.Logger.Info("Node Service WebSvc")
 			}
-			ns.Logger.Info("Node Service WebSvc")
-			return nil
 		}(&waiter)
 	}
 	if ns.Config.Mode == config.ALL || ns.Config.Mode == config.GRPC {
 		waiter.Add(1)
-		go func(wg *sync.WaitGroup) error {
+		go func(wg *sync.WaitGroup) {
 			defer wg.Done()
 			if err := ns.GRPCSvc.Serve(); err != nil {
 				ns.Logger.Error("GRPC Serve Done", "err", err)
-				return err
+			} else {
+				ns.Logger.Info("Node Service GRPCSvc")
 			}
-			ns.Logger.Info("Node Service GRPCSvc")
-			return nil
 		}(&waiter)
 	}
 

@@ -67,23 +67,21 @@ func (ms *MysqlServiceImpl) checkLoop() {
 	defer timer.Stop()
 	for {
 		timer.Reset(dbCheckInterval)
-		select {
-		case <-timer.C:
-			if err := ms.EngineG.Ping(); err != nil {
-				ms.Logger.Error("MysqlServiceImpl checkLoop Ping", "err", err)
-				if err := ms.buildClient(); err != nil {
-					ms.Logger.Error("MysqlServiceImpl checkLoop buildClient", "err", err)
-				} else {
-					ms.Logger.Error("MysqlServiceImpl checkLoop buildClient success")
-				}
+		<-timer.C
+		if err := ms.EngineG.Ping(); err != nil {
+			ms.Logger.Error("MysqlServiceImpl checkLoop Ping", "err", err)
+			if err := ms.buildClient(); err != nil {
+				ms.Logger.Error("MysqlServiceImpl checkLoop buildClient", "err", err)
 			} else {
-				ms.Logger.Info("MysqlServiceImpl checkLoop Ping success")
+				ms.Logger.Error("MysqlServiceImpl checkLoop buildClient success")
 			}
-			if err := ms.Sync2(); err != nil {
-				ms.Logger.Error("MysqlServiceImpl checkLoop Sync2", "err", err)
-			} else {
-				ms.Logger.Error("MysqlServiceImpl checkLoop Sync2 success")
-			}
+		} else {
+			ms.Logger.Info("MysqlServiceImpl checkLoop Ping success")
+		}
+		if err := ms.Sync2(); err != nil {
+			ms.Logger.Error("MysqlServiceImpl checkLoop Sync2", "err", err)
+		} else {
+			ms.Logger.Error("MysqlServiceImpl checkLoop Sync2 success")
 		}
 	}
 }

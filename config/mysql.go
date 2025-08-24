@@ -30,7 +30,7 @@ func defaultMysqlConfig() MysqlConfig {
 // GenerateDSN get DSNs
 func (mc MysqlConfig) GenerateDSN() []string {
 	num := len(mc.Conns)
-	DSN := make([]string, num, num)
+	DSN := make([]string, num)
 	for idx, sigCon := range mc.Conns {
 		DSN[idx] = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 			sigCon.User, sigCon.Password, sigCon.Host, sigCon.Port, sigCon.DB)

@@ -1,0 +1,14 @@
+name: "Issue Labeler"
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+jobs:
+  auto-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Label Issue
+        uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

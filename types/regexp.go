@@ -5,7 +5,6 @@ import (
 )
 
 var (
-	regNumber, _     = regexp.Compile("^[0-9]+$")
 	regPhone, _      = regexp.Compile(`^1[\d]{10}$`)
 	regEmail, _      = regexp.Compile(`\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`)
 	regVerifyCode, _ = regexp.Compile(`^[a-zA-Z0-9]{6}$`)

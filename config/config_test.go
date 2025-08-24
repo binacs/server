@@ -58,9 +58,9 @@ func getNormalConfig() *Config {
 		LogConfig: LogConfig{
 			File:       "./server.log",
 			Level:      "debug",
-			Maxsize:    500,
-			MaxBackups: 100,
-			Maxage:     1000,
+			MaxSize:    100,
+			MaxBackups: 10,
+			MaxAge:     30,
 		},
 		RedisConfig: RedisConfig{
 			Network:      "tcp",

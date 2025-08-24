@@ -300,7 +300,7 @@ func (ws *WebServiceImpl) apiCryptoEncrypto(c *gin.Context) {
 	tp := c.Request.FormValue("type")
 
 	span := ws.TraceSvc.FromGinContext(c, "CryptoSvc CryptoEncrypt")
-	rsp, err := ws.CryptoSvc.CryptoEncrypt(nil, &api_crypto.CryptoEncryptReq{
+	rsp, err := ws.CryptoSvc.CryptoEncrypt(context.TODO(), &api_crypto.CryptoEncryptReq{
 		Algorithm: tp,
 		PlainText: text,
 	})
@@ -317,7 +317,7 @@ func (ws *WebServiceImpl) apiCryptoDecrypto(c *gin.Context) {
 	tp := c.Request.FormValue("type")
 
 	span := ws.TraceSvc.FromGinContext(c, "CryptoSvc CryptoDecrypto")
-	rsp, err := ws.CryptoSvc.CryptoDecrypt(nil, &api_crypto.CryptoDecryptReq{
+	rsp, err := ws.CryptoSvc.CryptoDecrypt(context.TODO(), &api_crypto.CryptoDecryptReq{
 		Algorithm:   tp,
 		EncryptText: text,
 	})
@@ -334,7 +334,7 @@ func (ws *WebServiceImpl) apiTinyURLEncode(c *gin.Context) {
 	text := c.Request.FormValue("text")
 
 	span := ws.TraceSvc.FromGinContext(c, "TinyURLSvc TinyURLEncode")
-	rsp, err := ws.TinyURLSvc.TinyURLEncode(nil, &api_tinyurl.TinyURLEncodeReq{
+	rsp, err := ws.TinyURLSvc.TinyURLEncode(context.TODO(), &api_tinyurl.TinyURLEncodeReq{
 		Url: text,
 	})
 	span.Finish()
@@ -349,7 +349,7 @@ func (ws *WebServiceImpl) apiTinyURLDecode(c *gin.Context) {
 	text := c.Request.FormValue("text")
 
 	span := ws.TraceSvc.FromGinContext(c, "TinyURLSvc TinyURLDecode")
-	rsp, err := ws.TinyURLSvc.TinyURLDecode(nil, &api_tinyurl.TinyURLDecodeReq{
+	rsp, err := ws.TinyURLSvc.TinyURLDecode(context.TODO(), &api_tinyurl.TinyURLDecodeReq{
 		Turl: text,
 	})
 	span.Finish()
@@ -363,7 +363,7 @@ func (ws *WebServiceImpl) apiTinyURLDecode(c *gin.Context) {
 // -------- PasteBin Service --------
 func (ws *WebServiceImpl) apiPastebinSubmit(c *gin.Context) {
 	span := ws.TraceSvc.FromGinContext(c, "PastebinSvc Submit")
-	rsp, err := ws.PastebinSvc.PastebinSubmit(nil, &api_pastebin.PastebinSubmitReq{
+	rsp, err := ws.PastebinSvc.PastebinSubmit(context.TODO(), &api_pastebin.PastebinSubmitReq{
 		Author: c.Request.FormValue("poster"),
 		Syntax: c.Request.FormValue("syntax"),
 		Text:   c.Request.FormValue("content"),

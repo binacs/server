@@ -6,6 +6,7 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/binacsgo/log"
 
@@ -45,7 +46,7 @@ func (cs *CryptoServiceImpl) Register(ctx context.Context, gsrv *grpc.Server, gw
 
 func (cs *CryptoServiceImpl) connect() {
 	for svc, addr := range cs.Config.WebConfig.K8sService {
-		conn, err := grpc.Dial(addr, grpc.WithInsecure())
+		conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			cs.Logger.Error("CryptoServiceImpl: Dial", "svc", svc, "err", err)
 			continue

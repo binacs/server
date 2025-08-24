@@ -32,5 +32,9 @@ func GrpcMatadataSetResultFail(ctx context.Context, rsp interface{}) {
 	if err != nil {
 		return
 	}
-	grpc.SendHeader(ctx, metadata.Pairs(GrpcMatadataResult_Key, string(data)))
+	if err := grpc.SendHeader(ctx, metadata.Pairs(GrpcMatadataResult_Key, string(data))); err != nil {
+		// Log error if needed, but continue execution
+		// This is a debug function, so we don't want to fail the main flow
+		_ = err // Suppress unused variable warning
+	}
 }

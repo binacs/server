@@ -1,7 +1,6 @@
 package service
 
 import (
-	"reflect"
 	"testing"
 
 	"github.com/binacs/server/config"
@@ -70,8 +69,10 @@ func TestBlogServiceImpl_RecentBlogs(t *testing.T) {
 				t.Errorf("BlogServiceImpl.RecentBlogs() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				// t.Errorf("BlogServiceImpl.RecentBlogs() = %v, want %v", got, tt.want)
+			// Skip deep comparison for integration tests that call real GitHub API
+			// The actual result depends on the current state of the repository
+			if len(got) == 0 && !tt.wantErr {
+				t.Logf("RecentBlogs returned empty result, this might be expected for integration tests")
 			}
 		})
 	}
@@ -133,8 +134,10 @@ func TestBlogServiceImpl_URLSearch(t *testing.T) {
 			if (err != nil) != tt.wantErr {
 				t.Errorf("BlogServiceImpl.URLSearch() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				// 	t.Errorf("BlogServiceImpl.URLSearch() = %v, want %v", got, tt.want)
+			// Skip deep comparison for integration tests that call real GitHub API
+			// The actual result depends on the current state of the repository
+			if got.Name == "" && !tt.wantErr {
+				t.Logf("URLSearch returned empty result, this might be expected for integration tests")
 			}
 		})
 	}

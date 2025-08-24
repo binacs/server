@@ -41,15 +41,22 @@ func getMockGRPCSvcRetErr(ctrl *gomock.Controller) *mock_gateway.MockGRPCService
 	return mock
 }
 
+func getMockLogCleanerRetNil(ctrl *gomock.Controller) *mock_gateway.MockLogCleanerService {
+	mock := mock_gateway.NewMockLogCleanerService(ctrl)
+	mock.EXPECT().Start().Return(nil)
+	return mock
+}
+
 func TestNodeServiceImpl_OnStart(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	type fields struct {
-		Config  *config.Config
-		Logger  log.Logger
-		WebSvc  WebService
-		GRPCSvc GRPCService
+		Config     *config.Config
+		Logger     log.Logger
+		WebSvc     WebService
+		GRPCSvc    GRPCService
+		LogCleaner LogCleanerService
 	}
 	tests := []struct {
 		name    string
@@ -62,9 +69,10 @@ func TestNodeServiceImpl_OnStart(t *testing.T) {
 				Config: &config.Config{
 					Mode: config.ALL,
 				},
-				Logger:  log.NewNopLogger(),
-				WebSvc:  getMockWebSvcRetNil(ctrl),
-				GRPCSvc: getMockGRPCSvcRetNil(ctrl),
+				Logger:     log.NewNopLogger(),
+				WebSvc:     getMockWebSvcRetNil(ctrl),
+				GRPCSvc:    getMockGRPCSvcRetNil(ctrl),
+				LogCleaner: getMockLogCleanerRetNil(ctrl),
 			},
 			wantErr: false,
 		},
@@ -74,8 +82,9 @@ func TestNodeServiceImpl_OnStart(t *testing.T) {
 				Config: &config.Config{
 					Mode: config.WEB,
 				},
-				Logger: log.NewNopLogger(),
-				WebSvc: getMockWebSvcRetErr(ctrl),
+				Logger:     log.NewNopLogger(),
+				WebSvc:     getMockWebSvcRetErr(ctrl),
+				LogCleaner: getMockLogCleanerRetNil(ctrl),
 			},
 			// TODO catch error by channel
 			// wantErr: true,
@@ -87,8 +96,9 @@ func TestNodeServiceImpl_OnStart(t *testing.T) {
 				Config: &config.Config{
 					Mode: config.GRPC,
 				},
-				Logger:  log.NewNopLogger(),
-				GRPCSvc: getMockGRPCSvcRetErr(ctrl),
+				Logger:     log.NewNopLogger(),
+				GRPCSvc:    getMockGRPCSvcRetErr(ctrl),
+				LogCleaner: getMockLogCleanerRetNil(ctrl),
 			},
 			// TODO catch error by channel
 			// wantErr: true,
@@ -98,10 +108,11 @@ func TestNodeServiceImpl_OnStart(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ns := &NodeServiceImpl{
-				Config:  tt.fields.Config,
-				Logger:  tt.fields.Logger,
-				WebSvc:  tt.fields.WebSvc,
-				GRPCSvc: tt.fields.GRPCSvc,
+				Config:     tt.fields.Config,
+				Logger:     tt.fields.Logger,
+				WebSvc:     tt.fields.WebSvc,
+				GRPCSvc:    tt.fields.GRPCSvc,
+				LogCleaner: tt.fields.LogCleaner,
 			}
 			if err := ns.OnStart(); (err != nil) != tt.wantErr {
 				t.Errorf("NodeServiceImpl.OnStart() error = %v, wantErr %v", err, tt.wantErr)

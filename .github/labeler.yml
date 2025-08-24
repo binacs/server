@@ -1,0 +1,86 @@
+# Issue Labeler Bot Configuration
+# This bot will automatically label issues based on their content
+
+# Bug reports
+bug:
+  - "bug"
+  - "error"
+  - "crash"
+  - "exception"
+  - "fail"
+  - "broken"
+  - "doesn't work"
+  - "not working"
+  - "issue"
+  - "problem"
+
+# Feature requests
+enhancement:
+  - "feature"
+  - "enhancement"
+  - "improvement"
+  - "suggestion"
+  - "proposal"
+  - "request"
+  - "add"
+  - "new"
+
+# Documentation
+documentation:
+  - "documentation"
+  - "docs"
+  - "readme"
+  - "guide"
+  - "tutorial"
+  - "example"
+  - "help"
+
+# Good first issues for new contributors
+good first issue:
+  - "good first issue"
+  - "beginner"
+  - "easy"
+  - "starter"
+  - "first-timer"
+  - "newbie"
+
+# Help wanted
+help wanted:
+  - "help wanted"
+  - "help"
+  - "support"
+  - "question"
+  - "discussion"
+
+# High priority
+high priority:
+  - "urgent"
+  - "critical"
+  - "high priority"
+  - "important"
+  - "blocker"
+  - "security"
+
+# Low priority
+low priority:
+  - "low priority"
+  - "nice to have"
+  - "minor"
+  - "trivial"
+
+# Performance related
+performance:
+  - "performance"
+  - "slow"
+  - "speed"
+  - "optimization"
+  - "memory"
+  - "cpu"
+
+# Security related
+security:
+  - "security"
+  - "vulnerability"
+  - "exploit"
+  - "attack"
+  - "cve"

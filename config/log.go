@@ -4,16 +4,16 @@ package config
 type LogConfig struct {
 	File       string `toml:"File"`
 	Level      string `toml:"Level"`
-	Maxsize    int    `toml:"Maxsize"` //unit is M
+	MaxSize    int    `toml:"MaxSize"` //unit is M
 	MaxBackups int    `toml:"MaxBackups"`
-	Maxage     int    `toml:"Maxage"`
+	MaxAge     int    `toml:"MaxAge"`
 }
 
 func defaultLogConfig() LogConfig {
 	return LogConfig{
 		File:       "log/server.log",
-		Maxsize:    500,
-		MaxBackups: 100,
-		Maxage:     1000,
+		MaxSize:    100, // 100MB
+		MaxBackups: 10,  // backups
+		MaxAge:     30,  // 30 days
 	}
 }
