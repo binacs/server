@@ -4,6 +4,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
 
     <style type="text/css">
+        :root {
+            --primary-color: #0075c9;
+            --primary-light: #009bdf;
+            --secondary-color: #6ea8ee;
+            --accent-color: #f5f5f5;
+            --text-primary: #404040;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0,0,0,0.08);
+            --shadow-medium: rgba(0,0,0,0.12);
+            --shadow-primary: rgba(0,117,201,0.3);
+        }
+
         * {
             font-weight: 300 !important;
         }
@@ -13,29 +26,37 @@
             min-height: 100vh;
             flex-direction: column;
             font-size: 14px;
-            background-color: #FFFFFF;
-            color: #404040;
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            color: var(--text-primary);
             font-family: "Roboto Mono", monospace, "Open Sans", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", "sans-serif";
+            margin: 0;
+            padding: 0;
         }
+        
         main {
             flex: 1 0 auto;
+            min-height: calc(100vh - 60px);
         }
+        
         strong {
             font-weight: 500 !important;
         }
 
         p {
             font-size: 15px;
+            line-height: 1.6;
         }
 
         a:link {
-            color: #0075c9;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
         }
         a:visited {
-            color: #0075c9;
+            color: var(--primary-color);
         }
         a:hover {
-            color: #009bdf;
+            color: var(--primary-light);
+            transform: translateY(-1px);
         }
         a {
             text-decoration: none;
@@ -44,21 +65,33 @@
 
         h1 {
             font-size: 22px !important;
+            color: var(--text-primary);
+            margin-bottom: 20px;
         }
         h2 {
             font-size: 21px !important;
+            color: var(--text-primary);
+            margin-bottom: 18px;
         }
         h3 {
             font-size: 20px !important;
+            color: var(--text-primary);
+            margin-bottom: 16px;
         }
         h4 {
             font-size: 19px !important;
+            color: var(--text-primary);
+            margin-bottom: 14px;
         }
         h5 {
             font-size: 18px !important;
+            color: var(--text-primary);
+            margin-bottom: 12px;
         }
         h6 {
             font-size: 17px !important;
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
         ul:not(.browser-default)>li {
@@ -66,30 +99,74 @@
             padding-left: 8px !important;
             list-style-type: disc !important;
         }
+        
         blockquote {
-            border-left: 5px solid #6ea8ee !important;
+            border-left: 5px solid var(--secondary-color) !important;
+            background: var(--accent-color);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
         }
+        
         pre {
             display: block;
-            background: none;
+            background: var(--accent-color);
             white-space: pre;
             -webkit-overflow-scrolling: touch;
             overflow-x: scroll;
             max-width: 100%;
             min-width: 100px;
-            padding: 1em;
+            padding: 1.5em;
             tab-size: 4;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         button {
             background-color: transparent;
             border: 0;
+            transition: all 0.3s ease;
         }
 
         .container img {
             max-width: 100%;
             height: auto;
             display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px var(--shadow-light);
+        }
+
+        /* 新增：现代化卡片样式 */
+        .card {
+            border-radius: 12px !important;
+            box-shadow: 0 4px 16px var(--shadow-light) !important;
+            border: 1px solid var(--border-color) !important;
+            transition: all 0.3s ease !important;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow-medium) !important;
+        }
+
+
+
+        /* 新增：响应式优化 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            h1 { font-size: 20px !important; }
+            h2 { font-size: 19px !important; }
+            h3 { font-size: 18px !important; }
+        }
+
+        /* 修复：确保卡片内容正确显示 */
+        .card-content {
+            padding: 20px !important;
         }
     </style>
     <!-- CSS  -->

@@ -8,22 +8,21 @@
     <title>{{.Title}}</title>
     <!-- TODO 页面主体  -->
     <!-- ================== Body 渲染起始 ================== -->
-	<div class="container valign-wrapper">
+	<div class="container page-container">
         <div class="section" style="width: 100%;">
-            <div class="section center valign" style="width: 100%;">
+            <div class="section center" style="width: 100%; margin-bottom: 40px;">
                 <h1><a href={{.OriginURL}}>{{.Name}}</a></h1>
             </div>
             <div class="section" style="width: 100%;">
-                <!-- <div class="section center" style="height: 80vh;"> -->
-                <div class="section" style="height: 80vh;">
-                    <div class="row card">
-                        <div class="col s12" style="height: 5vh"></div>
-                        <div class="col s1"></div>
-                        <div class="col s10">
-                            {{.Content}}
+                <div class="row">
+                    <div class="col s12 m10 offset-m1">
+                        <div class="card" style="border-radius: 16px; padding: 20px;">
+                            <div class="card-content">
+                                <div class="section" style="min-height: 60vh;">
+                                    {{.Content}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col s1"></div>
-                        <div class="col s12" style="height: 5vh"></div>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ Host     = "server.grpc.io"            # for test
 [WebConfig]
 HttpPort    = "80"
 HttpsPort   = "443"
-SSLRedirect = true
+SSLRedirect = false
 TmplPath    = "/work/template/"
 CertPath    = "/work/tls/server.crt"
 KeyPath     = "/work/tls/server.key"

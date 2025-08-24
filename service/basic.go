@@ -189,7 +189,7 @@ const (
 									$('#enc_source').val(data);
 								},
 								error: function () {
-									alert("error!");p_
+									alert("error!");
 								}
 							})
 						}
@@ -304,7 +304,7 @@ const (
 							</div>
 							<div class="row">
 								<div class="input-field col s12">
-									<textarea id="sub_content" class="materialize-textarea"></textarea>
+									<textarea id="sub_content" class="materialize-textarea" style="min-height: 50px; max-height: 400px; overflow-y: auto; resize: vertical;"></textarea>
 									<label for="sub_content">Content</label>
 								</div>
 							</div>
