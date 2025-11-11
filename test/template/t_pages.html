@@ -15,21 +15,21 @@
                 <div class="section" style="margin-bottom: 30px;">
                     <div class="row">
                         <div class="col s12">
-                            <div class="card-panel" style="background: var(--accent-color); border-radius: 12px; margin: 20px 0;">
+                            <div class="card-panel" style="background-color: transparent; box-shadow: none; border-radius: 12px; margin: 20px 0;">
                                 <div class="row grey-text text-darken-1" style="margin-bottom: 15px;">
                                     <div class="col s12 center">Render using Markdown syntax by default</div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s12 m4 center">
-                                        <i class="material-icons" style="color: var(--primary-color); margin-right: 8px;">person</i>
+                                    <div class="col s12 m4 center" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                                        <i class="material-icons" style="color: var(--primary-color);">person</i>
                                         <strong>Poster:</strong> {{.Poster}}
                                     </div>
-                                    <div class="col s12 m4 center">
-                                        <i class="material-icons" style="color: var(--primary-color); margin-right: 8px;">code</i>
+                                    <div class="col s12 m4 center" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                                        <i class="material-icons" style="color: var(--primary-color);">code</i>
                                         <strong>Syntax:</strong> {{.Syntax}}
                                     </div>
-                                    <div class="col s12 m4 center">
-                                        <i class="material-icons" style="color: var(--primary-color); margin-right: 8px;">schedule</i>
+                                    <div class="col s12 m4 center" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                                        <i class="material-icons" style="color: var(--primary-color);">schedule</i>
                                         <strong>Created:</strong> {{.CreateAt}}
                                     </div>
                                 </div>

@@ -176,8 +176,10 @@ func (ws *WebServiceImpl) redirect(c *gin.Context) {
 	span := ws.TraceSvc.FromGinContext(c, "TinyURLSvc URLSearch")
 	rsp, err := ws.TinyURLSvc.URLSearch(c.Param("turl"))
 	span.Finish()
-	if err != nil {
+	if err != nil || rsp == "" {
 		ws.Logger.Error("WebServiceImpl redirect", "URLSearch err", err, "turl", c.Param("turl"))
+		c.String(http.StatusNotFound, "TinyURL not found")
+		return
 	}
 
 	c.Redirect(http.StatusMovedPermanently, rsp)
@@ -187,12 +189,13 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 	span := ws.TraceSvc.FromGinContext(c, "PastebinSvc URLSearch")
 	rsp, err := ws.PastebinSvc.URLSearch(c.Param("turl"))
 	span.Finish()
-	if err != nil {
+	if err != nil || rsp == nil {
 		ws.Logger.Error("WebServiceImpl pages", "URLSearch err", err, "turl", c.Param("turl"))
 		c.HTML(http.StatusOK, "global", gin.H{
 			"Title": "binacs.space - Pages",
-			"Body":  template.HTML(err.Error()),
+			"Body":  template.HTML("Page not found or internal error"),
 		})
+		return
 	}
 
 	span = ws.TraceSvc.FromGinContext(c, "PastebinSvc Parse")
