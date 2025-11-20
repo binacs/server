@@ -1,6 +1,6 @@
 module github.com/binacs/server
 
-go 1.24
+go 1.24.0
 
 require (
 	github.com/BurntSushi/toml v1.5.0
@@ -25,7 +25,7 @@ require (
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/unrolled/secure v1.17.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/net v0.43.0
+	golang.org/x/net v0.47.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250707201910-8d1bb00bc6a7
 	google.golang.org/grpc v1.75.0
 	google.golang.org/protobuf v1.36.8
@@ -71,9 +71,9 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
-	golang.org/x/crypto v0.41.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	google.golang.org/genproto v0.0.0-20240318140521-94a12d6c2237 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
