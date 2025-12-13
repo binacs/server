@@ -293,13 +293,18 @@ const (
 					<div class="row">
 						<form class="col s12" name="pasteForm">
 							<div class="row">
-								<div class="input-field col s6">
-									<input id="sub_poster" type="text" id="sub_poster">
+								<div class="input-field col s4">
+									<input id="sub_poster" type="text">
 									<label for="sub_poster">Poster</label>
 								</div>
-								<div class="input-field col s6">
+								<div class="input-field col s4">
 									<input id="sub_syntax" type="text">
 									<label for="sub_syntax">Syntax</label>
+								</div>
+								<div class="input-field col s4">
+									<input id="sub_password" type="password" autocomplete="new-password">
+									<label for="sub_password">Password (Optional)</label>
+									<span class="helper-text">Leave empty for public access</span>
 								</div>
 							</div>
 							<div class="row">
@@ -319,7 +324,11 @@ const (
 					</div>
 
 					<script type="text/javascript">
-						M.textareaAutoResize($('#sub_content'));
+						$(document).ready(function() {
+							if (typeof M !== 'undefined') {
+								M.textareaAutoResize($('#sub_content'));
+							}
+						});
 						function paste_submit() {
 							$.ajax({
 								'url': '/api/pastebin/submit',
@@ -327,6 +336,7 @@ const (
 									"poster": $('#sub_poster').val(),
 									"syntax": $('#sub_syntax').val(),
 									"content": $('#sub_content').val(),
+									"password": $('#sub_password').val(),
 								},
 								'type': 'post',
 								'dataType': "text",

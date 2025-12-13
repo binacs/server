@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-xorm/xorm"
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/opentracing/opentracing-go"
 	"google.golang.org/grpc"
 
@@ -54,6 +54,7 @@ type PastebinService interface {
 	URLSearch(turl string) (*table.Page, error)
 	Parse(content, syntax string) string
 	RecentPosts() ([]table.Page, error)
+	VerifyPassword(page *table.Page, password string) bool
 }
 
 // BlogService blog service

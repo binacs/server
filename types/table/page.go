@@ -9,6 +9,7 @@ type Page struct {
 	Syntax     string        `xorm:"syntax not null comment('Syntax') VARCHAR(64)"`
 	Content    string        `xorm:"content not null comment('Content') TEXT(65535)"`
 	TinyURL    string        `xorm:"tinyurl not null comment('TinyURL') VARCHAR(64)"`
+	Password   string        `xorm:"password default '' comment('Password Hash') VARCHAR(128)"`
 	Expiration time.Duration `xorm:"expir not null comment('Expiration') BIGINT(30)"`
 
 	CreatedAt time.Time `xorm:"ctime not null default CURRENT_TIMESTAMP comment('创建时间') TIMESTAMP created"`

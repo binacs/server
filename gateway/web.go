@@ -156,7 +156,7 @@ func (ws *WebServiceImpl) setRedirectRouter(r *gin.RouterGroup) {
 }
 
 func (ws *WebServiceImpl) setPagesRouter(r *gin.RouterGroup) {
-	r.GET("/:turl", ws.pages)
+	r.Any("/:turl", ws.pages)
 }
 
 func (ws *WebServiceImpl) setBlogsRouter(r *gin.RouterGroup) {
@@ -198,17 +198,47 @@ func (ws *WebServiceImpl) pages(c *gin.Context) {
 		return
 	}
 
+	// Security check: if page has password, must verify before showing content
+	if rsp.Password != "" {
+		// Handle POST request (password verification)
+		if c.Request.Method == http.MethodPost {
+			password := c.Request.FormValue("password")
+			if !ws.PastebinSvc.VerifyPassword(rsp, password) {
+				// Password incorrect, show error
+				c.HTML(http.StatusOK, "pages", gin.H{
+					"Title":        "binacs.space - Pages",
+					"TinyURL":      rsp.TinyURL,
+					"NeedPassword": true,
+					"Error":        "Incorrect password. Please try again.",
+				})
+				return
+			}
+			// Password correct, fall through to show content
+		} else {
+			// GET or other methods: password protected, show password input form
+			c.HTML(http.StatusOK, "pages", gin.H{
+				"Title":        "binacs.space - Pages",
+				"TinyURL":      rsp.TinyURL,
+				"NeedPassword": true,
+				"Error":        "",
+			})
+			return
+		}
+	}
+
+	// No password or password verified, show content
 	span = ws.TraceSvc.FromGinContext(c, "PastebinSvc Parse")
 	body := ws.PastebinSvc.Parse(rsp.Content, rsp.Syntax)
 	span.Finish()
 
 	c.HTML(http.StatusOK, "pages", gin.H{
-		"Title":    "binacs.space - Pages",
-		"TinyURL":  rsp.TinyURL,
-		"Poster":   rsp.Poster,
-		"Syntax":   rsp.Syntax,
-		"CreateAt": rsp.CreatedAt,
-		"Content":  template.HTML(body),
+		"Title":        "binacs.space - Pages",
+		"TinyURL":      rsp.TinyURL,
+		"Poster":       rsp.Poster,
+		"Syntax":       rsp.Syntax,
+		"CreateAt":     rsp.CreatedAt,
+		"Content":      template.HTML(body),
+		"NeedPassword": false,
 	})
 }
 
@@ -367,9 +397,10 @@ func (ws *WebServiceImpl) apiTinyURLDecode(c *gin.Context) {
 func (ws *WebServiceImpl) apiPastebinSubmit(c *gin.Context) {
 	span := ws.TraceSvc.FromGinContext(c, "PastebinSvc Submit")
 	rsp, err := ws.PastebinSvc.PastebinSubmit(context.TODO(), &api_pastebin.PastebinSubmitReq{
-		Author: c.Request.FormValue("poster"),
-		Syntax: c.Request.FormValue("syntax"),
-		Text:   c.Request.FormValue("content"),
+		Author:   c.Request.FormValue("poster"),
+		Syntax:   c.Request.FormValue("syntax"),
+		Text:     c.Request.FormValue("content"),
+		Password: c.Request.FormValue("password"),
 	})
 	span.Finish()
 	if err != nil {

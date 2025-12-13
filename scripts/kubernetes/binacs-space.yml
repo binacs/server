@@ -52,10 +52,8 @@ spec:
       - name: mysql
         image: mysql:latest
         args:
-          - '--default-authentication-plugin=mysql_native_password'
           - '--character-set-server=utf8mb4'
           - '--collation-server=utf8mb4_unicode_ci'
-          - '--user=root'
         env:
           - name: MYSQL_DATABASE
             value: testdb

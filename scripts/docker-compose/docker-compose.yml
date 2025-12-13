@@ -1,5 +1,3 @@
-version: '3.1'
-
 services:
   server_dc:
     container_name: server_dc
@@ -23,9 +21,8 @@ services:
 
   mysql_dc:
     container_name: mysql_dc
-    image: mysql
+    image: mysql:latest
     command: [
-      '--default_authentication_plugin=mysql_native_password',
       '--character-set-server=utf8mb4',
       '--collation-server=utf8mb4_unicode_ci'
     ]

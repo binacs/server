@@ -23,6 +23,7 @@ message PastebinSubmitReq {
     string author = 1;
     string syntax = 2;
     string text = 3;
+    string password = 4;  // Optional password for protecting the pastebin
 }
 
 message PastebinSubmitResp {

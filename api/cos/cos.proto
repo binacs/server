@@ -8,7 +8,7 @@ import "google/api/annotations.proto";
 service Cos {
     rpc CosBucketURL(CosBucketURLReq) returns (CosBucketURLResp) {
         option (google.api.http) = {
-            post: "/cos/put"
+            post: "/cos/bucketurl"
             body: "*"
         };
     };

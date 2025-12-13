@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"strconv"
 	"time"
 
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
 	"github.com/binacsgo/log"
@@ -55,22 +57,47 @@ func (ps *PastebinServiceImpl) Register(ctx context.Context, gsrv *grpc.Server, 
 	return nil
 }
 
+// hashPassword hashes the password using SHA256
+func (ps *PastebinServiceImpl) hashPassword(password string) string {
+	if password == "" {
+		return ""
+	}
+	hash := sha256.Sum256([]byte(password))
+	return hex.EncodeToString(hash[:])
+}
+
+// verifyPassword verifies if the provided password matches the stored hash
+func (ps *PastebinServiceImpl) verifyPassword(password, hash string) bool {
+	if hash == "" {
+		return true // No password set, allow access
+	}
+	if password == "" {
+		return false // Password required but not provided
+	}
+	computedHash := ps.hashPassword(password)
+	return computedHash == hash
+}
+
 // PastebinSubmit the text to DB
 func (ps *PastebinServiceImpl) PastebinSubmit(ctx context.Context, req *pb.PastebinSubmitReq) (*pb.PastebinSubmitResp, error) {
 	turl := ps.TinyURLSvc.Encode(req.GetText() + strconv.FormatInt(time.Now().Unix(), 10))
 
+	// Hash password if provided
+	passwordHash := ps.hashPassword(req.GetPassword())
+
 	page := &table.Page{
-		Poster:  req.GetAuthor(),
-		Syntax:  req.GetSyntax(),
-		Content: req.GetText(),
-		TinyURL: turl,
+		Poster:   req.GetAuthor(),
+		Syntax:   req.GetSyntax(),
+		Content:  req.GetText(),
+		TinyURL:  turl,
+		Password: passwordHash,
 	}
 	affected, err := ps.MysqlSvc.GetEngineG().InsertOne(page)
 	if err != nil || affected == 0 {
 		return nil, err
 	}
 
-	ps.Logger.Info("PastebinServiceImpl PastebinSubmit Success", "turl", turl)
+	ps.Logger.Info("PastebinServiceImpl PastebinSubmit Success", "turl", turl, "hasPassword", passwordHash != "")
 	return &pb.PastebinSubmitResp{
 		Data: &pb.PastebinSubmitResObj{
 			Purl: ps.prefix + turl,
@@ -85,6 +112,11 @@ func (ps *PastebinServiceImpl) URLSearch(turl string) (*table.Page, error) {
 		return nil, err
 	}
 	return &page, nil
+}
+
+// VerifyPassword verifies if the provided password is correct for the page
+func (ps *PastebinServiceImpl) VerifyPassword(page *table.Page, password string) bool {
+	return ps.verifyPassword(password, page.Password)
 }
 
 // Parse the content to markdown... etc.
