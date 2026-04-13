@@ -54,8 +54,6 @@ func initService() (gateway.NodeService, error) {
 	inject.Regist(Inject_Blog_Service, &service.BlogServiceImpl{})
 	inject.Regist(Inject_Cos_Service, &service.CosServiceImpl{})
 
-	inject.Regist(Inject_LogCleaner_Service, &gateway.LogCleanerServiceImpl{})
-
 	inject.Regist(Inject_Web_Service, &gateway.WebServiceImpl{})
 	inject.Regist(Inject_GRPC_Service, &gateway.GRPCServiceImpl{})
 	inject.Regist(Inject_Node_Service, &nodeSvc)

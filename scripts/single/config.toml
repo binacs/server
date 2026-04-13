@@ -25,8 +25,11 @@ Host        = "server.grpc.io"         # for test
 "CryptoDES"    = "cryptfunc-des-svc.cryptfunc:8888"
 
 [LogConfig]
-File  = "./server.log"
-Level = "debug"
+File       = "./server.log"
+Level      = "debug"
+MaxSize    = 100
+MaxBackups = 10
+MaxAge     = 30
 
 [TraceConfig]
 "ServiceName"   = "binacs-cn"

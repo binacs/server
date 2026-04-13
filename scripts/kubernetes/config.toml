@@ -25,8 +25,11 @@ Host        = "binacs.space"             # for test
 "CryptoDES"    = "cryptfunc-des-svc.cryptfunc.svc.cluster.local:8888"
 
 [LogConfig]
-File  = "/work/server.log"
-Level = "debug"
+File       = "/work/server.log"
+Level      = "debug"
+MaxSize    = 100
+MaxBackups = 10
+MaxAge     = 30
 
 [TraceConfig]
 "ServiceName"   = "binacs-space"

@@ -21,8 +21,7 @@ const (
 	Inject_TinyURL_Service    = "TinyURLService"
 	Inject_Pastebin_Service   = "PastebinService"
 	Inject_Blog_Service       = "BlogService"
-	Inject_Cos_Service        = "CosService"
-	Inject_LogCleaner_Service = "LogCleanerService"
+	Inject_Cos_Service = "CosService"
 
 	Inject_Web_Service  = "WebService"
 	Inject_GRPC_Service = "GRPCService"
