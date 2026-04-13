@@ -1,12 +1,15 @@
 FROM golang:1.24-alpine AS binacsgobuild
 
-COPY . /src
+RUN apk add --no-cache make git build-base
 
-RUN apk add --no-cache make git build-base && \
-    \
-    cd /src && \
-    \
-    make
+WORKDIR /src
+
+# Cache dependency downloads in a separate layer
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+RUN make
 
 FROM alpine
 
