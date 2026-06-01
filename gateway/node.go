@@ -19,11 +19,10 @@ type NodeService interface {
 
 // NodeServiceImpl the implement of node service
 type NodeServiceImpl struct {
-	Config     *config.Config    `inject-name:"Config"`
-	Logger     log.Logger        `inject-name:"NodeLogger"`
-	WebSvc     WebService        `inject-name:"WebService"`
-	GRPCSvc    GRPCService       `inject-name:"GRPCService"`
-	LogCleaner LogCleanerService `inject-name:"LogCleanerService"`
+	Config  *config.Config `inject-name:"Config"`
+	Logger  log.Logger     `inject-name:"NodeLogger"`
+	WebSvc  WebService     `inject-name:"WebService"`
+	GRPCSvc GRPCService    `inject-name:"GRPCService"`
 }
 
 // AfterInject do inject
@@ -34,13 +33,6 @@ func (ns *NodeServiceImpl) AfterInject() error {
 // OnStart start all the service
 func (ns *NodeServiceImpl) OnStart() error {
 	ns.Logger.Info("Node Service Onstart")
-
-	// Start log cleanup service
-	if err := ns.LogCleaner.Start(); err != nil {
-		ns.Logger.Error("Failed to start log cleanup service", "error", err)
-	} else {
-		ns.Logger.Info("Log cleanup service started successfully")
-	}
 
 	if ns.Config.PerfConfig.HttpPort != config.NoPerf {
 		// Go Pprof

@@ -26,11 +26,30 @@
             min-height: 100vh;
             flex-direction: column;
             font-size: 14px;
-            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            background: #f8f9fa;
             color: var(--text-primary);
             font-family: "Roboto Mono", monospace, "Open Sans", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", "sans-serif";
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
+        }
+
+        .perspective-grid {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            height: 45vh;
+            z-index: 0;
+            pointer-events: none;
+            -webkit-mask-image:
+                linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.85) 100%),
+                linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+            -webkit-mask-composite: destination-in;
+            mask-image:
+                linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.85) 100%),
+                linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+            mask-composite: intersect;
         }
         
         main {
@@ -178,5 +197,151 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
     <!-- TODO 附加CSS <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" /> -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var canvas = document.querySelector('.perspective-grid');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var dpr = window.devicePixelRatio || 1;
+        var W, H, f;
+
+        // Camera: pitched down 25 deg from height 4
+        // Cell aspect ratio = cz/camH; square when cz = camH (z ≈ 2.8)
+        var camH = 4.0;
+        var pitch = 25 * Math.PI / 180;
+        var cosP = Math.cos(pitch), sinP = Math.sin(pitch);
+        var zNear = 1.0, zFar = 20;
+        // Separate X/Z cell sizes to compensate perspective aspect ratio
+        // Projected ratio = (cellX/cellZ) * cz/camH
+        // z=2: 0.86*0.875=0.75  z=3: 0.86*1.10=0.95  z=4: 0.86*1.33=1.15
+        var cellX = 1.6;
+        var cellZ = 1.85;
+        var seg = 60;
+
+        function resize() {
+            var rect = canvas.getBoundingClientRect();
+            W = rect.width; H = rect.height;
+            canvas.width = W * dpr; canvas.height = H * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            var cyN = -camH * cosP + zNear * sinP;
+            var czN = camH * sinP + zNear * cosP;
+            f = H * 0.48 * czN / (-cyN);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Gerstner waves (4 components for realistic interference)
+        // Precompute k (wave vector magnitude) and normalized direction
+        var waves = [
+            { A: 0.08, kx: 0.5,  kz: 0.3,  omega: 0.6, phi: 0 },
+            { A: 0.05, kx:-0.3,  kz: 0.7,  omega: 1.0, phi: 2.1 },
+            { A: 0.035,kx: 0.9,  kz: 0.15, omega: 1.4, phi: 4.3 },
+            { A: 0.02, kx: 0.15, kz: 1.0,  omega: 1.9, phi: 1.5 }
+        ];
+        for (var wi = 0; wi < waves.length; wi++) {
+            var ww = waves[wi];
+            var k = Math.sqrt(ww.kx * ww.kx + ww.kz * ww.kz);
+            ww.nkx = ww.kx / k;  // normalized direction x
+            ww.nkz = ww.kz / k;  // normalized direction z
+        }
+
+        // Reusable output array to avoid per-call allocation
+        var _d = [0, 0, 0];
+        function displace(x0, z0, t) {
+            var dx = 0, dz = 0, dy = 0;
+            for (var i = 0; i < waves.length; i++) {
+                var w = waves[i];
+                var phase = w.kx * x0 + w.kz * z0 - w.omega * t + w.phi;
+                var c = Math.cos(phase), s = Math.sin(phase);
+                dx -= w.A * w.nkx * c;
+                dz -= w.A * w.nkz * c;
+                dy += w.A * s;
+            }
+            _d[0] = x0 + dx; _d[1] = dy; _d[2] = z0 + dz;
+            return _d;
+        }
+
+        function project(wx, wy, wz) {
+            var cy = (wy - camH) * cosP + wz * sinP;
+            var cz = -(wy - camH) * sinP + wz * cosP;
+            if (cz < 0.3) return null;
+            return [W / 2 + f * wx / cz, H * 0.5 - f * cy / cz];
+        }
+
+        // Compute world half-width needed to fill viewport at given depth
+        // Screen edge: W/2 + f*wx/cz = W → wx = W*cz/(2*f)
+        // Add margin (1.15x) so grid extends past CSS mask edges
+        function halfWidthAtDepth(z0) {
+            var cz = camH * sinP + z0 * cosP;
+            return (W / 2) * cz / f * 1.15 + cellX;
+        }
+
+        function render(time) {
+            var t = time * 0.001;
+            ctx.clearRect(0, 0, W, H);
+
+            var maxHalfW = halfWidthAtDepth(zFar);
+            var nX = Math.ceil(maxHalfW / cellX);
+            var nZ = Math.ceil((zFar - zNear) / cellZ);
+            var d, p, started, x0, z0, alpha;
+            var zRange = zFar - zNear;
+            // Depth fade: alpha = baseAlpha * (1 - (z-zNear)/zRange)^1.3
+            // Near (z=zNear) → full alpha; far (z=zFar) → 0
+            var baseAlpha = 0.28;
+
+            // Z-direction lines: split into depth bands with decreasing alpha
+            var bands = 6;
+            var bandSeg = Math.ceil(seg / bands);
+            for (var i = -nX; i <= nX; i++) {
+                x0 = i * cellX;
+                for (var b = 0; b < bands; b++) {
+                    var sStart = b * bandSeg;
+                    var sEnd = Math.min((b + 1) * bandSeg, seg);
+                    var midZ = zNear + ((sStart + sEnd) / 2 / seg) * zRange;
+                    alpha = baseAlpha * Math.pow(1 - (midZ - zNear) / zRange, 1.3);
+                    if (alpha < 0.01) continue;
+                    ctx.beginPath();
+                    started = false;
+                    for (var s = sStart; s <= sEnd; s++) {
+                        z0 = zNear + (s / seg) * zRange;
+                        d = displace(x0, z0, t);
+                        p = project(d[0], d[1], d[2]);
+                        if (!p || p[1] < -10 || p[1] > H + 10) { started = false; continue; }
+                        if (p[0] < -W * 0.5 || p[0] > W * 1.5) { started = false; continue; }
+                        if (!started) { ctx.moveTo(p[0], p[1]); started = true; }
+                        else { ctx.lineTo(p[0], p[1]); }
+                    }
+                    ctx.strokeStyle = 'rgba(0,117,201,' + alpha.toFixed(3) + ')';
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+
+            // X-direction lines: alpha decreases with depth
+            for (var j = 0; j <= nZ; j++) {
+                z0 = zNear + j * cellZ;
+                alpha = baseAlpha * Math.pow(1 - (z0 - zNear) / zRange, 1.3);
+                if (alpha < 0.01) continue;
+                var halfW = halfWidthAtDepth(z0);
+                ctx.beginPath();
+                started = false;
+                for (var s = 0; s <= seg; s++) {
+                    x0 = (s / seg - 0.5) * halfW * 2;
+                    d = displace(x0, z0, t);
+                    p = project(d[0], d[1], d[2]);
+                    if (!p || p[1] < -10 || p[1] > H + 10) { started = false; continue; }
+                    if (!started) { ctx.moveTo(p[0], p[1]); started = true; }
+                    else { ctx.lineTo(p[0], p[1]); }
+                }
+                ctx.strokeStyle = 'rgba(0,117,201,' + alpha.toFixed(3) + ')';
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+    });
+    </script>
 </head>
 {{end}}

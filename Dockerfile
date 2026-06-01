@@ -1,12 +1,17 @@
-FROM golang:1.24-alpine AS binacsgobuild
+FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS binacsgobuild
 
-COPY . /src
+RUN apk add --no-cache make git
 
-RUN apk add --no-cache make git build-base && \
-    \
-    cd /src && \
-    \
-    make
+WORKDIR /src
+
+# Cache dependency downloads in a separate layer
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+ARG TARGETOS TARGETARCH
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} make
 
 FROM alpine
 
