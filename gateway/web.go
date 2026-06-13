@@ -25,6 +25,9 @@ import (
 	"github.com/binacs/server/types/table"
 )
 
+// httpServerTimeout bounds read/write on both the plaintext and TLS servers.
+const httpServerTimeout = 10 * time.Second
+
 // WebService the web service
 type WebService interface {
 	Serve() error
@@ -63,8 +66,8 @@ func (ws *WebServiceImpl) AfterInject() error {
 	ws.s = &http.Server{
 		Addr:           ":" + ws.Config.WebConfig.HttpPort,
 		Handler:        ws.r,
-		ReadTimeout:    time.Second,
-		WriteTimeout:   time.Second,
+		ReadTimeout:    httpServerTimeout,
+		WriteTimeout:   httpServerTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
 	return nil
@@ -77,7 +80,17 @@ func (ws *WebServiceImpl) Serve() error {
 	if ws.Config.WebConfig.SSLRedirect {
 		ws.Logger.Info("WebService Serve ", "ListenAndServeTLS", true)
 		go func() {
-			if err := ws.r.RunTLS(":"+ws.Config.WebConfig.HttpsPort, ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath); err != nil {
+			// Use an explicit http.Server so the TLS listener has the same
+			// timeouts as the plaintext one (gin's RunTLS sets none, which let
+			// slow/stuck requests hang the connection indefinitely).
+			tlsSrv := &http.Server{
+				Addr:           ":" + ws.Config.WebConfig.HttpsPort,
+				Handler:        ws.r,
+				ReadTimeout:    httpServerTimeout,
+				WriteTimeout:   httpServerTimeout,
+				MaxHeaderBytes: 1 << 20,
+			}
+			if err := tlsSrv.ListenAndServeTLS(ws.Config.WebConfig.CertPath, ws.Config.WebConfig.KeyPath); err != nil {
 				ws.Logger.Error("WebService Serve", "ListenAndServeTLS err", err)
 			}
 		}()
@@ -247,11 +260,12 @@ func (ws *WebServiceImpl) blogs(c *gin.Context) {
 	blog, err := ws.BlogService.URLSearch(c.Param("uri"))
 	span.Finish()
 	if err != nil {
-		ws.Logger.Error("WebServiceImpl blogs", "URLSearch err", err, "uri", c.Param("turl"))
+		ws.Logger.Error("WebServiceImpl blogs", "URLSearch err", err, "uri", c.Param("uri"))
 		c.HTML(http.StatusOK, "blogs", gin.H{
 			"Title": "binacs.space - Blogs",
-			"Body":  template.HTML(err.Error()),
+			"Body":  template.HTML("Blog not found or internal error"),
 		})
+		return
 	}
 
 	span = ws.TraceSvc.FromGinContext(c, "BlogSvc Parse")
@@ -338,8 +352,10 @@ func (ws *WebServiceImpl) apiCryptoEncrypto(c *gin.Context) {
 		PlainText: text,
 	})
 	span.Finish()
-	if err != nil {
+	if err != nil || rsp.GetData() == nil {
 		ws.Logger.Error("WebServiceImpl apiCryptoEncrypto", "err", err, "text", text, "type", tp)
+		c.String(http.StatusBadRequest, "encrypt failed")
+		return
 	}
 
 	c.String(http.StatusOK, rsp.Data.EncryptText)
@@ -355,8 +371,10 @@ func (ws *WebServiceImpl) apiCryptoDecrypto(c *gin.Context) {
 		EncryptText: text,
 	})
 	span.Finish()
-	if err != nil {
+	if err != nil || rsp.GetData() == nil {
 		ws.Logger.Error("WebServiceImpl apiCryptoDecrypto", "err", err, "text", text, "type", tp)
+		c.String(http.StatusBadRequest, "decrypt failed")
+		return
 	}
 
 	c.String(http.StatusOK, rsp.Data.PlainText)
@@ -371,8 +389,10 @@ func (ws *WebServiceImpl) apiTinyURLEncode(c *gin.Context) {
 		Url: text,
 	})
 	span.Finish()
-	if err != nil {
+	if err != nil || rsp.GetData() == nil {
 		ws.Logger.Error("WebServiceImpl apiTinyURLEncode", "err", err, "text", text)
+		c.String(http.StatusBadRequest, "encode failed (url must start with http/https)")
+		return
 	}
 
 	c.String(http.StatusOK, rsp.Data.Turl)
@@ -386,8 +406,10 @@ func (ws *WebServiceImpl) apiTinyURLDecode(c *gin.Context) {
 		Turl: text,
 	})
 	span.Finish()
-	if err != nil {
+	if err != nil || rsp.GetData() == nil {
 		ws.Logger.Error("WebServiceImpl apiTinyURLDecode", "err", err, "text", text)
+		c.String(http.StatusBadRequest, "decode failed")
+		return
 	}
 
 	c.String(http.StatusOK, rsp.Data.Url)

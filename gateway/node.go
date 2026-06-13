@@ -3,8 +3,6 @@ package gateway
 import (
 	"net/http"
 	_ "net/http/pprof"
-	"os"
-	"runtime/trace"
 	"sync"
 
 	"github.com/binacsgo/log"
@@ -35,28 +33,17 @@ func (ns *NodeServiceImpl) OnStart() error {
 	ns.Logger.Info("Node Service Onstart")
 
 	if ns.Config.PerfConfig.HttpPort != config.NoPerf {
-		// Go Pprof
-		{
-			ns.Logger.Info("Perf Pprof", "HttpPort", ns.Config.PerfConfig.HttpPort)
-			go func() {
-				if err := http.ListenAndServe("0.0.0.0:"+ns.Config.PerfConfig.HttpPort, nil); err != nil {
-					ns.Logger.Error("Pprof server failed", "error", err)
-				}
-			}()
-		}
-		// Go Trace
-		{
-			ns.Logger.Info("Perf Trace")
-			if f, err := os.Create("trace.out"); err != nil {
-				ns.Logger.Error("Perf Trace", "err", err)
-			} else {
-				if err := trace.Start(f); err != nil {
-					ns.Logger.Error("Trace start failed", "error", err)
-				} else {
-					defer trace.Stop()
-				}
+		// Go Pprof. Execution traces are available on demand and time-bounded
+		// via net/http/pprof at /debug/pprof/trace?seconds=N. We intentionally do
+		// NOT call runtime/trace.Start to a file here: that captures the whole
+		// program for the entire process lifetime, growing trace.out without bound
+		// (it once filled the disk and stalled MySQL writes).
+		ns.Logger.Info("Perf Pprof", "HttpPort", ns.Config.PerfConfig.HttpPort)
+		go func() {
+			if err := http.ListenAndServe("0.0.0.0:"+ns.Config.PerfConfig.HttpPort, nil); err != nil {
+				ns.Logger.Error("Pprof server failed", "error", err)
 			}
-		}
+		}()
 	}
 
 	// TODO catch error by channel

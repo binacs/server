@@ -57,7 +57,7 @@ The app uses `binacsgo/inject` for DI. All services are registered in `cmd/comma
 ### Key Layers
 
 - **cmd/commands/** - CLI entry point using cobra. `root.go` handles config loading and logger init; `start.go` wires all DI and boots the node.
-- **gateway/** - Server layer. `node.go` orchestrates startup (pprof, trace, web, gRPC). `web.go` sets up Gin routes and handlers. `grpc.go` sets up gRPC server with TLS, auth interceptors, and grpc-gateway mux.
+- **gateway/** - Server layer. `node.go`'s `OnStart()` orchestrates startup: it optionally launches pprof and `runtime/trace`, then starts the web and/or gRPC servers in goroutines gated by `Config.Mode` (`config.ALL`/`WEB`/`GRPC`, defined in `config/config.go`). `web.go` sets up Gin routes and handlers. `grpc.go` sets up gRPC server with TLS, auth interceptors, and grpc-gateway mux.
 - **service/** - Business logic. `interface.go` defines all service interfaces. Each service (crypto, tinyurl, pastebin, blog, cos, user) has its own implementation file. DB services: `mysql.go` (xorm), `redis.go`.
 - **api/** - Protobuf definitions and generated code for each gRPC service. Use `go generate` via `api/Makefile` to regenerate.
 - **config/** - TOML-based configuration (`config.toml`). Supports hot reload. Configurable mode: `all`, `web`, or `grpc`.
@@ -68,6 +68,8 @@ The app uses `binacsgo/inject` for DI. All services are registered in `cmd/comma
 ### Service Registration Pattern
 
 Each API service (crypto, tinyurl, pastebin, cos, user) implements a `Register()` method that registers both the gRPC server handler and the gRPC-Gateway reverse proxy handler simultaneously.
+
+The **crypto service is a fan-out gateway, not a self-contained implementation**: its `Register()`/`AfterInject()` dials external gRPC backends (the `cryptfunc` BASE64/AES/DES microservices) using the address map `Config.WebConfig.K8sService` (keys `CryptoBASE64`/`CryptoAES`/`CryptoDES`), then routes each encrypt/decrypt request to the client selected by the request's algorithm. These backend addresses live in `config.toml` and differ per environment (docker-compose vs Kubernetes).
 
 ### Configuration
 

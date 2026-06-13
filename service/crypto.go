@@ -67,7 +67,7 @@ func (cs *CryptoServiceImpl) connect() {
 
 // CryptoEncrypt encrypt
 func (cs *CryptoServiceImpl) CryptoEncrypt(ctx context.Context, req *pb.CryptoEncryptReq) (*pb.CryptoEncryptResp, error) {
-	cs.Logger.Info("CryptoServiceImpl CryptoEncrypt Start", "algorithm", req.GetAlgorithm(), "plainText", req.GetPlainText())
+	cs.Logger.Info("CryptoServiceImpl CryptoEncrypt Start", "algorithm", req.GetAlgorithm(), "plainLen", len(req.GetPlainText()))
 	var client pb.CryptoClient
 	switch req.GetAlgorithm() {
 	case "BASE64":
@@ -77,20 +77,19 @@ func (cs *CryptoServiceImpl) CryptoEncrypt(ctx context.Context, req *pb.CryptoEn
 	case "DES":
 		client = cs.clientDES
 	default:
-		cs.Logger.Error("CryptoEncrypt: NOT BASE64/AES/DES")
-		return nil, nil
+		cs.Logger.Error("CryptoEncrypt: NOT BASE64/AES/DES", "algorithm", req.GetAlgorithm())
+		return nil, fmt.Errorf("unsupported algorithm: %q", req.GetAlgorithm())
 	}
 	if client == nil {
-		cs.Logger.Error("CryptoEncrypt client nil")
-		// TODO return nil for now
-		return nil, nil
+		cs.Logger.Error("CryptoEncrypt client nil", "algorithm", req.GetAlgorithm())
+		return nil, fmt.Errorf("crypto backend %q unavailable", req.GetAlgorithm())
 	}
 	return client.CryptoEncrypt(context.Background(), req)
 }
 
 // CryptoDecrypt decrypt
 func (cs *CryptoServiceImpl) CryptoDecrypt(ctx context.Context, req *pb.CryptoDecryptReq) (*pb.CryptoDecryptResp, error) {
-	cs.Logger.Info("CryptoServiceImpl CryptoEncrypt Start", "algorithm", req.GetAlgorithm(), "encryptText", req.GetEncryptText())
+	cs.Logger.Info("CryptoServiceImpl CryptoDecrypt Start", "algorithm", req.GetAlgorithm(), "encryptLen", len(req.GetEncryptText()))
 	var client pb.CryptoClient
 	switch req.GetAlgorithm() {
 	case "BASE64":
@@ -100,13 +99,12 @@ func (cs *CryptoServiceImpl) CryptoDecrypt(ctx context.Context, req *pb.CryptoDe
 	case "DES":
 		client = cs.clientDES
 	default:
-		cs.Logger.Error("CryptoEncrypt: NOT BASE64/AES/DES")
-		return nil, nil
+		cs.Logger.Error("CryptoDecrypt: NOT BASE64/AES/DES", "algorithm", req.GetAlgorithm())
+		return nil, fmt.Errorf("unsupported algorithm: %q", req.GetAlgorithm())
 	}
 	if client == nil {
-		cs.Logger.Error("CryptoEncrypt client nil")
-		// TODO return nil for now
-		return nil, nil
+		cs.Logger.Error("CryptoDecrypt client nil", "algorithm", req.GetAlgorithm())
+		return nil, fmt.Errorf("crypto backend %q unavailable", req.GetAlgorithm())
 	}
 	return client.CryptoDecrypt(context.Background(), req)
 }

@@ -7,6 +7,11 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
+    # Skip image rebuilds for doc-only changes.
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -24,9 +29,9 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
       -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
+        # No QEMU needed: the build stage is pinned to $BUILDPLATFORM and
+        # cross-compiles (CGO disabled); the final stage only COPYs, so no
+        # foreign-arch binary is ever executed during the build.
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -

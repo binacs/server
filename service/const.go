@@ -3,8 +3,7 @@ package service
 import "time"
 
 const (
-	dbCheckInterval  = 15 * time.Second
-	cliCheckInterval = 1 * time.Minute
+	dbCheckInterval = 15 * time.Second
 
 	fatalPscNilInGinContext = "fatal-psc-nil-in-gin-context"
 )

@@ -149,7 +149,7 @@ func TestTinyURLServiceImpl_TinyURLEncode(t *testing.T) {
 				},
 			},
 			want:    nil,
-			wantErr: false,
+			wantErr: true,
 		},
 		{
 			name: "redis set err",
@@ -251,7 +251,7 @@ func TestTinyURLServiceImpl_TinyURLDecode(t *testing.T) {
 				},
 			},
 			want:    nil,
-			wantErr: false,
+			wantErr: true,
 		},
 		{
 			name: "redis get err",

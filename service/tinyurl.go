@@ -56,9 +56,9 @@ func (ts *TinyURLServiceImpl) TinyURLEncode(ctx context.Context, req *pb.TinyURL
 	ts.Logger.Info("TinyURLServiceImpl TinyURLEncode Start", "url", req.GetUrl())
 
 	url := req.GetUrl()
-	if !strings.HasPrefix(url, "http") && !strings.HasPrefix(url, "https") {
+	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
 		ts.Logger.Error("TinyURLServiceImpl TinyURLEncode, url illegal", "text", url)
-		return nil, nil
+		return nil, fmt.Errorf("url must start with http:// or https://")
 	}
 
 	turl := ts.Encode(url)
@@ -82,7 +82,7 @@ func (ts *TinyURLServiceImpl) TinyURLDecode(ctx context.Context, req *pb.TinyURL
 	uri := req.GetTurl()
 	if !strings.HasPrefix(uri, ts.prefix) {
 		ts.Logger.Error("TinyURLServiceImpl TinyURLDecode, tiny-url illegal", "uri", uri)
-		return nil, nil
+		return nil, fmt.Errorf("tiny-url must start with %s", ts.prefix)
 	}
 
 	url, err := ts.RedisSvc.Get(strings.TrimPrefix(uri, ts.prefix))

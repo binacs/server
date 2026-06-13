@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc"
 
 	"github.com/binacsgo/log"
@@ -53,20 +54,29 @@ func (us *UserServiceImpl) UserTest(ctx context.Context, req *pb.UserTestReq) (*
 // UserRegister register
 func (us *UserServiceImpl) UserRegister(ctx context.Context, req *pb.UserRegisterReq) (*pb.UserRegisterResp, error) {
 	userID, userPWD := req.GetId(), req.GetPwd()
+	if len(userID) == 0 || len(userPWD) == 0 {
+		return nil, fmt.Errorf("ID or PWD empty")
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(userPWD), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, fmt.Errorf("hash password: %w", err)
+	}
+
 	user := &table.User{
 		UIN: userID,
-		Pwd: userPWD,
+		Pwd: string(hashed),
 	}
 	affected, err := us.MysqlSvc.GetEngineG().Master().Insert(user)
 	if err != nil || affected == 0 {
-		return nil, nil
+		return nil, fmt.Errorf("insert user: %v", err)
 	}
 
 	us.Logger.Info("UserRegister Success", "userID", userID, "UID", user.UID)
+	// Do not echo the password back in the response.
 	return &pb.UserRegisterResp{
 		Data: &pb.UserRegisterDataObj{
-			Id:  userID,
-			Pwd: userPWD,
+			Id: userID,
 		},
 	}, nil
 }
@@ -79,8 +89,12 @@ func (us *UserServiceImpl) UserAuth(ctx context.Context, req *pb.UserAuthReq) (*
 	}
 
 	user := &table.User{}
-	if exsit, err := us.MysqlSvc.GetEngineG().Where("id=?", id).Get(user); err != nil || !exsit || pwd != user.Pwd {
+	exsit, err := us.MysqlSvc.GetEngineG().Where("id=?", id).Get(user)
+	if err != nil || !exsit {
 		return nil, err
+	}
+	if bcrypt.CompareHashAndPassword([]byte(user.Pwd), []byte(pwd)) != nil {
+		return nil, fmt.Errorf("invalid credentials")
 	}
 
 	token, refresh := token.GenTokenAndRefresh(id)
@@ -144,7 +158,7 @@ func (us *UserServiceImpl) UserInfo(ctx context.Context, req *pb.UserInfoReq) (*
 			Id:    id,
 			Role:  user.Role,
 			Desc:  user.Desc,
-			Ctime: user.CreatedAt.String(), // todo panic
+			Ctime: user.CreatedAt.String(),
 		},
 	}, nil
 }

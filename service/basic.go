@@ -168,6 +168,7 @@ const (
 								'success': function (data) {
 									console.log("enc success")
 									$('#dec_source').val(data);
+									if (typeof M !== 'undefined') { M.updateTextFields(); M.textareaAutoResize($('#dec_source')); }
 								},
 								error: function () {
 									alert("error!");
@@ -187,6 +188,7 @@ const (
 								'success': function (data) {
 									console.log("dec success")
 									$('#enc_source').val(data);
+									if (typeof M !== 'undefined') { M.updateTextFields(); M.textareaAutoResize($('#enc_source')); }
 								},
 								error: function () {
 									alert("error!");
@@ -249,6 +251,7 @@ const (
 								'success': function(data) {
 									console.log("enc success")
 									$('#dec_source').val(data);
+									if (typeof M !== 'undefined') { M.updateTextFields(); }
 								},
 								error: function() {
 									alert("error!");
@@ -267,6 +270,7 @@ const (
 								'success': function(data) {
 									console.log("dec success")
 									$('#enc_source').val(data);
+									if (typeof M !== 'undefined') { M.updateTextFields(); }
 								},
 								error: function() {
 									alert("error!");
@@ -324,8 +328,8 @@ const (
 					</div>
 
 					<script type="text/javascript">
-						$(document).ready(function() {
-							if (typeof M !== 'undefined') {
+						document.addEventListener('DOMContentLoaded', function() {
+							if (typeof M !== 'undefined' && typeof $ !== 'undefined') {
 								M.textareaAutoResize($('#sub_content'));
 							}
 						});

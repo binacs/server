@@ -122,21 +122,3 @@ func (rs *RedisServiceImpl) Del(key string) error {
 	}
 	return nil
 }
-
-// GetExpireAt get key expire-time
-func (rs *RedisServiceImpl) GetExpireAt(key string) (time.Time, error) {
-	res, err := rs.client.TTL(key).Result()
-	if err != nil {
-		return time.Time{}, err
-	}
-	//if res == -2 {
-	//}
-	//if res == -1 {
-	//}
-	// to..do.. +4 seconds ttl
-	expireAt, err := time.ParseDuration(fmt.Sprintf("%ds", res-4))
-	if err != nil {
-		return time.Time{}, err
-	}
-	return time.Now().Add(expireAt), nil
-}

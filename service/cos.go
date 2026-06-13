@@ -67,26 +67,6 @@ func (cs *CosServiceImpl) makeCosClient() *cos.Client {
 		})
 }
 
-// stayAlive keeps the COS client alive by periodically checking the service
-// This function is currently unused but kept for future use
-//
-//nolint:unused
-func (cs *CosServiceImpl) stayAlive() {
-	timer := time.NewTimer(cliCheckInterval)
-	defer timer.Stop()
-	for {
-		timer.Reset(cliCheckInterval)
-		<-timer.C
-		cs.Logger.Error("CosServiceImpl Start")
-		s, _, err := cs.makeCosClient().Service.Get(context.Background())
-		if err != nil {
-			cs.Logger.Error("CosServiceImpl", "stayAlive Get get err", err)
-			continue
-		}
-		cs.Logger.Error("CosServiceImpl", "Buckets", s.Buckets)
-	}
-}
-
 func (cs *CosServiceImpl) generateFileName(name string) string {
 	fileWithSuffix := path.Base(name)
 	suffixOnly := path.Ext(fileWithSuffix)

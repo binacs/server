@@ -35,7 +35,6 @@ type RedisService interface {
 	Set(string, string, time.Duration) error
 	Get(string) (string, error)
 	Del(string) error
-	GetExpireAt(string) (time.Time, error)
 }
 
 // ----------------- API service -----------------
