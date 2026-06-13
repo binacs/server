@@ -43,6 +43,13 @@ type MysqlServiceImpl struct {
 	Logger    log.Logger     `inject-name:"MysqlLogger"`
 	ZapLogger *zap.Logger    `inject-name:"ZapLogger"`
 	EngineG   *xorm.EngineGroup
+
+	// synced records whether Sync2 (schema creation) has succeeded at least
+	// once. It guards against the startup race where MySQL is not ready when
+	// the server boots: the initial Sync2 fails, and checkLoop must retry it
+	// once the connection comes up (only touched from AfterInject before the
+	// checkLoop goroutine starts, then from checkLoop alone).
+	synced bool
 }
 
 // AfterInject inject
@@ -59,6 +66,7 @@ func (ms *MysqlServiceImpl) buildClient() (err error) {
 	} else if err = ms.Sync2(); err != nil {
 		return err
 	}
+	ms.synced = true
 	return nil
 }
 
@@ -70,15 +78,28 @@ func (ms *MysqlServiceImpl) checkLoop() {
 		<-timer.C
 		if err := ms.EngineG.Ping(); err != nil {
 			ms.Logger.Error("MysqlServiceImpl checkLoop Ping", "err", err)
+			ms.synced = false
 			// buildClient reconnects and re-runs Sync2; no need to Sync2 every tick.
 			if err := ms.buildClient(); err != nil {
 				ms.Logger.Error("MysqlServiceImpl checkLoop buildClient", "err", err)
 			} else {
 				ms.Logger.Info("MysqlServiceImpl checkLoop buildClient success")
 			}
-		} else {
-			ms.Logger.Info("MysqlServiceImpl checkLoop Ping success")
+			continue
 		}
+		// Connection is healthy. If the schema was never synced (e.g. MySQL was
+		// not ready at startup so the initial Sync2 failed), sync it now and
+		// retry on the next tick until it succeeds — but don't Sync2 every tick.
+		if !ms.synced {
+			if err := ms.Sync2(); err != nil {
+				ms.Logger.Error("MysqlServiceImpl checkLoop Sync2", "err", err)
+			} else {
+				ms.synced = true
+				ms.Logger.Info("MysqlServiceImpl checkLoop Sync2 success")
+			}
+			continue
+		}
+		ms.Logger.Info("MysqlServiceImpl checkLoop Ping success")
 	}
 }
 
