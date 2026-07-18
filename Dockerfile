@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM golang:1.24-alpine AS binacsgobuild
+FROM --platform=$BUILDPLATFORM golang:1.25-alpine AS binacsgobuild
 
 RUN apk add --no-cache make git
 
